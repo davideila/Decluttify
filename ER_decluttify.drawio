@@ -78,7 +78,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="o1DXEVKSGSJljAAY257b-55" value="(0,N)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="407" y="81" width="45" height="26" as="geometry" />
+          <mxGeometry x="376" y="77" width="45" height="26" as="geometry" />
         </mxCell>
         <mxCell id="o1DXEVKSGSJljAAY257b-56" value="(0,N)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="354" y="-105" width="45" height="26" as="geometry" />

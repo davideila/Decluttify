@@ -76,9 +76,9 @@ public class ItemDetailsController extends GraphicController implements Initiali
         // using Task for background processing in JAVAFX as best practice (https://docs.oracle.com/javafx/2/best_practices/jfxpub-best_practices.htm)
         // The item details gets initially filled with the previewBean, meanwhile the background task fetches the full item data
         // The following shows the definition of the task
-        Task<FullItemBean> getFullItemTask = new Task<FullItemBean>() {
+        Task<FullItemBean> getFullItemTask = new Task<>() {
             @Override
-            protected FullItemBean call() throws Exception {
+            protected FullItemBean call() {
                 FullItemBean fib;
                 VisualizeItemController vic = new VisualizeItemController();
                 fib = vic.loadItemDetails(pib.getId());

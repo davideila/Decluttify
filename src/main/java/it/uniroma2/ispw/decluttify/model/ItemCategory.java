@@ -16,4 +16,4 @@ public enum ItemCategory{
     public String getCategory() {
         return category;
     }
-};
+}

@@ -106,7 +106,7 @@ public class MakeOfferController extends GraphicController implements Initializa
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) throws IOException {
+    private void handleCancel(ActionEvent event) {
         MainGraphicController.getInstance().goBack();
     }
 

@@ -43,13 +43,13 @@ public class HeaderBarController implements Initializable, Observer{
     // Methods for onAction button click event linked through fxml
 
     @FXML
-    void handleBackButton(ActionEvent event) throws IOException {
+    void handleBackButton(ActionEvent event) {
         MainGraphicController mainController = MainGraphicController.getInstance();
         mainController.goBack();
     }
 
     @FXML
-    void handleProfileButton(ActionEvent event) throws IOException {
+    void handleProfileButton(ActionEvent event) {
         if (SessionManager.getInstance().getLoggedUser() == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/LoginPopupView.fxml"));

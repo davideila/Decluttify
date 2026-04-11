@@ -92,11 +92,11 @@ public class BarterDAOCSV extends BarterDAO {
                     tmpRow[5] = String.valueOf(barter.isOffererConfirmed());
                     tmpRow[6] = String.valueOf(barter.isReceiverConfirmed());
                     bw.write(String.join(";",tmpRow) + "\r\n");
+                    found = true;
                 } else {
                     bw.write(line + "\r\n");
                 }
             }
-            found = true;
         } catch (IOException e) {
             if (tempFile.exists()) tempFile.delete();
             throw new DAOException("Error writing to barter CSV during update.", e);

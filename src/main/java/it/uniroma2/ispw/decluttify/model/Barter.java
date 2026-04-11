@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 public class Barter {
     private int id;
     private Offer offer;
-    private String startDate;
+    private final String startDate;
     private String completionDate;
     private BarterStatus status;
     private boolean offererConfirmed = false;

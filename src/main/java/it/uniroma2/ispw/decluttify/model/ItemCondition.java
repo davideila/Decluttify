@@ -16,4 +16,4 @@ public enum ItemCondition{
     public String getCondition() {
         return condition;
     }
-};
+}

@@ -18,7 +18,7 @@ public class OfferDAOJDBC extends OfferDAO {
     @Override
     public Offer retrieveOfferById(int id) {
         List<Item> itemofflist = new ArrayList<>();
-        Offer offer = null;
+        Offer offer;
         try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
             ResultSet rs = SelectQueries.selectOfferById(stmt, id);
             if (!rs.first()) { // rs empty
@@ -168,7 +168,6 @@ public class OfferDAOJDBC extends OfferDAO {
 
     @Override
     public void rejectOffer(Offer offer) {
-        PreparedStatement pstmt = null;
         try {
             //atomicity
             this.connection.setAutoCommit(false);

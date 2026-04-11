@@ -118,7 +118,7 @@ public class MakeBarterController {
         if(!this.isUserLogged()) throw new NotLoggedInException("Log in required");
         else {
             List<PreviewItemBean> pib = new ArrayList<>();
-            List<Item> itemlist = null;
+            List<Item> itemlist;
 
             ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
             itemlist = itemdao.retrieveItemsByOwner(SessionManager.getInstance().getLoggedUser().getUsername());

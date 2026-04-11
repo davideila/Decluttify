@@ -10,7 +10,7 @@ public class PersistenceManager {
 
     private static PersistenceManager instance;
     private Connection connection;
-    private String persistenceType;
+    private final String persistenceType;
 
     private PersistenceManager(){
 

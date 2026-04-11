@@ -12,8 +12,8 @@ public abstract class AbstractState {
         this.offerStatus = offerStatus;
     }
 
-    public void entry(StateMachineImpl contextSM){};
-    public void exit(StateMachineImpl contextSM){};
+    public void entry(StateMachineImpl contextSM){}
+    public void exit(StateMachineImpl contextSM){}
 
     public abstract void reject(StateMachineImpl context);
 

@@ -207,7 +207,7 @@ public class ItemDAOJDBC extends ItemDAO {
 
     public List<Item> retrieveItemsByOwner(String username) {
 
-        ArrayList<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<>();
 
         try(Statement stmtItem = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement stmtUser = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

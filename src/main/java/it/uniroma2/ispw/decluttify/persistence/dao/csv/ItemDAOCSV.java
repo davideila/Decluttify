@@ -150,11 +150,11 @@ public class ItemDAOCSV extends ItemDAO {
                 if (tmpRow[0].equals(String.valueOf(id))) {
                     tmpRow[7] = String.valueOf(num);
                     bw.write(String.join(";",tmpRow) + "\r\n");
+                    success = true;
                 } else {
                     bw.write(line + "\r\n");
                 }
             }
-            success = true;
         }
 
         catch (IOException e) {

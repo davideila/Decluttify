@@ -118,14 +118,15 @@ public class OfferDAOCSV extends OfferDAO {
                 if (acceptedItemsIds.contains(Integer.parseInt(tmpRow[0]))){
                     tmpRow[9] = "TRADED";
                     bw2.write(String.join(";",tmpRow) + "\r\n");
+                    success = true;
                 } else if (rejectedItemsIds.contains(Integer.parseInt(tmpRow[0]))) {
                     tmpRow[7] = Integer.toString(Integer.parseInt(tmpRow[7]) - 1); //offerCounter --
                     bw2.write( String.join(";",tmpRow)+ "\r\n");
+                    success = true;
                 }else{
                     bw2.write(line + "\r\n");
                 }
             }
-            success = true;
         } catch (IOException | NumberFormatException e) {
             if (tempOfferFile.exists()) tempOfferFile.delete();
             if (tempItemFile.exists()) tempItemFile.delete();

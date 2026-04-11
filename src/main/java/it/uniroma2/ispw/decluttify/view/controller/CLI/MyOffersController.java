@@ -1,12 +1,8 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
-import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MyOffersView;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class MyOffersController extends GraphicController<MyOffersView>{
 

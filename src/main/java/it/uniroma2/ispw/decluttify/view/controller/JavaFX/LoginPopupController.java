@@ -25,7 +25,7 @@ public class LoginPopupController {
     @FXML
     Label failedLogin;
 
-    public void onActionSignInButton(ActionEvent actionEvent) throws IOException, SQLException {
+    public void onActionSignInButton(ActionEvent actionEvent) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         LoginController lgc = new LoginController();

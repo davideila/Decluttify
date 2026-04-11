@@ -2,8 +2,6 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
-import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.view.CLI.MakeOfferView;
 
 import java.util.ArrayList;

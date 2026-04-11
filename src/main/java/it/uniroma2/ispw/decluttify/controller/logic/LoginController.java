@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
-import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.model.Notification;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
 import it.uniroma2.ispw.decluttify.utils.ConfigReader;

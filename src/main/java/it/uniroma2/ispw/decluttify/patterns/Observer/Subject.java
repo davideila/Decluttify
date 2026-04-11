@@ -13,7 +13,7 @@ public abstract class Subject {
     }
 
     public Subject(Observer obs) {
-        this(new Vector<Observer>());
+        this(new Vector<>());
         if (obs != null)
             this.observers.add(obs);
     }

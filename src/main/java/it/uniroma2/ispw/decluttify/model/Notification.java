@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 public class Notification {
     private int id;
     private String username;
-    private String message;
+    private final String message;
     private String type; // "OFFER" or "BARTER"
     private boolean read;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     // Constructors
 

@@ -162,7 +162,7 @@ public class MainGraphicController implements Initializable, Observer {
 
     //Method for sidebar button stile and enabling/disabling logic
 
-    public void lockUnlockSidebar(ActionEvent event) throws IOException {
+    public void lockUnlockSidebar(ActionEvent event) {
         Button button = (Button) event.getSource();
         if(!this.sidebarButtonStack.isEmpty()){
             this.sidebarButtonStack.getLast().setDisable(false);

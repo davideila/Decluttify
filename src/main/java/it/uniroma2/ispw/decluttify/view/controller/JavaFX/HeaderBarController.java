@@ -17,11 +17,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HeaderBarController implements Initializable, Observer{
+public class HeaderBarController extends GraphicController implements Initializable, Observer{
 
     private int loginTries = 0;
     @FXML
@@ -68,8 +67,8 @@ public class HeaderBarController implements Initializable, Observer{
                     profileButton.setText(SessionManager.getInstance().getLoggedUser().getUsername());
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            }catch(Exception e){
+                this.handleException(e);
             }
 
         }

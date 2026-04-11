@@ -2,6 +2,9 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.BarterBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.exception.DAOException;
+import it.uniroma2.ispw.decluttify.exception.ModelException;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,6 +59,7 @@ public class MyBartersController extends GraphicController implements Initializa
                 root = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
+                AlertProvider.showError("System error", "Service not available. Please try again later");
             }
         }
 
@@ -113,8 +117,15 @@ public class MyBartersController extends GraphicController implements Initializa
             MakeBarterController makeBarterController = new MakeBarterController();
             try {
                 makeBarterController.confirmBarter(barterBean);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            }catch(Exception e){
+                if (e instanceof DAOException) {
+                    AlertProvider.showError("System error", "Service not available. Please try again later.");
+                } else if (e instanceof ModelException) {
+                    AlertProvider.showError("Invalid request", e.getMessage());
+                } else {
+                    AlertProvider.showError("Unexpected error", e.getMessage());
+                }
+                e.printStackTrace();
             }
 
         }

@@ -172,13 +172,13 @@ public class MainGraphicController implements Initializable, Observer {
         button.setStyle("-fx-opacity: 1.0;" + "-fx-background-color: #4CAF50;" + "-fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 10, 0, 0, 0);");
         this.sidebarButtonStack.push(button);
         boolean bool = SessionManager.getInstance().isLoggedIn();
-            this.offerButton.setDisable(!bool);
-            this.inventoryButton.setDisable(!bool);
-            this.barterButton.setDisable(!bool);
+        this.offerButton.setDisable(!bool);
+        this.inventoryButton.setDisable(!bool);
+        this.barterButton.setDisable(!bool);
 
     }
 
-    public void triggerLogin() throws IOException {
+    public void triggerLogin() {
         if (headerBarController != null) {
             ActionEvent e = null;
             headerBarController.handleProfileButton(e);

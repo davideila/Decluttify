@@ -41,7 +41,7 @@ public class ItemBrowserController extends GraphicController implements Initiali
             itemImage.setImage(image);
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the error, e.g., show a placeholder image
+            itemImage.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
         }
         itemImage.setFitWidth(140);
         itemImage.setFitHeight(140);
@@ -67,8 +67,8 @@ public class ItemBrowserController extends GraphicController implements Initiali
             PreviewItemBean selectedItem = (PreviewItemBean) itemButton.getUserData();
             try {
                 MainGraphicController.getInstance().showItemDetailsView(selectedItem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            }catch(Exception e){
+                this.handleException(e);
             }
         });
 
@@ -77,8 +77,8 @@ public class ItemBrowserController extends GraphicController implements Initiali
             PreviewItemBean selectedUser = (PreviewItemBean) itemOwnerButton.getUserData();
             try {
                 MainGraphicController.getInstance().showUserDetailsView(selectedUser.getOwner());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            }catch(Exception e){
+                this.handleException(e);
             }
             event.consume();
         });
@@ -96,7 +96,11 @@ public class ItemBrowserController extends GraphicController implements Initiali
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.isInSidebar = true;
         VisualizeItemController vic = new VisualizeItemController();
-        items.addAll(vic.loadAvailableItems());
+        try{
+            items.addAll(vic.loadAvailableItems());
+        }catch(Exception e){
+            this.handleException(e);
+        }
         refreshTilePane();
     }
 

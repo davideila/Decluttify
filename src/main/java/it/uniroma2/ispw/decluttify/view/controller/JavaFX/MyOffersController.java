@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,19 +25,19 @@ public class MyOffersController extends GraphicController implements Initializab
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.setInSidebar(true);
         MakeBarterController mbc = new MakeBarterController();
-        List<OfferBean> received;
+        List<OfferBean> received = List.of();
         this.listViewReceived.setCellFactory(lv -> new OfferListCell(true));
         this.listViewSent.setCellFactory(lv -> new OfferListCell(false));
         try {
             received = mbc.loadReceivedOffers(SessionManager.getInstance().getLoggedUser().getUsername());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }catch(Exception e){
+            this.handleException(e);
         }
-        List<OfferBean> sent;
+        List<OfferBean> sent = List.of();
         try {
             sent = mbc.loadSentOffers(SessionManager.getInstance().getLoggedUser().getUsername());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }catch(Exception e){
+            this.handleException(e);
         }
         listViewReceived.getItems().addAll(received);
         listViewSent.getItems().addAll(sent);
@@ -57,6 +58,7 @@ public class MyOffersController extends GraphicController implements Initializab
                 controller = loader.getController();
             } catch (IOException e) {
                 e.printStackTrace();
+                AlertProvider.showError("System error", "Service not available. Please try again later");
             }
         }
 

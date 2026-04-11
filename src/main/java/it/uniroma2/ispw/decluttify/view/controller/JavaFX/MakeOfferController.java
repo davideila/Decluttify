@@ -49,7 +49,7 @@ public class MakeOfferController extends GraphicController implements Initializa
                 this.requestedItemImage.setImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
-                // Handle the error, e.g., showMenu a placeholder image TODO
+                requestedItemImage.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
             }
         }
     }
@@ -78,10 +78,8 @@ public class MakeOfferController extends GraphicController implements Initializa
 
             popupStage.showAndWait();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }catch(Exception e){
+            this.handleException(e);
         }
     }
 
@@ -101,7 +99,11 @@ public class MakeOfferController extends GraphicController implements Initializa
         // Button to submit the barter proposal
         System.out.println("Offer sent for: " + targetItem.getName());
         MakeBarterController makeBarterController = new MakeBarterController();
-        makeBarterController.makeOffer(this.offeredItems, this.targetItem);
+        try{
+            makeBarterController.makeOffer(this.offeredItems, this.targetItem);
+        }catch(Exception e){
+            this.handleException(e);
+        }
         MainGraphicController.getInstance().handleOfferSent();
     }
 

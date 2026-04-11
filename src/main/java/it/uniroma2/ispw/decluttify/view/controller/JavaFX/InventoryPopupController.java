@@ -26,7 +26,7 @@ public class InventoryPopupController {
     private MakeOfferController callerController;
     private Stage stage;
 
-    // Metodo fondamentale per collegare i due controller
+    // This method is to pass data to this object from caller
     public void setParameters(MakeOfferController caller, Stage stage, List<PreviewItemBean> myItems) {
         this.callerController = caller;
         this.stage = stage;
@@ -43,18 +43,6 @@ public class InventoryPopupController {
             callerController.addOfferedItem(selected);
             stage.close();
         }
-    }
-
-    @FXML
-    private void handleConfirm(ActionEvent event) {
-        // 1. Prendi l'oggetto selezionato (esempio)
-        // PreviewItemBean selected = listView.getSelectionModel().getSelectedItem();
-
-        // 2. Passalo al padre
-        // if (selected != null) parentController.addOfferedItem(selected);
-
-        // 3. Chiudi il popup
-        handleClose(event);
     }
 
     @FXML
@@ -109,9 +97,10 @@ public class InventoryPopupController {
                 try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + item.getImages().getFirst())) {
                     image = new Image(is);
                     itemImage.setImage(image);
+
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // Handle the error, e.g., showMenu a placeholder image
+                    itemImage.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
                 }
                 itemImage.setFitWidth(60);
                 itemImage.setFitHeight(60);

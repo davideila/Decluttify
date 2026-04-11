@@ -11,11 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
-public class OfferListCellController{
+public class OfferListCellController extends GraphicController{
 
     @FXML Label labelUserLeft;
     @FXML FlowPane flowPaneLeft;
@@ -81,7 +79,11 @@ public class OfferListCellController{
 
     public void handleAccept(ActionEvent actionEvent) throws Exception {
         MakeBarterController mbc = new MakeBarterController();
-        mbc.acceptOffer(this.offerBean);
+        try {
+            mbc.acceptOffer(this.offerBean);
+        }catch(Exception e){
+            this.handleException(e);
+        }
         AlertProvider.showInfo("Success!", "Offer has been accepted");
         MainGraphicController.getInstance().showMyBartersView();
     }

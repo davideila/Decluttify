@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.MainGraphicController">
+
+    <VBox alignment="TOP_CENTER" spacing="15" style="-fx-background-color: #e0e0e0;">
+        <children>
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Button fx:id="itemBrowseButton" alignment="CENTER_LEFT" focusTraversable="false" graphicTextGap="20" maxWidth="1.7976931348623157E308" onAction="#handleItemBrowseButton" text="Explore Items">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <graphic>
+                    <ImageView fitHeight="80.0" fitWidth="80.0">
+                        <Image url="@../images/Item_browse.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="inventoryButton" alignment="CENTER_LEFT" focusTraversable="false" graphicTextGap="20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleInventoryButton" text="My Inventory">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <graphic>
+                    <ImageView fitHeight="80.0" fitWidth="80.0">
+                        <Image url="@../images/menu.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="offerButton" alignment="CENTER_LEFT" focusTraversable="false" graphicTextGap="20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleOfferButton" text="Pending Offers">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <graphic>
+                    <ImageView fitHeight="80.0" fitWidth="80.0">
+                        <Image url="@../images/offer_icon.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="barterButton" alignment="CENTER_LEFT" focusTraversable="false" graphicTextGap="20" maxWidth="1.7976931348623157E308" onAction="#handleBarterButton" text="My Barters">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <graphic>
+                    <ImageView fitHeight="80.0" fitWidth="80.0">
+                        <Image url="@../images/barter_icon.png" />
+                    </ImageView>
+                </graphic>
+            <font>
+               <Font size="20.0" />
+            </font>
+            </Button>
+
+            <Button fx:id="donateButton" alignment="CENTER_LEFT" focusTraversable="false" graphicTextGap="20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleDonateButton" text="Donations">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+                <graphic>
+                    <ImageView fitHeight="80.0" fitWidth="80.0">
+                        <Image url="@../images/donation_icon.png" />
+                    </ImageView>
+                </graphic>
+            <font>
+               <Font size="20.0" />
+            </font>
+            </Button>
+            <Region VBox.vgrow="ALWAYS" />
+        </children>
+        <padding>
+            <Insets bottom="15.0" top="15.0" />
+        </padding>
+    </VBox>
+
+    <BorderPane fx:id="borderPane" HBox.hgrow="ALWAYS">
+        <top>
+            <fx:include fx:id="headerBar" source="HeaderBar.fxml" />
+        </top>
+        <center>
+        </center>
+    </BorderPane>
+
+</HBox>

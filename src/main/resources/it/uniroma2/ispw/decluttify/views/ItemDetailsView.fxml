@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.ItemDetailsController">
+    <content>
+        <VBox alignment="TOP_CENTER" spacing="30" style="-fx-padding: 30;">
+
+            <HBox alignment="CENTER" spacing="50">
+
+                <VBox alignment="TOP_CENTER" spacing="15">
+                    <ImageView fx:id="mainImageView" fitHeight="400" fitWidth="450" preserveRatio="true" />
+
+                    <HBox alignment="CENTER" spacing="12">
+                        <Circle fx:id="dot1" fill="DODGERBLUE" radius="6" stroke="BLACK" strokeType="INSIDE" strokeWidth="0" onMouseClicked="#handleDot1" style="-fx-cursor: hand;" />
+                        <Circle fx:id="dot2" fill="LIGHTGRAY" radius="6" stroke="BLACK" strokeType="INSIDE" strokeWidth="0" onMouseClicked="#handleDot2" style="-fx-cursor: hand;" />
+                        <Circle fx:id="dot3" fill="LIGHTGRAY" radius="6" stroke="BLACK" strokeType="INSIDE" strokeWidth="0" onMouseClicked="#handleDot3" style="-fx-cursor: hand;" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="20" maxWidth="500" alignment="TOP_LEFT">
+                    <VBox spacing="5">
+                        <Label fx:id="itemNameLabel" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="Title" wrapText="true" />
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <Button fx:id="ownerButton" onAction="#handleOwnerClick" style="-fx-background-color: transparent; -fx-text-fill: #007bff; -fx-underline: true; -fx-font-size: 18;" text="Owner" />
+                            <Label fx:id="ownerRatingLabel" style="-fx-text-fill: #f39c12; -fx-font-size: 16;" text="★★★★☆" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Description" />
+                        <Label fx:id="itemDescriptionLabel" text="Item description loaded from database..." wrapText="true">
+                            <font><Font size="15.0" /></font>
+                        </Label>
+                    </VBox>
+
+                    <Separator />
+
+                    <GridPane hgap="40" vgap="15">
+                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: gray;" text="Condition" />
+                            <Label fx:id="itemConditionLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Excellent" />
+                        </VBox>
+                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label style="-fx-text-fill: gray;" text="Listed on" />
+                            <Label fx:id="itemCreationDateLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" text="01/01/2026" />
+                        </VBox>
+                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label style="-fx-text-fill: gray;" text="Location" />
+                            <Label fx:id="itemLocationLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Rome" />
+                        </VBox>
+                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label style="-fx-text-fill: gray;" text="Active offers" />
+                            <Label fx:id="itemNumOfferLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" text="3" />
+                        </VBox>
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="120" />
+                            <ColumnConstraints minWidth="120" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+
+                    <Separator />
+
+                    <HBox spacing="20">
+                        <Button fx:id="barterButton" onAction="#handleMakeOffer" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand; -fx-background-radius: 5;" text="PROPOSE BARTER" />
+                        <Button onAction="#handleChatClick" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-cursor: hand; -fx-background-radius: 5;" text="CHAT" />
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="15" maxWidth="1000" alignment="CENTER_LEFT" style="-fx-padding: 40 0 0 0;">
+                <Separator />
+                <Label text="Recommended for you" style="-fx-font-weight: bold; -fx-font-size: 20px;" />
+                <ScrollPane fitToHeight="true" vbarPolicy="NEVER" hbarPolicy="AS_NEEDED" style="-fx-background-color: transparent; -fx-background: transparent;">
+                    <content>
+                        <HBox fx:id="relatedItemsContainer" spacing="20" style="-fx-padding: 10 0 10 0;">
+                            <Label text="Loading suggestions..." textFill="GRAY" />
+                        </HBox>
+                    </content>
+                </ScrollPane>
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

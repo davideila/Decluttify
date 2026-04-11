@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.MyBartersController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="My Barters">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-padding: 10; -fx-background-radius: 5;">
+            <children>
+                <Label text="Filter by status:">
+                    <font>
+                        <Font name="System Italic" size="13.0" />
+                    </font>
+                </Label>
+                <RadioButton mnemonicParsing="false" selected="true" text="All">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="filterGroup" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton mnemonicParsing="false" text="Ongoing" toggleGroup="$filterGroup" />
+                <RadioButton mnemonicParsing="false" text="Completed" toggleGroup="$filterGroup" />
+                <RadioButton mnemonicParsing="false" text="Disputed" toggleGroup="$filterGroup" />
+            </children>
+        </HBox>
+
+        <ListView fx:id="barterList" VBox.vgrow="ALWAYS" style="-fx-background-radius: 5;" />
+
+    </children>
+</VBox>

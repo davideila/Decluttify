@@ -1,0 +1,3 @@
+id;offerer;receiver;itemReq;escrow;shipping;status
+1;dave;jane;2;false;false;ACCEPTED
+2;dave;jane;2;false;false;ACCEPTED

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="headerRoot" alignment="CENTER_LEFT" prefHeight="70.0" spacing="20"
+      style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.HeaderBarController">
+
+    <children>
+        <Button fx:id="backButton" onAction="#handleBackButton"
+                style="-fx-background-color: transparent; -fx-cursor: hand;">
+            <graphic>
+                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/back_button.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <Label text="Decluttify" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <HBox alignment="CENTER" spacing="10">
+            <StackPane fx:id="notificationContainer" style="-fx-cursor: hand;" onMouseClicked="#handleNotificationClick">
+                <children>
+                    <Label text="🔔" style="-fx-font-size: 24px;" />
+
+                    <StackPane fx:id="badgePane" alignment="TOP_RIGHT" maxHeight="18.0" maxWidth="18.0"
+                               style="-fx-background-color: red; -fx-background-radius: 10;"
+                               translateY="-5.0" translateX="5.0" visible="false">
+                        <children>
+                            <Label fx:id="notificationCountLabel" text="0" textFill="WHITE"
+                                   style="-fx-font-size: 10px; -fx-font-weight: bold;">
+                                <padding>
+                                    <Insets left="2" right="2" />
+                                </padding>
+                            </Label>
+                        </children>
+                    </StackPane>
+                </children>
+            </StackPane>
+            <Button fx:id="profileButton" onAction="#handleProfileButton" text="Sign In"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 20; -fx-cursor: hand;" />
+
+            <Button fx:id="logoutButton" onAction="#handleLogoutButton" text="Sign Up"
+                    style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-border-color: #3498db; -fx-border-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" />
+        </HBox>
+    </children>
+
+    <padding>
+        <Insets left="25" right="25" />
+    </padding>
+</HBox>

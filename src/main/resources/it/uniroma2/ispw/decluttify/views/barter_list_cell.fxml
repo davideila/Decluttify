@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="rootPane" alignment="CENTER_LEFT" spacing="15.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+    </padding>
+    <children>
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox spacing="10.0">
+                    <Label fx:id="labelDate" text="2024-02-22" textFill="#7f8c8d" />
+                    <Label fx:id="labelStatus" style="-fx-font-weight: bold;" text="ONGOING" />
+                </HBox>
+                <Label fx:id="partnerLabel" text="Partner: ">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Label>
+            <HBox fx:id="youGiveBox" spacing="5.0">
+               <children>
+                      <Label fx:id="labelYouGive" text="You/ngive " wrapText="true" />
+               </children>
+            </HBox>
+            <HBox fx:id="youGetBox" spacing="5.0">
+               <children>
+                      <Label fx:id="labelYouGet" text="You/nget" wrapText="true" />
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="8.0">
+            <children>
+            <VBox spacing="10.0">
+               <children>
+                  <Region VBox.vgrow="ALWAYS" />
+                      <Button fx:id="btnDetails" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2196F3;" text="Details" textFill="WHITE" />
+                      <Button fx:id="btnDispute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #e67e22;" text="Dispute" textFill="WHITE" />
+                      <Button fx:id="btnConfirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2ecc71;" text="Confirm" textFill="WHITE" />
+               </children>
+            </VBox>
+            </children>
+        </HBox>
+    </children>
+</HBox>

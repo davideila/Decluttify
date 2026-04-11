@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox spacing="20.0" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.MakeOfferController">
+    <padding>
+        <Insets top="20" right="40" bottom="20" left="40"/>
+    </padding>
+
+    <Label text="Propose a Barter" style="-fx-font-weight: bold;">
+        <font>
+            <Font size="28.0" />
+        </font>
+    </Label>
+
+    <GridPane hgap="40" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50" />
+            <ColumnConstraints percentWidth="50" />
+        </columnConstraints>
+
+        <VBox GridPane.columnIndex="0" spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;">
+            <Label text="YOU RECEIVE" style="-fx-text-fill: #777; -fx-font-weight: bold;" />
+            <Separator />
+            <ImageView fx:id="requestedItemImage" fitHeight="200.0" fitWidth="250.0" preserveRatio="true" />
+            <Label fx:id="requestedItemName" text="Item Name" style="-fx-font-size: 20; -fx-font-weight: bold;" />
+            <Label fx:id="ownerName" text="Owner: John Doe" style="-fx-font-style: italic;" />
+        </VBox>
+
+        <VBox GridPane.columnIndex="1" spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="YOUR PROPOSAL" style="-fx-text-fill: #777; -fx-font-weight: bold;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="+ Add Item" onAction="#handleAddMyItem" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" />
+            </HBox>
+            <Separator />
+
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <VBox fx:id="offeredItemsContainer" spacing="10" minHeight="250" />
+            </ScrollPane>
+        </VBox>
+    </GridPane>
+
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Cancel" onAction="#handleCancel" style="-fx-min-width: 150; -fx-padding: 10;" />
+        <Button fx:id="confirmButton" text="Send Proposal" onAction="#handleSendProposal"
+                disable="true" style="-fx-min-width: 250; -fx-padding: 10; -fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+    </HBox>
+</VBox>

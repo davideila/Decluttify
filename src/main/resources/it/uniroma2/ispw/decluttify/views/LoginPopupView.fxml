@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.LoginPopupController">
+   <children>
+      <VBox layoutX="215.0" layoutY="68.0" spacing="15.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="120.0">
+         <children>
+            <Label textFill="#d03333" fx:id="failedLogin"/>
+            <TextField fx:id="usernameField" promptText="username" />
+            <PasswordField fx:id="passwordField" promptText="password" />
+            <HBox>
+               <children>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onActionSignInButton" text="Sign in" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label contentDisplay="CENTER" text="Don't have an account yet?" wrapText="true" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" text="Sign on" wrapText="true" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

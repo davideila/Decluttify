@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="rootPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="200.0" spacing="10.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1 0; -fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.OfferListCellController">
+    <children>
+
+        <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label fx:id="labelUserLeft" text="FROM: @USER" textFill="#777777">
+                    <font>
+                        <Font name="System Bold Italic" size="11.0" />
+                    </font>
+                </Label>
+                <FlowPane fx:id="flowPaneLeft" alignment="CENTER" hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+
+        <VBox alignment="CENTER" minWidth="70.0" spacing="10.0" HBox.hgrow="ALWAYS">
+            <children>
+                <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/offerArrows_icon.png" />
+                </ImageView>
+                <HBox alignment="CENTER" spacing="8.0">
+                    <children>
+                        <ImageView fx:id="imgShipping" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/shipping_icon.png" />
+                         </ImageView>
+                        <ImageView fx:id="imgEscrow" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/escrow_icon.png" />
+                        </ImageView>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label fx:id="labelUserRight" text="TO: @USER" textFill="#777777">
+                    <font>
+                        <Font name="System Bold Italic" size="11.0" />
+                    </font>
+                </Label>
+                <FlowPane fx:id="flowPaneRight" alignment="CENTER" hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+      <VBox alignment="BOTTOM_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Button mnemonicParsing="false" style="-fx-background-color: #2ecc71;" text="Accept" textAlignment="CENTER" textFill="WHITE" onAction="#handleAccept">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" style="-fx-background-color: #E57373;" text="Reject " textAlignment="CENTER" textFill="WHITE" onAction="#handleReject">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+    </padding>
+</HBox>

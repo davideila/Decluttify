@@ -91,6 +91,11 @@ public class OfferListCellController extends GraphicController{
 
     public void handleReject(ActionEvent actionEvent) {
         MakeBarterController mbc = new MakeBarterController();
-        mbc.rejectOffer(this.offerBean);
+        try {
+            mbc.rejectOffer(this.offerBean);
+        }catch(Exception e){
+            this.handleException(e);
+        }
+        AlertProvider.showInfo("Success!", "Offer has been rejected");
     }
 }

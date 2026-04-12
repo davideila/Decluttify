@@ -110,7 +110,7 @@ public class MyBartersController extends GraphicController implements Initializa
         }
 
         public void handleShowDetails(ActionEvent actionEvent) {
-            //TODO
+            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
         }
 
         public void handleConfirmBarter(ActionEvent actionEvent) {
@@ -131,7 +131,7 @@ public class MyBartersController extends GraphicController implements Initializa
         }
 
         public void handleOpenDispute(ActionEvent actionEvent) {
-            //TODO
+            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
         }
 
     }

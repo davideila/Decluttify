@@ -3,6 +3,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.exception.NotLoggedInException;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -135,7 +136,7 @@ public class MainGraphicController implements Initializable, Observer {
 
     @FXML
     void handleInventoryButton(ActionEvent event) {
-       //TODO
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     @FXML
@@ -152,6 +153,7 @@ public class MainGraphicController implements Initializable, Observer {
 
     @FXML
     public void handleDonateButton(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     @FXML

@@ -22,7 +22,6 @@ import java.util.List;
 public class InventoryPopupController {
     @FXML
     private ListView<PreviewItemBean> inventoryListView;
-
     private MakeOfferController callerController;
     private Stage stage;
 

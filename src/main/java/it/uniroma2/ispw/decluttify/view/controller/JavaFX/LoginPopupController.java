@@ -6,14 +6,11 @@ import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class LoginPopupController extends GraphicController{
 
@@ -61,5 +58,9 @@ public class LoginPopupController extends GraphicController{
         }
         usernameField.setText("");
         passwordField.setText("");
+    }
+
+    public void onActionSignUpButton(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 }

@@ -53,8 +53,8 @@ public class ItemDetailsController extends GraphicController implements Initiali
         }
     }
 
-    private void handleEditItem(PreviewItemBean item) throws IOException {
-        System.out.println("Edit item button clicked");
+    private void handleEditItem(PreviewItemBean item) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ItemDetailsController extends GraphicController implements Initiali
             this.mainImageView.setImage(image);
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the error, e.g., showMenu a placeholder image TODO
+            mainImageView.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
         }
 
         // using Task for background processing in JAVAFX as best practice (https://docs.oracle.com/javafx/2/best_practices/jfxpub-best_practices.htm)
@@ -151,18 +151,23 @@ public class ItemDetailsController extends GraphicController implements Initiali
     }
 
     public void handleOwnerClick(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     public void handleChatClick(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     public void handleDot1(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     public void handleDot2(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 
     public void handleDot3(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
 
     }
 

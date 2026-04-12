@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,16 +74,21 @@ public class HeaderBarController extends GraphicController implements Initializa
 
         }
         else{
-            // TODO MainGraphicController.getInstance().showUserDetailsView(SessionManager.getUser());
+            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
         }
         this.update();
     }
 
     @FXML
     void handleLogoutButton(ActionEvent event) {
-        LoginController  loginController = new LoginController();
-        loginController.logout();
-        MainGraphicController.getInstance().handleLogout();
+        if(logoutButton.getText().equals("Sign Out")){
+            LoginController  loginController = new LoginController();
+            loginController.logout();
+            MainGraphicController.getInstance().handleLogout();
+        }
+        else{
+            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+        }
         this.update();
     }
 
@@ -96,21 +102,21 @@ public class HeaderBarController extends GraphicController implements Initializa
     public void update() {
         if (SessionManager.getInstance().isLoggedIn()) {
             profileButton.setText(SessionManager.getInstance().getLoggedUser().getUsername());
-            logoutButton.setText("Sign out");
+            logoutButton.setText("Sign Out");
             if(SessionManager.getInstance().getNotifications() != null){
                 badgePane.setVisible(true);
                 this.notificationCountLabel.setText(String.valueOf(SessionManager.getInstance().getNotifications().size()));
             }
 
         } else{
-            profileButton.setText("Sign in");
-            logoutButton.setText("Sign on");
+            profileButton.setText("Sign In");
+            logoutButton.setText("Sign Up");
             profileButton.setDisable(false);
             badgePane.setVisible(false);
         }
     }
 
     public void handleNotificationClick(MouseEvent mouseEvent) {
-
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
 }

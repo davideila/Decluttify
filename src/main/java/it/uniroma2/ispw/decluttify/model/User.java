@@ -1,9 +1,11 @@
 package it.uniroma2.ispw.decluttify.model;
 
+import com.password4j.BadParametersException;
 import com.password4j.BcryptFunction;
 import com.password4j.Hash;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 
 public class User {
@@ -30,14 +32,21 @@ public class User {
 
     //Business methods
     public boolean checkPassword(String inputPassword, String pepper) {
-        return Password.check(inputPassword, this.passwordHash)
-                .addPepper(pepper)
-                .with(BcryptFunction.getInstance(Bcrypt.B, 10));
+        try {
+            return Password.check(inputPassword, this.passwordHash)
+                    .addPepper(pepper)
+                    .with(BcryptFunction.getInstance(Bcrypt.B, 10));
+        }catch(BadParametersException e){
+            throw new DecluttifyException(e.getMessage());
+        }
     }
 
     public void setPasswordHash(String password, String pepper) {
         if (password == null) {
             throw new ModelException("Password cannot be null");
+        }
+        if (pepper == null) {
+            throw new DecluttifyException("Pepper cannot be null");
         }
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B, 10);
 

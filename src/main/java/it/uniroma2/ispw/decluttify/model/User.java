@@ -32,21 +32,29 @@ public class User {
 
     //Business methods
     public boolean checkPassword(String inputPassword, String pepper) {
+        if(inputPassword.isEmpty()) {
+            throw new ModelException("Invalid input: please provide a password.");
+        }
         try {
             return Password.check(inputPassword, this.passwordHash)
                     .addPepper(pepper)
                     .with(BcryptFunction.getInstance(Bcrypt.B, 10));
         }catch(BadParametersException e){
-            throw new DecluttifyException(e.getMessage());
+            if(inputPassword == null) {
+                throw new ModelException("Invalid input: please provide a password.");
+            }
+            else{
+                throw new ModelException("System error: service not available, please try again later");
+            }
         }
     }
 
     public void setPasswordHash(String password, String pepper) {
-        if (password == null) {
-            throw new ModelException("Password cannot be null");
+        if (password == null || password.length() < 6) {
+            throw new ModelException("Invalid password: please provide a password with more than 6 characters.");
         }
         if (pepper == null) {
-            throw new DecluttifyException("Pepper cannot be null");
+            throw new ModelException("System error: service not available, please try again later");
         }
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B, 10);
 

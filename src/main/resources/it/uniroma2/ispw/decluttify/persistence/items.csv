@@ -1,3 +1,4 @@
 id;owner;name;description;creationDate;category;condition;offersCounter;location;status
 1;dave;violin;entry level;2025-09-01;Music;Excellent;1;Rome;TRADED
 2;jane;1984;must read book;2025-09-01;Book;Good;1;London;TRADED
+3;richard;chess table;rare edition;2026-04-20;Miscellaneous;Good;0;Venice;AVAILABLE

@@ -109,8 +109,12 @@ public class Item{
     }
 
     public void addImage(String image){
+        if(this.getStatus() == ItemStatus.TRADED) throw new ModelException("Traded item cannot be edited");
         if(this.getImages() == null){
             this.images = new ArrayList<>();
+        }
+        if(image == null){
+            throw new ModelException("Please add a valid image.");
         }
         if (this.getImages().size() < 3) {
             this.getImages().add(image);
@@ -125,8 +129,13 @@ public class Item{
     //GETTERS & SETTERS
 
     private void setImages(List<String> images) {
-        for(String image : images){
-            this.addImage(image);
+        if (images == null){
+            this.addImage("placeholder_item.png");
+        }
+        else {
+            for (String image : images) {
+                this.addImage(image);
+            }
         }
     }
 
@@ -147,7 +156,7 @@ public class Item{
     }
 
     public void setCategory(String category){
-        this.category = ItemCategory.valueOf(category);
+        this.category = ItemCategory.valueOf(category.toUpperCase());
     }
 
     public String getCategory(){
@@ -194,7 +203,7 @@ public class Item{
     }
 
     public void setCondition(String condition){
-        this.condition = ItemCondition.valueOf(condition);
+        this.condition = ItemCondition.valueOf(condition.toUpperCase());
     }
 
     public String getCondition(){

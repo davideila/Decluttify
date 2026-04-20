@@ -15,8 +15,8 @@ public class VisualizeItemController {
     public ArrayList<PreviewItemBean> loadAvailableItems() {
         ArrayList<PreviewItemBean> itemBeans = new ArrayList<>();
         List<Item> items;
-        ItemDAO ItemDAO = DAOFactory.getDAOFactory().createItemDAO();
-        items = ItemDAO.retrieveAllAvailableItems();
+        ItemDAO itemDAO = DAOFactory.getDAOFactory().createItemDAO();
+        items = itemDAO.retrieveAllAvailableItems();
         PreviewItemBean pib;
         for (Item item : items) {
             pib = BeanConverter.toPreviewItemBean(item);
@@ -27,9 +27,9 @@ public class VisualizeItemController {
 
    // Method for loading the full detailed item view
    public FullItemBean loadItemDetails(int id) {
-       ItemDAO ItemDAO = DAOFactory.getDAOFactory().createItemDAO();
+       ItemDAO itemDAO = DAOFactory.getDAOFactory().createItemDAO();
        Item item;
-       item = ItemDAO.retrieveItemById(id);
+       item = itemDAO.retrieveItemById(id);
        FullItemBean fib;
        fib = BeanConverter.toFullItemBean(item);
     return fib;

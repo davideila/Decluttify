@@ -40,7 +40,7 @@ public class ItemDAOCSV extends ItemDAO {
         } catch (IOException | NumberFormatException e) {
             throw new DAOException("Error reading item data for ID: " + itemId, e);
         }
-        return null;
+        throw new DAOException("No item found with ID: " + itemId);
     }
 
     @Override

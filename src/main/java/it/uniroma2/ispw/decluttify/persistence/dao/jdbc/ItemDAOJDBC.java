@@ -76,7 +76,9 @@ public class ItemDAOJDBC extends ItemDAO {
         } catch (SQLException e) {
             throw new DAOException("Database error while retrieving item by ID: " + id, e);
         }
-
+        if (item == null) {
+            throw new DAOException("No item found with ID: " + id);
+        }
         return item;
     }
 

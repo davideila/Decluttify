@@ -122,14 +122,10 @@ public class MakeBarterController {
 
             ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
             itemlist = itemdao.retrieveItemsByOwner(SessionManager.getInstance().getLoggedUser().getUsername());
-            try {
-                for (Item item : itemlist) {
-                    if (item.getStatus() == ItemStatus.AVAILABLE) {
-                        pib.add(BeanConverter.toPreviewItemBean(item));
-                    }
+            for (Item item : itemlist) {
+                if (item.getStatus() == ItemStatus.AVAILABLE) {
+                    pib.add(BeanConverter.toPreviewItemBean(item));
                 }
-            } catch (NullPointerException e) {
-                throw new RuntimeException(e);
             }
             return pib;
         }

@@ -148,7 +148,7 @@ public class ItemDAOCSV extends ItemDAO {
             while ((line = br.readLine()) != null) {
                 tmpRow = line.split(";");
                 if (tmpRow[0].equals(String.valueOf(id))) {
-                    tmpRow[7] = String.valueOf(num);
+                    tmpRow[7] = String.valueOf(Integer.parseInt(tmpRow[7]) + num);
                     bw.write(String.join(";",tmpRow) + "\r\n");
                     success = true;
                 } else {

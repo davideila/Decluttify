@@ -159,6 +159,7 @@ public class Offer {
 
     public void setStatus(OfferStatus status) {
         this.status = status;
+        this.restoreStateMachine(status);
     }
 
     public void setState(StateMachine SM) {

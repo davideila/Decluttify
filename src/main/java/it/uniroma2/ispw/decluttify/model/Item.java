@@ -76,6 +76,12 @@ public class Item{
     }
 
     public Offer requestBarter(User offerer, List<Item> offeredItems) {
+        if(offerer == null || offeredItems == null || offeredItems.isEmpty()){
+            throw new ModelException("Error: invalid barter request");
+        }
+        if(offerer.getUsername().equals(this.getOwner().getUsername())){
+            throw new ModelException("Self offer is not possible");
+        }
         if (!this.isExchangeable()){
             throw new ModelException("Requested item " + this.getName() + " with ID " + this.getId() + " is not exchangeable");
         }
@@ -85,9 +91,6 @@ public class Item{
             }
             if (!item.isExchangeable()){
                 throw new ModelException("Offered item " + item.getName() + " with ID " + item.getId() + " is not exchangeable");
-            }
-            if (item.getOwner().getUsername().equals(this.getOwner().getUsername())){
-                throw new ModelException("Self offer is not possible");
             }
         }
         return new Offer(offerer, this.getOwner(), offeredItems, this);

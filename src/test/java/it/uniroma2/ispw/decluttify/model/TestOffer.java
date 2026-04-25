@@ -1,9 +1,11 @@
 package it.uniroma2.ispw.decluttify.model;
 
+import it.uniroma2.ispw.decluttify.exception.ModelException;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestOffer {
 
@@ -27,5 +29,27 @@ public class TestOffer {
         Barter barter = null;
         barter = offer.accept();
         assertNotNull(barter);
+    }
+
+    @Test
+    public void TestAcceptWrongState(){
+        Offer offer = this.CreateTestOffer("offerer", "receiver");
+        //offer.setState(new StateMachineImpl(offer, OfferStatus.ACCEPTED));
+        offer.setStatus(OfferStatus.ACCEPTED);
+        assertThrows(ModelException.class, () -> {offer.accept();});
+    }
+
+    @Test
+    public void TestRejectCorrect(){
+        Offer offer = this.CreateTestOffer("offerer", "receiver");
+        offer.reject();
+        assertEquals(OfferStatus.REJECTED, offer.getStatus());
+    }
+
+    @Test
+    public void TestRejectWrongState(){
+        Offer offer = this.CreateTestOffer("offerer", "receiver");
+        offer.setStatus(OfferStatus.ACCEPTED);
+        assertThrows(ModelException.class, () -> {offer.reject();});
     }
 }

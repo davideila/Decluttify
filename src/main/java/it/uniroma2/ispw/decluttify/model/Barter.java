@@ -36,10 +36,14 @@ public class Barter {
         if(this.status == BarterStatus.ONGOING || this.status == BarterStatus.CONFIRMED) {
             if (this.offer.getOfferer().getUsername().equals(username)) {
                 this.setOffererConfirmed(true);
+                this.setStatus(BarterStatus.CONFIRMED);
             } else if (this.offer.getReceiver().getUsername().equals(username)) {
                 this.setReceiverConfirmed(true);
+                this.setStatus(BarterStatus.CONFIRMED);
             }
-            this.setStatus(BarterStatus.CONFIRMED);
+            else{
+                throw new ModelException("User " + username + " is not participating to this offer!");
+            }
         }
         else{
             throw new ModelException("Couldn't confirm this barter: invalid status");
@@ -66,6 +70,23 @@ public class Barter {
     }
 
     public void setStatus(BarterStatus status) { //TODO could use pattern SM
+        if(this.status == BarterStatus.COMPLETED) {
+            throw new ModelException("Completed barter cannot be changed");
+        }
+        else if(this.status == BarterStatus.ONGOING) {
+            if(status == BarterStatus.CONFIRMED) {
+                if(!(isOffererConfirmed() || isReceiverConfirmed())) {
+                    throw new ModelException("Invalid operation on barter status change");
+                }
+            }
+        }
+        else if(this.status == BarterStatus.CONFIRMED) {
+            if(status == BarterStatus.COMPLETED) {
+                if(!(isOffererConfirmed() && isReceiverConfirmed())) {
+                    throw new ModelException("Invalid operation on barter status change");
+                }
+            }
+        }
         this.status = status;
     }
 

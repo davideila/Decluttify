@@ -20,9 +20,15 @@ public class OfferDAOJDBC extends OfferDAO {
         List<Item> itemofflist = new ArrayList<>();
         Offer offer;
         try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
+            ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmt, id);
+            while (rsItems.next()) {
+                itemofflist.add(new Item(rsItems.getInt("item")));
+            }
+            rsItems.close();
+
             ResultSet rs = SelectQueries.selectOfferById(stmt, id);
             if (!rs.first()) { // rs empty
-                throw new DAOException("Error fetching offer: no offer found with id: " + id);
+                throw new DAOException("Error fetching offer: no offer found with id " + id);
             }
             rs.first();
             offer = new Offer(
@@ -36,7 +42,7 @@ public class OfferDAOJDBC extends OfferDAO {
                 OfferStatus.valueOf(rs.getString("status").toUpperCase()));
             rs.close();
         }catch(SQLException e){
-            throw new DAOException("Error fetching offer with id: " + id, e);
+            throw new DAOException("Error fetching offer with id " + id, e);
         }
         return offer;
     }
@@ -66,8 +72,7 @@ public class OfferDAOJDBC extends OfferDAO {
                 }
             }
 
-            //TODO make a method for rejection and reuse that for this part and for rejectOffer of logic controller
-            // Invalidate Collision using with the statuses of the items object that were rejected with the method called in model by logic controller
+            // Invalidate Collision
             if (collidingOffers != null && !collidingOffers.isEmpty()) {
                 for (Offer coll : collidingOffers) {
                     rowsAffected = UpdateQueries.updateOfferStatus(connection, coll.getId(), coll.getStatus().name());
@@ -206,13 +211,21 @@ public class OfferDAOJDBC extends OfferDAO {
     @Override
     public List<Offer> retrieveOffersByReceiver(String receiver) {
         List<Offer> offerlist = new ArrayList<>();
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
+        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             Statement stmtItems = connection.createStatement()){
             ResultSet rs = SelectQueries.selectOffersByReceiver(stmt, receiver);
             rs.first();
-            List<Item> itemofflist = new ArrayList<>();
             do{
+                List<Item> itemofflist = new ArrayList<>();
+                int offID = rs.getInt("id");
+                ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID);
+                while (rsItems.next()) {
+                    itemofflist.add(new Item(rsItems.getInt("item")));
+                }
+                rsItems.close();
+
                 offerlist.add(new Offer(
-                    rs.getInt("id"),
+                    offID,
                     new User(rs.getString("offerer"), null, -1, null),
                     new User(rs.getString("receiver"), null, -1, null),
                     itemofflist,
@@ -222,7 +235,7 @@ public class OfferDAOJDBC extends OfferDAO {
                     OfferStatus.valueOf(rs.getString("status").toUpperCase())));
             }while(rs.next());
         }catch(SQLException e){
-            throw new DAOException("Error fetching offers for receiver: " + receiver, e);
+            throw new DAOException("Error fetching offers for receiver " + receiver, e);
         }
         return offerlist;
     }
@@ -230,13 +243,21 @@ public class OfferDAOJDBC extends OfferDAO {
     @Override
     public List<Offer> retrieveOffersBySender(String sender) {
         List<Offer> offerlist = new ArrayList<>();
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
+        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             Statement stmtItems = connection.createStatement()){
             ResultSet rs = SelectQueries.selectOffersBySender(stmt, sender);
             rs.first();
-            List<Item> itemofflist = new ArrayList<>();
             do{
+                List<Item> itemofflist = new ArrayList<>();
+                int offID = rs.getInt("id");
+                ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID);
+                while (rsItems.next()) {
+                    itemofflist.add(new Item(rsItems.getInt("item")));
+                }
+                rsItems.close();
+
                 offerlist.add(new Offer(
-                        rs.getInt("id"),
+                        offID,
                         new User(rs.getString("offerer"), null, -1, null),
                         new User(rs.getString("receiver"), null, -1, null),
                         itemofflist,
@@ -246,7 +267,7 @@ public class OfferDAOJDBC extends OfferDAO {
                         OfferStatus.valueOf(rs.getString("status").toUpperCase())));
             }while(rs.next());
         }catch(SQLException e){
-            throw new DAOException("Error fetching offers for sender: " + sender, e);
+            throw new DAOException("Error fetching offers for sender " + sender, e);
         }
         return offerlist;
     }

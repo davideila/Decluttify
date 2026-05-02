@@ -2,14 +2,15 @@ package it.uniroma2.ispw.decluttify.persistence.dao.csv;
 
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.model.*;
+import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.BarterDAO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BarterDAOCSV extends BarterDAO {
-    private final String BARTER_FILE_PATH = "src/main/resources/it/uniroma2/ispw/decluttify/persistence/barters.csv";
-    private final String OFFER_FILE_PATH = "src/main/resources/it/uniroma2/ispw/decluttify/persistence/offers.csv";
+    private final String BARTER_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "barters.csv";
+    private final String OFFER_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "offers.csv";
 
     @Override
     public List<Barter> retrieveBartersByUsername(String username){

@@ -106,4 +106,9 @@ public class SelectQueries {
         String sql = String.format("SELECT * FROM barters WHERE barters.id = \"%d\"", id);
         return stmt.executeQuery(sql);
     }
+
+    public static ResultSet selectItemsOfferedByOfferId(Statement stmt, int id) throws SQLException {
+        String sql = String.format("SELECT item FROM offered WHERE offered.offer = \"%d\"", id);
+        return stmt.executeQuery(sql);
+    }
 }

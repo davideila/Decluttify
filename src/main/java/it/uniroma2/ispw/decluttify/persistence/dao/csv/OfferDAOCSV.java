@@ -5,14 +5,15 @@ import it.uniroma2.ispw.decluttify.model.Item;
 import it.uniroma2.ispw.decluttify.model.Offer;
 import it.uniroma2.ispw.decluttify.model.OfferStatus;
 import it.uniroma2.ispw.decluttify.model.User;
+import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.OfferDAO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OfferDAOCSV extends OfferDAO {
-    private final String OFFER_FILE_PATH = "src/main/resources/it/uniroma2/ispw/decluttify/persistence/offers.csv";
-    private final String OFFERED_FILE_PATH = "src/main/resources/it/uniroma2/ispw/decluttify/persistence/offered.csv";
+    private final String OFFER_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "offers.csv";
+    private final String OFFERED_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "offered.csv";
 
     @Override
     public Offer retrieveOfferById(int id) {

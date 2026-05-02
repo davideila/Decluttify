@@ -34,4 +34,6 @@ public class ConfigReader {
     public String getDBUser() { return properties.getProperty("db.user"); }
     public String getDBPassword() { return properties.getProperty("db.password"); }
     public String getDBDriver() { return properties.getProperty("db.driver"); }
-}
+    public String getTestDBURL() { return properties.getProperty("testdb.url"); }
+    public String getTestDBUser() { return properties.getProperty("testdb.user"); }
+    public String getTestDBPassword() { return properties.getProperty("testdb.password"); }}

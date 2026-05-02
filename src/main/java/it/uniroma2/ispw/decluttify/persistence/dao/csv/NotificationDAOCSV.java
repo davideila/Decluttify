@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.persistence.dao.csv;
 
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.model.Notification;
+import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
 import java.io.*;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationDAOCSV extends NotificationDAO {
-    private final String NOTIFICATION_FILE_PATH = "src/main/resources/it/uniroma2/ispw/decluttify/persistence/notifications.csv";
+    private final String NOTIFICATION_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "notifications.csv";
 
     @Override
     public synchronized void createNotification(Notification notification) {

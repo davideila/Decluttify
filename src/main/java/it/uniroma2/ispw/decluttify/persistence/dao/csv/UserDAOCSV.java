@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.persistence.dao.csv;
 
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.model.User;
+import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.UserDAO;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,8 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class UserDAOCSV extends UserDAO {
-    private final String FILE_PATH =  "src/main/resources/it/uniroma2/ispw/decluttify/persistence/users.csv";
-    //getClass().getResource("/it/uniroma2/ispw/decluttify/persistence/users.csv")
+    private final String FILE_PATH =  PersistenceManager.getInstance().getCSVPathPrefix() + "users.csv";
 
     @Override
     public User retrieveUserByUsername(String username) {

@@ -3,6 +3,7 @@ package it.uniroma2.ispw.decluttify.persistence.dao.csv;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.model.Item;
 import it.uniroma2.ispw.decluttify.model.User;
+import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.ItemDAO;
 import java.io.*;
 import java.time.LocalDate;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAOCSV extends ItemDAO {
-    private final String ITEMS_FILE_PATH =  "src/main/resources/it/uniroma2/ispw/decluttify/persistence/items.csv";
-    private final String IMAGES_FILE_PATH =  "src/main/resources/it/uniroma2/ispw/decluttify/persistence/images.csv";
+    private final String ITEMS_FILE_PATH =  PersistenceManager.getInstance().getCSVPathPrefix() + "items.csv";
+    private final String IMAGES_FILE_PATH =  PersistenceManager.getInstance().getCSVPathPrefix() + "images.csv";
 
     @Override
     public Item retrieveItemById(int itemId) {

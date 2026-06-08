@@ -1,9 +1,86 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Pagina-1" id="lBEZxqTGqjM1sgic3xvy">
-    <mxGraphModel>
+    <mxGraphModel dx="2000" dy="1138" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="J09ckFeXd-orHBUEzoB2-1" parent="1" style="swimlane;startSize=0;" value="" vertex="1">
+          <mxGeometry height="910" width="610" x="110" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-2" parent="J09ckFeXd-orHBUEzoB2-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;b&gt;Decluttify&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="274" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-8" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Barter Items" vertex="1">
+          <mxGeometry height="80" width="120" x="70" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-9" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Publish Item" vertex="1">
+          <mxGeometry height="80" width="120" x="80" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-10" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Respond to Offer" vertex="1">
+          <mxGeometry height="80" width="120" x="70" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-17" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Item Publishement" vertex="1">
+          <mxGeometry height="80" width="120" x="70" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-18" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Request Shipping" vertex="1">
+          <mxGeometry height="80" width="120" x="420" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-12" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Activate Escrow Protection" vertex="1">
+          <mxGeometry height="80" width="120" x="400" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-19" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Browse Items" vertex="1">
+          <mxGeometry height="80" width="120" x="240" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-30" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Accept Donation" vertex="1">
+          <mxGeometry height="80" width="120" x="60" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-29" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Donate Item" vertex="1">
+          <mxGeometry height="80" width="120" x="220" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-31" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Item Inventory" vertex="1">
+          <mxGeometry height="80" width="120" x="200" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="User" vertex="1">
+          <mxGeometry height="60" width="30" x="40" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Receiver" vertex="1">
+          <mxGeometry height="60" width="30" x="10" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-5" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Offerer" vertex="1">
+          <mxGeometry height="60" width="30" x="70" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-6" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="55" y="450" as="sourcePoint" />
+            <mxPoint x="55" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-7" edge="1" parent="1" source="J09ckFeXd-orHBUEzoB2-4" style="endArrow=none;html=1;rounded=0;" target="J09ckFeXd-orHBUEzoB2-5" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="25" y="450" />
+              <mxPoint x="60" y="450" />
+              <mxPoint x="85" y="450" />
+            </Array>
+            <mxPoint x="30" y="450" as="sourcePoint" />
+            <mxPoint x="80" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-11" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Make Offer" vertex="1">
+          <mxGeometry height="80" width="120" x="420" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-13" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Escrow.com" vertex="1">
+          <mxGeometry height="60" width="30" x="760" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-14" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="ShipStation API" vertex="1">
+          <mxGeometry height="60" width="30" x="760" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-15" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Moderator" vertex="1">
+          <mxGeometry height="60" width="30" x="30" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="J09ckFeXd-orHBUEzoB2-16" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Beneficiary Entity" vertex="1">
+          <mxGeometry height="60" width="30" x="40" y="800" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

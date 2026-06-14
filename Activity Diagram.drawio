@@ -21,7 +21,7 @@
         <mxCell id="98pQ5EC6WEBKg6TK99Ge-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Displays offer options and offerer inventory" vertex="1">
           <mxGeometry height="60" width="120" x="310" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="98pQ5EC6WEBKg6TK99Ge-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Displays offer summary&amp;nbsp;" vertex="1">
+        <mxCell id="98pQ5EC6WEBKg6TK99Ge-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Cancel timer and displays offer summary&amp;nbsp;" vertex="1">
           <mxGeometry height="60" width="120" x="420" y="820" as="geometry" />
         </mxCell>
         <mxCell id="98pQ5EC6WEBKg6TK99Ge-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Gets confirmation" vertex="1">

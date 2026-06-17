@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Pagina-1" id="urYqykAiAXnn_KhfwyT1">
+    <mxGraphModel dx="1379" dy="785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qY1C52bccnMpXyQLt48p-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Actor&amp;gt;&amp;gt;&lt;br&gt;Offerer" vertex="1">
+          <mxGeometry height="300" width="80" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Boundary&amp;gt;&amp;gt;&lt;br&gt;makeOfferBoundary: MakeOfferBoundary" vertex="1">
+          <mxGeometry height="380" width="140" x="130" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-2" parent="qY1C52bccnMpXyQLt48p-5" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="320" width="10" x="65" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Control&amp;gt;&amp;gt;&lt;br&gt;makeOfferController: MakeOfferController" vertex="1">
+          <mxGeometry height="490" width="120" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-15" parent="qY1C52bccnMpXyQLt48p-7" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="150" width="10" x="55" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-28" edge="1" parent="qY1C52bccnMpXyQLt48p-7" source="qY1C52bccnMpXyQLt48p-15" style="html=1;verticalAlign=bottom;endArrow=open;curved=0;rounded=0;endFill=0;" target="qY1C52bccnMpXyQLt48p-31" value="startTimer">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="160" />
+              <mxPoint x="100" y="170" />
+            </Array>
+            <mxPoint x="330" y="440" as="sourcePoint" />
+            <mxPoint x="480" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-31" parent="qY1C52bccnMpXyQLt48p-7" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="58" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Entity&amp;gt;&amp;gt;&lt;br&gt;receiverItem: Item" vertex="1">
+          <mxGeometry height="300" width="100" x="440" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-9" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Entity&amp;gt;&amp;gt;&lt;br&gt;barterOffer: BarterOffer" vertex="1">
+          <mxGeometry height="300" width="130" x="570" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-10" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Entity&amp;gt;&amp;gt;&lt;br&gt;offererItems: List&amp;lt;Item&amp;gt;" vertex="1">
+          <mxGeometry height="300" width="100" x="860" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-17" parent="qY1C52bccnMpXyQLt48p-10" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="20" width="10" x="45" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-12" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-4" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="qY1C52bccnMpXyQLt48p-2" value="makeOffer">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="100" />
+            </Array>
+            <mxPoint x="750" y="570" as="sourcePoint" />
+            <mxPoint x="210" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-13" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-2" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="qY1C52bccnMpXyQLt48p-15" value="loadUserInventory">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="280" y="120" />
+            </Array>
+            <mxPoint x="250" y="480" as="sourcePoint" />
+            <mxPoint x="400" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-20" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-15" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="qY1C52bccnMpXyQLt48p-22" value="getUserInventory">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="140" />
+            </Array>
+            <mxPoint x="470" y="560" as="sourcePoint" />
+            <mxPoint x="620" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-21" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;DAO&amp;gt;&amp;gt;&lt;br&gt;itemDAO: ItemDAO" vertex="1">
+          <mxGeometry height="300" width="100" x="730" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-22" parent="qY1C52bccnMpXyQLt48p-21" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="45" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-23" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-22" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="qY1C52bccnMpXyQLt48p-17" value="create">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="150" />
+            </Array>
+            <mxPoint x="700" y="510" as="sourcePoint" />
+            <mxPoint x="1110" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qY1C52bccnMpXyQLt48p-24" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-4" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="qY1C52bccnMpXyQLt48p-2" value="submitOffer">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="280" />
+            </Array>
+            <mxPoint x="120" y="270" as="sourcePoint" />
+            <mxPoint x="140" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

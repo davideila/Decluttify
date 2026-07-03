@@ -42,7 +42,7 @@
           <mxGeometry height="1020" width="120" x="300" y="40" as="geometry" />
         </mxCell>
         <mxCell id="qY1C52bccnMpXyQLt48p-15" parent="qY1C52bccnMpXyQLt48p-7" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
-          <mxGeometry height="80" width="10" x="55" y="80" as="geometry" />
+          <mxGeometry height="110" width="10" x="55" y="80" as="geometry" />
         </mxCell>
         <mxCell id="byJqHCdjXBHtmsSrR4Eg-17" parent="qY1C52bccnMpXyQLt48p-7" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
           <mxGeometry height="90" width="10" x="60" y="100" as="geometry" />
@@ -189,15 +189,6 @@
             </Array>
             <mxPoint x="790" y="180" as="sourcePoint" />
             <mxPoint x="670" y="180" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="byJqHCdjXBHtmsSrR4Eg-5" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-15" style="html=1;verticalAlign=bottom;endArrow=open;curved=0;rounded=0;endFill=0;dashed=1;dashPattern=1 1;" target="qY1C52bccnMpXyQLt48p-2" value="done">
-          <mxGeometry relative="1" width="80" as="geometry">
-            <Array as="points">
-              <mxPoint x="280" y="200" />
-            </Array>
-            <mxPoint x="355" y="189.67000000000002" as="sourcePoint" />
-            <mxPoint x="210" y="189.67000000000002" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="byJqHCdjXBHtmsSrR4Eg-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&amp;lt;&amp;lt;Entity&amp;gt;&amp;gt;&lt;br&gt;sessionTimer: Timer" vertex="1">

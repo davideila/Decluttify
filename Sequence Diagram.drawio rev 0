@@ -246,7 +246,7 @@
             <mxPoint x="860" y="430" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="byJqHCdjXBHtmsSrR4Eg-15" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-4" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;endFill=1;" target="byJqHCdjXBHtmsSrR4Eg-16" value="add&lt;div&gt;Options&lt;/div&gt;">
+        <mxCell id="byJqHCdjXBHtmsSrR4Eg-15" edge="1" parent="1" source="qY1C52bccnMpXyQLt48p-4" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;endFill=1;" target="byJqHCdjXBHtmsSrR4Eg-16" value="add&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Options&lt;/span&gt;">
           <mxGeometry relative="1" width="80" as="geometry">
             <Array as="points">
               <mxPoint x="80" y="360" />

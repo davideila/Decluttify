@@ -3,12 +3,20 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MyOffersView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public class MyOffersController extends GraphicController<MyOffersView>{
+    private final MakeBarterController makeBarterController;
+
+    public MyOffersController(SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
+        this.makeBarterController = new MakeBarterController(sessionManager);
+    }
 
     @Override
     protected MyOffersView createView() {
-        return new MyOffersView();
+        return new MyOffersView(sessionManager);
     }
 
     @Override
@@ -28,13 +36,12 @@ public class MyOffersController extends GraphicController<MyOffersView>{
             }
         }
         else{
-             MakeBarterController mbc = new MakeBarterController();
              switch(index){
                  case 0:
                      try{
-                         mbc.acceptOffer(this.view.getSelectedOffer());
+                         makeBarterController.acceptOffer(this.view.getSelectedOffer());
                          this.view.showMessage("Offer successfully accepted", false);
-                         this.navigatorManager.navigatetoMyBarters();
+                         this.navigatorManager.navigateTo(ViewType.MY_BARTERS);
                      }catch(Exception e){
                          this.handleException(e);
                      }
@@ -45,7 +52,7 @@ public class MyOffersController extends GraphicController<MyOffersView>{
                      break;
                  case 1:
                      try{
-                         mbc.rejectOffer(this.view.getSelectedOffer());
+                         makeBarterController.rejectOffer(this.view.getSelectedOffer());
                          this.view.showMessage("Offer successfully rejected", false);
                      }catch(Exception e){
                          this.handleException(e);
@@ -65,7 +72,7 @@ public class MyOffersController extends GraphicController<MyOffersView>{
     protected void handleMenuInput(String choice) {
         switch (choice){
             case "l","L":
-                if(!SessionManager.getInstance().isLoggedIn()){
+                if(!sessionManager.isLoggedIn()){
                     handleLogin();
                 }
                 else{
@@ -73,12 +80,12 @@ public class MyOffersController extends GraphicController<MyOffersView>{
                 }
                 break;
             case "p","P":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleProfile();
                 }
                 break;
             case "r","R":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleRegister();
                 }
                 break;
@@ -117,12 +124,12 @@ public class MyOffersController extends GraphicController<MyOffersView>{
 
     @Override
     protected void setupData() {
-        MakeBarterController mbc = new MakeBarterController();
         try {
-            this.view.setReceivedOffers(mbc.loadReceivedOffers(SessionManager.getInstance().getLoggedUser().getUsername()));
-            this.view.setSentOffers(mbc.loadSentOffers(SessionManager.getInstance().getLoggedUser().getUsername()));
+            this.view.setReceivedOffers(makeBarterController.loadReceivedOffers(sessionManager.getLoggedUser()));
+            this.view.setSentOffers(makeBarterController.loadSentOffers(sessionManager.getLoggedUser()));
         }catch(Exception e){
             this.handleException(e);
         }
     }
+
 }

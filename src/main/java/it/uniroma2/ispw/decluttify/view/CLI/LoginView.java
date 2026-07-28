@@ -4,10 +4,14 @@ import it.uniroma2.ispw.decluttify.utils.SessionManager;
 
 public class LoginView extends View{
 
+    public LoginView(SessionManager sessionManager) {
+        super(sessionManager);
+    }
+
     @Override
     public void show() {
         printHeader("Login View");
-        if(SessionManager.getInstance().isLoggedIn()){
+        if(sessionManager.isLoggedIn()){
             super.show();
         }
         else {

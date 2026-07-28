@@ -1,12 +1,18 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MyItemsView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 
 public class MyInventoryController extends GraphicController<MyItemsView> {
 
+    public MyInventoryController(SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
+    }
+
     @Override
     protected MyItemsView createView() {
-        return new MyItemsView();
+        return new MyItemsView(sessionManager);
     }
 
     @Override

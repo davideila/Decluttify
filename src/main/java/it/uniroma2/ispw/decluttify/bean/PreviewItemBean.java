@@ -17,7 +17,6 @@ public class PreviewItemBean {
     public PreviewItemBean() {
     }
 
-    // Costruttore completo
     public PreviewItemBean(int id, String name, String description, String owner, ArrayList<String> images,
                            String category, String condition) {
         this.id = id;
@@ -32,7 +31,7 @@ public class PreviewItemBean {
     public PreviewItemBean(int id, String owner, String name, String description, java.sql.Date creationDate, int category, int condition, int numOffers) {
     }
 
-    // --- Metodi Getters e Setters ---
+    // --- Getters & Setters ---
 
     public int getId() {
         return id;

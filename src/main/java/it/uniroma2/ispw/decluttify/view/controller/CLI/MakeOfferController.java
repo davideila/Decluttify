@@ -2,25 +2,31 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MakeOfferView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MakeOfferController extends GraphicController<MakeOfferView>{
 
-    List<PreviewItemBean> inventoryItems;
-    List<Integer> addedItems = new ArrayList<>(); //stores indexes of inventoryItems for added to offer items
-    List<Integer> offeredItems = new ArrayList<>(); //stores indexes of inventoryItems for items sent for offer
-    PreviewItemBean requestedItem;
+    private List<PreviewItemBean> inventoryItems;
+    private List<Integer> addedItems = new ArrayList<>(); //stores indexes of inventoryItems for added to offer items
+    private List<Integer> offeredItems = new ArrayList<>(); //stores indexes of inventoryItems for items sent for offer
+    private PreviewItemBean requestedItem;
+    private final MakeBarterController makeBarterController;
 
-    public MakeOfferController(PreviewItemBean requestedItem) {
+    public MakeOfferController(PreviewItemBean requestedItem, SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
         this.setRequestedItem(requestedItem);
+        this.makeBarterController = new MakeBarterController(sessionManager);
     }
 
     @Override
     protected MakeOfferView createView() {
-        return new MakeOfferView();
+        return new MakeOfferView(sessionManager);
     }
 
     @Override
@@ -43,18 +49,18 @@ public class MakeOfferController extends GraphicController<MakeOfferView>{
                     this.view.showMessage("Offer already sent!", true);
                 }
                 else {
-                    MakeBarterController mbc = new MakeBarterController();
+
                     ArrayList<PreviewItemBean> items= new ArrayList<>();
                     for(Integer i : addedItems) {
                         items.add(inventoryItems.get(i-1));
                     }
                     try {
-                        mbc.makeOffer(items, requestedItem);
+                        makeBarterController.makeOffer(items, requestedItem, sessionManager.getLoggedUser());
                     }catch(Exception e){
                         this.handleException(e);
                     }
                     this.view.showMessage("Offer sent!", false);
-                    NavigatorManager.getInstance().navigateToMyOffers();
+                    navigatorManager.navigateTo(ViewType.MY_OFFERS);
                 }
             }
             else {
@@ -73,9 +79,8 @@ public class MakeOfferController extends GraphicController<MakeOfferView>{
 
     @Override
     protected void setupData() {
-        MakeBarterController mbc = new MakeBarterController();
         try{
-            this.inventoryItems = mbc.loadUserInventory();
+            this.inventoryItems = makeBarterController.loadUserInventory(sessionManager.getLoggedUser());
             System.out.println(inventoryItems.toString());
             this.view.setItems(this.inventoryItems);
         }catch(Exception e){

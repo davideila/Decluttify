@@ -1,6 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,10 @@ import java.util.List;
 public class ItemBrowserView extends View{
 
     List<PreviewItemBean> items;
+
+    public ItemBrowserView(SessionManager sessionManager) {
+        super(sessionManager);
+    }
 
     public void show() {
         printHeader("Item Browser View");

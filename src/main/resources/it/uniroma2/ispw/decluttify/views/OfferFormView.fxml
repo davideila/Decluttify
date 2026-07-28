@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.ImageView?>
 
-<VBox spacing="20.0" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.MakeOfferController">
+<VBox spacing="20.0" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets top="20" right="40" bottom="20" left="40"/>
     </padding>
@@ -47,7 +47,7 @@
 
     <HBox spacing="20" alignment="CENTER">
         <Button text="Cancel" onAction="#handleCancel" style="-fx-min-width: 150; -fx-padding: 10;" />
-        <Button fx:id="confirmButton" text="Send Proposal" onAction="#handleSendProposal"
+        <Button fx:id="confirmButton" text="Send Proposal" onAction="#handleSubmit"
                 disable="true" style="-fx-min-width: 250; -fx-padding: 10; -fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
     </HBox>
 </VBox>

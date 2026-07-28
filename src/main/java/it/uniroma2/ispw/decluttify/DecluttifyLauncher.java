@@ -2,7 +2,9 @@ package it.uniroma2.ispw.decluttify;
 
 import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.utils.ConfigReader;
-import it.uniroma2.ispw.decluttify.view.controller.CLI.NavigatorManager;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.JavaFX.NavigatorManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -18,7 +20,8 @@ public class DecluttifyLauncher extends Application {
         if(args.length > 0){
             switch(args[0]){
                 case "CLI":
-                    NavigatorManager.getInstance().start();
+                    Navigator navigator = new it.uniroma2.ispw.decluttify.view.controller.CLI.NavigatorManager(new SessionManager());
+                    navigator.start();
                     break;
                 case "GUI":
                     Application.launch(args);
@@ -31,7 +34,8 @@ public class DecluttifyLauncher extends Application {
             String viewType = ConfigReader.getInstance().getViewType();
             switch (viewType) {
                 case "CLI":
-                    NavigatorManager.getInstance().start();
+                    Navigator navigator = new it.uniroma2.ispw.decluttify.view.controller.CLI.NavigatorManager(new SessionManager());
+                    navigator.start();
                     break;
                 case "GUI":
                     Application.launch(args);
@@ -45,7 +49,10 @@ public class DecluttifyLauncher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/MainView.fxml"));
+        NavigatorManager navigatorManager = new NavigatorManager();
+        loader.setController(navigatorManager);
         Parent root = loader.load();
+        navigatorManager.start();
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();

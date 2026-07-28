@@ -209,52 +209,53 @@ public class OfferDAOJDBC extends OfferDAO {
     }
 
     @Override
-    public List<Offer> retrieveOffersByReceiver(String receiver) {
+    public List<Offer> retrieveOffersByReceiver(String receiver) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             Statement stmtItems = connection.createStatement()){
+
+        try (Statement stmt = connection.createStatement();
+             Statement stmtItems = connection.createStatement()) {
             ResultSet rs = SelectQueries.selectOffersByReceiver(stmt, receiver);
-            rs.first();
-            do{
+            while (rs.next()) {
                 List<Item> itemofflist = new ArrayList<>();
                 int offID = rs.getInt("id");
-                ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID);
-                while (rsItems.next()) {
-                    itemofflist.add(new Item(rsItems.getInt("item")));
+                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
+                    while (rsItems.next()) {
+                        itemofflist.add(new Item(rsItems.getInt("item")));
+                    }
                 }
-                rsItems.close();
-
                 offerlist.add(new Offer(
-                    offID,
-                    new User(rs.getString("offerer"), null, -1, null),
-                    new User(rs.getString("receiver"), null, -1, null),
-                    itemofflist,
-                    new Item(rs.getInt("itemReq")),
-                    rs.getBoolean("escrow"),
-                    rs.getBoolean("shipping"),
-                    OfferStatus.valueOf(rs.getString("status").toUpperCase())));
-            }while(rs.next());
-        }catch(SQLException e){
+                        offID,
+                        new User(rs.getString("offerer"), null, -1, null),
+                        new User(rs.getString("receiver"), null, -1, null),
+                        itemofflist,
+                        new Item(rs.getInt("itemReq")),
+                        rs.getBoolean("escrow"),
+                        rs.getBoolean("shipping"),
+                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                ));
+            }
+        } catch (SQLException e) {
             throw new DAOException("Error fetching offers for receiver " + receiver, e);
         }
         return offerlist;
     }
 
     @Override
-    public List<Offer> retrieveOffersBySender(String sender) {
+    public List<Offer> retrieveOffersBySender(String sender) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             Statement stmtItems = connection.createStatement()){
+
+        try (Statement stmt = connection.createStatement();
+             Statement stmtItems = connection.createStatement()) {
+
             ResultSet rs = SelectQueries.selectOffersBySender(stmt, sender);
-            rs.first();
-            do{
+            while (rs.next()) {
                 List<Item> itemofflist = new ArrayList<>();
                 int offID = rs.getInt("id");
-                ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID);
-                while (rsItems.next()) {
-                    itemofflist.add(new Item(rsItems.getInt("item")));
+                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
+                    while (rsItems.next()) {
+                        itemofflist.add(new Item(rsItems.getInt("item")));
+                    }
                 }
-                rsItems.close();
 
                 offerlist.add(new Offer(
                         offID,
@@ -264,9 +265,10 @@ public class OfferDAOJDBC extends OfferDAO {
                         new Item(rs.getInt("itemReq")),
                         rs.getBoolean("escrow"),
                         rs.getBoolean("shipping"),
-                        OfferStatus.valueOf(rs.getString("status").toUpperCase())));
-            }while(rs.next());
-        }catch(SQLException e){
+                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                ));
+            }
+        } catch (SQLException e) {
             throw new DAOException("Error fetching offers for sender " + sender, e);
         }
         return offerlist;

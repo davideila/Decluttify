@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,10 @@ public class MyOffersView extends View{
     private List<OfferBean> receivedOffers;
     private boolean onSelection;
     private OfferBean selectedOffer;
+
+    public MyOffersView(SessionManager sessionManager) {
+        super(sessionManager);
+    }
 
     public void show() {
         printHeader("My Offers View");

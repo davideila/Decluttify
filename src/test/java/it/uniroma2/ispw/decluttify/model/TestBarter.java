@@ -14,7 +14,7 @@ public class TestBarter {
     }
 
     @Test
-    public void testBarterConfirm(){
+    public void testBarterConfirmCorrect(){
         Barter barter = createTestBarter();
         barter.confirm("offerer");
         barter.confirm("receiver");

@@ -4,6 +4,9 @@ import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -15,11 +18,17 @@ import java.util.List;
 
 public class OfferListCellController extends GraphicController{
 
+    private final MakeBarterController makeBarterController;
     @FXML Label labelUserLeft;
     @FXML FlowPane flowPaneLeft;
     @FXML Label labelUserRight;
     @FXML FlowPane flowPaneRight;
     private OfferBean offerBean;
+
+    public OfferListCellController(Navigator navigator, SessionManager sm) {
+        super(navigator, sm, null);
+        this.makeBarterController = new MakeBarterController(sm);
+    }
 
     public void setData(OfferBean offerBean, boolean isReceived) {
         flowPaneLeft.getChildren().clear();
@@ -77,22 +86,20 @@ public class OfferListCellController extends GraphicController{
         return tile;
     }
 
-    public void handleAccept(ActionEvent actionEvent) throws Exception {
-        MakeBarterController mbc = new MakeBarterController();
+    public void handleAccept(ActionEvent actionEvent) {
         try {
-            mbc.acceptOffer(this.offerBean);
+            makeBarterController.acceptOffer(this.offerBean);
         }catch(Exception e){
             this.handleException(e);
         }
         AlertProvider.showInfo("Success!", "Offer has been accepted");
-        MainGraphicController.getInstance().showMyBartersView();
+        navigator.navigateTo(ViewType.MY_BARTERS);
     }
 
 
     public void handleReject(ActionEvent actionEvent) {
-        MakeBarterController mbc = new MakeBarterController();
         try {
-            mbc.rejectOffer(this.offerBean);
+            makeBarterController.rejectOffer(this.offerBean);
         }catch(Exception e){
             this.handleException(e);
         }

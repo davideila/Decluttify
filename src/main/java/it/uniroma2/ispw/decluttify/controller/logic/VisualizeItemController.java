@@ -11,11 +11,16 @@ import java.util.List;
 
 public class VisualizeItemController {
 
+    private final ItemDAO itemDAO;
+
+    public VisualizeItemController() {
+        this.itemDAO = DAOFactory.getDAOFactory().createItemDAO();
+    }
+
     //Method for loading (previewed) items from persistence to tile pane in item browse view
     public ArrayList<PreviewItemBean> loadAvailableItems() {
         ArrayList<PreviewItemBean> itemBeans = new ArrayList<>();
         List<Item> items;
-        ItemDAO itemDAO = DAOFactory.getDAOFactory().createItemDAO();
         items = itemDAO.retrieveAllAvailableItems();
         PreviewItemBean pib;
         for (Item item : items) {
@@ -26,10 +31,9 @@ public class VisualizeItemController {
     }
 
    // Method for loading the full detailed item view
-   public FullItemBean loadItemDetails(int id) {
-       ItemDAO itemDAO = DAOFactory.getDAOFactory().createItemDAO();
+   public FullItemBean loadItemDetails(PreviewItemBean pib) {
        Item item;
-       item = itemDAO.retrieveItemById(id);
+       item = itemDAO.retrieveItemById(pib.getId());
        FullItemBean fib;
        fib = BeanConverter.toFullItemBean(item);
     return fib;

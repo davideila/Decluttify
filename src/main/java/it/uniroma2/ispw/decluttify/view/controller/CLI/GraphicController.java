@@ -1,18 +1,25 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
+import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.View;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public abstract class GraphicController<V extends View> {
     protected V view;
     protected boolean isLoginRequired;
-    protected NavigatorManager navigatorManager = NavigatorManager.getInstance();
+    protected Navigator navigatorManager;
     protected boolean listening;
+    protected SessionManager sessionManager;
 
-    public GraphicController() {}
+    public GraphicController(SessionManager sessionManager, Navigator navigatorManager) {
+        this.sessionManager = sessionManager;
+        this.navigatorManager = navigatorManager;
+    }
 
     protected abstract V createView();
 
@@ -28,7 +35,7 @@ public abstract class GraphicController<V extends View> {
     protected void handleMenuInput(String choice) {
         switch (choice){
             case "l","L":
-                if(!SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleLogin();
                 }
                 else{
@@ -36,12 +43,12 @@ public abstract class GraphicController<V extends View> {
                 }
                 break;
             case "p","P":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleProfile();
                 }
                 break;
             case "r","R":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleRegister();
                 }
                 break;
@@ -83,27 +90,27 @@ public abstract class GraphicController<V extends View> {
 
     void handleBarters() {
         triggerLogin();
-        if(SessionManager.getInstance().isLoggedIn()) {
-            navigatorManager.navigatetoMyBarters();
+        if(sessionManager.isLoggedIn()) {
+            navigatorManager.navigateTo(ViewType.MY_BARTERS);
         }
     }
 
     void handleMyOffers() {
         triggerLogin();
-        if(SessionManager.getInstance().isLoggedIn()) {
-            navigatorManager.navigateToMyOffers();
+        if(sessionManager.isLoggedIn()) {
+            navigatorManager.navigateTo(ViewType.MY_OFFERS);
         }
     }
 
     void handleMyItems() {
         triggerLogin();
-        if(SessionManager.getInstance().isLoggedIn()) {
-            navigatorManager.navigateToMyItems();
+        if(sessionManager.isLoggedIn()) {
+            navigatorManager.navigateTo(ViewType.MY_INVENTORY);
         }
     }
 
     void handleItemBrowser() {
-        navigatorManager.navigateToItemBrowser();
+        navigatorManager.navigateTo(ViewType.ITEM_BROWSER);
     }
 
     protected void handleRegister() {
@@ -113,8 +120,8 @@ public abstract class GraphicController<V extends View> {
 
     protected void handleProfile() {
         triggerLogin();
-        if(SessionManager.getInstance().isLoggedIn()) {
-            navigatorManager.navigateToProfile();
+        if(sessionManager.isLoggedIn()) {
+            //TODO navigatorManager.navigateToProfile();
         }
 
     }
@@ -133,7 +140,7 @@ public abstract class GraphicController<V extends View> {
     protected void setupData(){}
 
     protected void triggerLogin() {
-        if(!SessionManager.getInstance().isLoggedIn()){
+        if(!sessionManager.isLoggedIn()){
             this.view.showMessage("You must log in", true);
             handleLogin();
         }
@@ -152,16 +159,17 @@ public abstract class GraphicController<V extends View> {
     }
 
     public void handleLogout(){
-        navigatorManager.handleLogout();
+        LoginController loginController = new LoginController(sessionManager);
+        loginController.logout();
+        navigatorManager.reset();
     }
 
-
     public void handleHome(){
-        navigatorManager.navigateToHome();
+        navigatorManager.navigateTo(ViewType.HOME);
     }
 
     public void handleBack(){
-        navigatorManager.navigateToBack();
+        navigatorManager.navigateBack();
     }
 
     public void handleExit(){
@@ -172,7 +180,7 @@ public abstract class GraphicController<V extends View> {
     }
 
     public void handleLogin(){
-        navigatorManager.navigateToLogin();
+        navigatorManager.navigateTo(ViewType.LOGIN);
     }
 
     protected void handleException(Exception e) {

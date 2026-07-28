@@ -1,6 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.BarterBean;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,10 @@ public class MyBartersView extends View{
     private List<BarterBean> ongoingBarters;
     private boolean onSelection;
     private BarterBean selectedBarter;
+
+    public MyBartersView(SessionManager sessionManager) {
+        super(sessionManager);
+    }
 
     public void show() {
         printHeader("My Barters View");

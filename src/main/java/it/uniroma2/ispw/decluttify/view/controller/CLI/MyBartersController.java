@@ -5,12 +5,20 @@ import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MyBartersView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public class MyBartersController extends GraphicController<MyBartersView>{
+    private final MakeBarterController makeBarterController;
+
+    public MyBartersController(SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
+        this.makeBarterController = new MakeBarterController(sessionManager);
+    }
 
     @Override
     protected MyBartersView createView() {
-        return new MyBartersView();
+        return new MyBartersView(sessionManager);
     }
 
     @Override
@@ -30,7 +38,6 @@ public class MyBartersController extends GraphicController<MyBartersView>{
             }
         }
         else{
-            MakeBarterController mbc = new MakeBarterController();
             switch(index){
                 case 0:
                     try{
@@ -39,9 +46,9 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                         else {
-                            mbc.confirmBarter(this.view.getSelectedBarter());
+                            makeBarterController.confirmBarter(this.view.getSelectedBarter(), sessionManager.getLoggedUser());
                             this.view.showMessage("Barter successfully confirmed", false);
-                            this.navigatorManager.navigatetoMyBarters();
+                            this.navigatorManager.navigateTo(ViewType.MY_BARTERS);
                         }
                     }catch(DAOException e) {
                         this.view.showMessage("System error: service not available. Please try again later.", true);
@@ -60,11 +67,11 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                 case 1:
                     try{
                         if(this.view.getSelectedBarter().getStatus().equalsIgnoreCase("COMPLETED") || this.view.getSelectedBarter().isYouConfirmed()){
-                            mbc.viewBarterDetails(this.view.getSelectedBarter());
+                            makeBarterController.viewBarterDetails(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                         else {
-                            mbc.disputeBarter(this.view.getSelectedBarter());
+                            makeBarterController.disputeBarter(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                     }catch(Exception e){
@@ -81,7 +88,7 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                             this.view.showMessage("Select a valid option.", true);
                         }
                         else {
-                            mbc.viewBarterDetails(this.view.getSelectedBarter());
+                            makeBarterController.viewBarterDetails(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                     }catch(Exception e){
@@ -102,7 +109,7 @@ public class MyBartersController extends GraphicController<MyBartersView>{
     protected void handleMenuInput(String choice) {
         switch (choice){
             case "l","L":
-                if(!SessionManager.getInstance().isLoggedIn()){
+                if(!sessionManager.isLoggedIn()){
                     handleLogin();
                 }
                 else{
@@ -110,12 +117,12 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                 }
                 break;
             case "p","P":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleProfile();
                 }
                 break;
             case "r","R":
-                if(SessionManager.getInstance().isLoggedIn()){
+                if(sessionManager.isLoggedIn()){
                     handleRegister();
                 }
                 break;
@@ -154,11 +161,11 @@ public class MyBartersController extends GraphicController<MyBartersView>{
 
     @Override
     protected void setupData() {
-        MakeBarterController mbc = new MakeBarterController();
         try {
-            this.view.setOngoingBarters(mbc.loadUserBarters());
+            this.view.setOngoingBarters(makeBarterController.loadUserBarters(sessionManager.getLoggedUser()));
         }catch(Exception e){
             this.handleException(e);
         }
     }
+
 }

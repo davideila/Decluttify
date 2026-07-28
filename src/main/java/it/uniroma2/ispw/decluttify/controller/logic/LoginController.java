@@ -12,15 +12,24 @@ import java.util.List;
 
 public class LoginController {
 
+    private SessionManager sessionManager;
+    private final UserDAO userDAO;
+    private final NotificationDAO notificationDAO;
+
+    public LoginController(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+        this.userDAO = DAOFactory.getDAOFactory().createUserDAO();
+        this.notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
+    }
+
     public boolean login(String username, String inputPassword) {
-        UserDAO userDAO= DAOFactory.getDAOFactory().createUserDAO();
         User user = userDAO.retrieveUserByUsername(username);
         if(user == null){
             return false;
         }
         else {
             if (user.checkPassword(inputPassword, ConfigReader.getInstance().getPepper())) {
-                SessionManager.getInstance().login(BeanConverter.toUserBean(user));
+                sessionManager.login(BeanConverter.toUserBean(user));
                 this.checkForNotifications();
                 return true;
             } else return false;
@@ -28,8 +37,8 @@ public class LoginController {
     }
 
     public void logout(){
-        if (SessionManager.getInstance().isLoggedIn()){
-            SessionManager.getInstance().logout();
+        if (sessionManager.isLoggedIn()){
+            sessionManager.logout();
         }
     }
 
@@ -40,8 +49,7 @@ public class LoginController {
     }
 
     public void checkForNotifications() {
-        NotificationDAO notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
-        List<Notification> notifications = notificationDAO.retrieveNotificationByUser(SessionManager.getInstance().getLoggedUser().getUsername());
-        SessionManager.getInstance().setNotifications(BeanConverter.toNotificationBeanList(notifications));
+        List<Notification> notifications = notificationDAO.retrieveNotificationByUser(sessionManager.getLoggedUser().getUsername());
+        sessionManager.setNotifications(BeanConverter.toNotificationBeanList(notifications));
     }
 }

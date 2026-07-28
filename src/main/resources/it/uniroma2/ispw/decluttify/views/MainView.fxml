@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.MainGraphicController">
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <VBox alignment="TOP_CENTER" spacing="15" style="-fx-background-color: #e0e0e0;">
         <children>
@@ -90,7 +90,6 @@
 
     <BorderPane fx:id="borderPane" HBox.hgrow="ALWAYS">
         <top>
-            <fx:include fx:id="headerBar" source="HeaderBar.fxml" />
         </top>
         <center>
         </center>

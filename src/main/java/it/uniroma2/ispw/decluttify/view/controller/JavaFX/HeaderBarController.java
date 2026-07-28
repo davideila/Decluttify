@@ -4,10 +4,11 @@ import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,94 +19,84 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 
-public class HeaderBarController extends GraphicController implements Initializable, Observer{
 
-    private int loginTries = 0;
-    @FXML
-    Button profileButton;
-    @FXML
-    TextField usernameField;
-    @FXML
-    PasswordField passwordField;
-    @FXML
-    Button logoutButton;
-    @FXML
-    Label errorLabel;
+public class HeaderBarController extends GraphicController implements Observer{
+
+    private final LoginController  loginController;
+
+    @FXML Button profileButton;
+    @FXML TextField usernameField;
+    @FXML PasswordField passwordField;
+    @FXML Button logoutButton;
+    @FXML Label errorLabel;
     @FXML private StackPane badgePane;
     @FXML private Label notificationCountLabel;
 
-    private SessionManager sessionManager;
+    public HeaderBarController(Navigator navigator, SessionManager sm, ViewType viewType) {
+        super(navigator, sm, viewType);
+        this.loginController = new LoginController(sm);
+    }
 
+    public void init() {
+        this.sessionManager.attach(this);
+    }
 
     // Methods for onAction button click event linked through fxml
 
     @FXML
     void handleBackButton(ActionEvent event) {
-        MainGraphicController mainController = MainGraphicController.getInstance();
-        mainController.goBack();
+        this.navigator.navigateBack();
     }
 
+    //this button could be login or go to user details if logged already
     @FXML
     void handleProfileButton(ActionEvent event) {
-        if (SessionManager.getInstance().getLoggedUser() == null) {
+        if (!sessionManager.isLoggedIn()) {
+            Stage popupStage = new Stage();
+            popupStage.initOwner(profileButton.getScene().getWindow());
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Login");
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/LoginPopupView.fxml"));
+                LoginPopupController popupController = new LoginPopupController(navigator, sessionManager, null);
+                loader.setController(popupController);
                 Parent root = loader.load();
-
-                LoginPopupController loginPopupController = loader.getController();
-                Stage popupStage = new Stage();
-                popupStage.initOwner(profileButton.getScene().getWindow());
-                popupStage.initModality(Modality.APPLICATION_MODAL);
                 popupStage.setScene(new Scene(root));
-
-                // Wait for the popup to be closed
                 popupStage.showAndWait();
-
-                if (SessionManager.getInstance().getLoggedUser() != null) {
-                    profileButton.setText(SessionManager.getInstance().getLoggedUser().getUsername());
-                }
-
-            }catch(Exception e){
-                this.handleException(e);
+            }catch (IOException e){
+                AlertProvider.showError("Server Error", "Service temporarily not available");
             }
 
+            if (sessionManager.getLoggedUser() != null) {
+                profileButton.setText(sessionManager.getLoggedUser().getUsername());
+            }
         }
         else{
             AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
         }
-        this.update();
     }
 
     @FXML
     void handleLogoutButton(ActionEvent event) {
         if(logoutButton.getText().equals("Sign Out")){
-            LoginController  loginController = new LoginController();
-            loginController.logout();
-            MainGraphicController.getInstance().handleLogout();
+           loginController.logout();
+           this.navigator.reset();
         }
         else{
             AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
         }
-        this.update();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        this.sessionManager = SessionManager.getInstance();
-        this.sessionManager.attach(this);
     }
 
     @Override
     public void update() {
-        if (SessionManager.getInstance().isLoggedIn()) {
-            profileButton.setText(SessionManager.getInstance().getLoggedUser().getUsername());
+        if (sessionManager.isLoggedIn()) {
+            profileButton.setText(sessionManager.getLoggedUser().getUsername());
             logoutButton.setText("Sign Out");
-            if(SessionManager.getInstance().getNotifications() != null){
+            if(sessionManager.getNotifications() != null){
                 badgePane.setVisible(true);
-                this.notificationCountLabel.setText(String.valueOf(SessionManager.getInstance().getNotifications().size()));
+                this.notificationCountLabel.setText(String.valueOf(sessionManager.getNotifications().size()));
             }
 
         } else{
@@ -119,4 +110,5 @@ public class HeaderBarController extends GraphicController implements Initializa
     public void handleNotificationClick(MouseEvent mouseEvent) {
         AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
     }
+
 }

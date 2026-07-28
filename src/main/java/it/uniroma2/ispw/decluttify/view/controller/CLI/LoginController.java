@@ -2,13 +2,22 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.LoginView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+
 import java.util.Scanner;
 
 public class LoginController extends GraphicController<LoginView> {
 
+    private final it.uniroma2.ispw.decluttify.controller.logic.LoginController logicLoginController;
+
+    public LoginController(SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
+        logicLoginController = new it.uniroma2.ispw.decluttify.controller.logic.LoginController(sessionManager);
+    }
+
     @Override
     protected LoginView createView() {
-        return new LoginView();
+        return new LoginView(sessionManager);
     }
 
     @Override
@@ -44,9 +53,9 @@ public class LoginController extends GraphicController<LoginView> {
         String username = sc.nextLine();
         System.out.println("Enter password: ");
         String password = sc.nextLine();
-        it.uniroma2.ispw.decluttify.controller.logic.LoginController loginController = new it.uniroma2.ispw.decluttify.controller.logic.LoginController();
+
         try {
-            if(!loginController.login(username, password)){
+            if(!logicLoginController.login(username, password)){
                 this.view.showMessage("Incorrect username or password", true);
                 this.start();
             }
@@ -54,7 +63,7 @@ public class LoginController extends GraphicController<LoginView> {
             this.handleException(e);
         }
         finally {
-            if (SessionManager.getInstance().isLoggedIn()){
+            if (sessionManager.isLoggedIn()){
                 this.listen(false);
             }
         }

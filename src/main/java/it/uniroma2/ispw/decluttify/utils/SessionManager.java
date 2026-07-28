@@ -11,19 +11,13 @@ import java.util.TimerTask;
 public class SessionManager extends Subject {
     private UserBean loggedUser;
     private boolean loggedIn;
-    private static SessionManager instance = null;
     private List<NotificationBean>  notifications = new ArrayList<>();
-    private boolean loginLocked = false;
+    private boolean loginLocked;
 
-
-    protected SessionManager(){
-    }
-
-    public static synchronized SessionManager getInstance() {
-        if(instance == null){
-            instance = new SessionManager();
-        }
-        return instance;
+    public SessionManager() {
+        this.loggedUser = null;
+        this.loggedIn = false;
+        this.loginLocked = false;
     }
 
     public UserBean getLoggedUser(){
@@ -73,7 +67,7 @@ public class SessionManager extends Subject {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                SessionManager.getInstance().unlockLogin();
+                unlockLogin();
             }
         }, 10000);
     }

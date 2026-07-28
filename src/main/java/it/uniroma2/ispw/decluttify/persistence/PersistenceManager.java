@@ -12,6 +12,7 @@ public class PersistenceManager {
     private Connection connection;
     private String persistenceType;
     private boolean testEnvironment = false;
+    private boolean demoMode = false;
 
     private PersistenceManager(){
         //persistence.type can be mysql or csv, read from config.properties, if it is sql create the connection to DB

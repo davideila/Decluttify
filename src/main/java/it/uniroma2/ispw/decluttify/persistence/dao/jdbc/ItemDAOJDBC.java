@@ -147,20 +147,18 @@ public class ItemDAOJDBC extends ItemDAO {
     }
 
     @Override
-    public List<Item> retrieveAllAvailableItems() {
+    public List<Item> retrieveAllAvailableItems() throws DAOException {
 
-        List<Item>  itemList = new ArrayList<>();
+        List<Item> itemList = new ArrayList<>();
 
         try (Statement stmtItem = connection.createStatement();
              Statement stmtUser = connection.createStatement();
              Statement stmtImages = connection.createStatement()) {
 
-             ResultSet rsItem = SelectQueries.selectAllAvailableItems(stmtItem);
-             if (!rsItem.first()){ // rsItem empty
-                 throw new DAOException("No available items found");
-             }
-            rsItem.first();
-            do {
+            ResultSet rsItem = SelectQueries.selectAllAvailableItems(stmtItem);
+
+            // Usiamo il classico while (rsItem.next()) invece di .first() e do-while
+            while (rsItem.next()) {
                 int id = rsItem.getInt("id");
                 String owner = rsItem.getString("owner");
                 String name = rsItem.getString("name");
@@ -171,39 +169,43 @@ public class ItemDAOJDBC extends ItemDAO {
                 int numOffers = rsItem.getInt("numOffers");
                 String status = rsItem.getString("status");
 
-                // Second statement for owner data
-                String username;
-                double rating;
-                String email;
+                // --- Dati Owner ---
                 ResultSet rsUser = SelectQueries.selectUserByUsername(stmtUser, owner);
-
-                if (!rsUser.first()) { // rs empty
-                        throw new DAOException("Data integrity error: no owner found for item with ID:" + id);
+                if (!rsUser.next()) { // Avanza al primo record; se false, non esiste l'utente
+                    throw new DAOException("Data integrity error: no owner found for item with ID: " + id);
                 }
-                rsUser.first();
-                username = rsUser.getString("username");
-                rating = rsUser.getDouble("rating");
-                email = rsUser.getString("email");
+                String username = rsUser.getString("username");
+                double rating = rsUser.getDouble("rating");
+                String email = rsUser.getString("email");
 
-                // Third statement for images data
+                // --- Dati Immagini ---
                 List<String> images = new ArrayList<>();
                 ResultSet rsImages = SelectQueries.selectImagesByItem(stmtImages, id);
-                if (!rsImages.first()) { // rsItem empty
+
+                while (rsImages.next()) {
+                    images.add(rsImages.getString("image"));
+                }
+
+                // Se l'item DEVE avere per forza almeno un'immagine:
+                if (images.isEmpty()) {
                     throw new DAOException("Data integrity error: no images found for item with ID: " + id);
                 }
-                rsImages.first();
-                do{
-                    images.add(rsImages.getString("image"));
-                }while(rsImages.next());
 
                 User user = new User(username, null, rating, email);
-                Item item = new Item(id, user, name, description, creationDate, category.toUpperCase(), condition.toUpperCase(), numOffers, images);
+                Item item = new Item(id, user, name, description, creationDate,
+                        category.toUpperCase(), condition.toUpperCase(), numOffers, images);
                 itemList.add(item);
+            }
 
-            } while(rsItem.next());
+            // Se non è stato trovato alcun item disponibile
+            if (itemList.isEmpty()) {
+                throw new DAOException("No available items found");
+            }
+
         } catch (SQLException e) {
             throw new DAOException("Error fetching available items", e);
         }
+
         return itemList;
     }
 

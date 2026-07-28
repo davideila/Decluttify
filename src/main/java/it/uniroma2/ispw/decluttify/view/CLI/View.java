@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 public abstract class View {
     protected final Scanner scanner = new Scanner(System.in);
+    protected final SessionManager sessionManager;
+
+    public View(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
 
     public void show(){
         this.showMenu();
@@ -12,8 +17,8 @@ public abstract class View {
     }
 
     public void showMenu(){
-        if(SessionManager.getInstance().isLoggedIn()){
-            System.out.println("Logged in as: " + SessionManager.getInstance().getLoggedUser().getUsername());
+        if(sessionManager.isLoggedIn()){
+            System.out.println("Logged in as: " + sessionManager.getLoggedUser().getUsername());
             System.out.println("[p] My Profile    | [l] Log Out       | [h] Home          | [b] Back          ");
 
         }

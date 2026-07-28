@@ -1,18 +1,22 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.FullItemBean;
+import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.ItemDetailsView;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public class ItemDetailsController extends GraphicController<ItemDetailsView> {
-
+    VisualizeItemController visualizeItemController;
     FullItemBean item;
 
-    public ItemDetailsController(int id) {
-        VisualizeItemController vic = new VisualizeItemController();
+    public ItemDetailsController(PreviewItemBean pib, SessionManager sessionManager, Navigator navigatorManager) {
+        super(sessionManager, navigatorManager);
+        this.visualizeItemController = new VisualizeItemController();
         try {
-            this.item = vic.loadItemDetails(id);
+            this.item = visualizeItemController.loadItemDetails(pib);
         }catch(Exception e){
             this.view.showMessage("Item details not available", true);
         }
@@ -20,7 +24,7 @@ public class ItemDetailsController extends GraphicController<ItemDetailsView> {
 
     @Override
     protected ItemDetailsView createView() {
-        return new ItemDetailsView();
+        return new ItemDetailsView(sessionManager);
     }
 
     @Override
@@ -33,11 +37,11 @@ public class ItemDetailsController extends GraphicController<ItemDetailsView> {
         switch (index) {
             case 0:
                 triggerLogin();
-                if(SessionManager.getInstance().getLoggedUser() != null && item.getOwner().equals(SessionManager.getInstance().getLoggedUser().getUsername())){
+                if(sessionManager.getLoggedUser() != null && item.getOwner().equals(sessionManager.getLoggedUser().getUsername())){
                     this.view.showMessage("TO BE IMPLEMENTED", false);
                 }
                 else {
-                    navigatorManager.navigateToMakeOffer(item);
+                    navigatorManager.navigateTo(ViewType.OFFER_FORM, item);
                 }
                 break;
             case 1:

@@ -4,38 +4,41 @@ import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class MyOffersController extends GraphicController implements Initializable {
+public class MyOffersController extends GraphicController {
+
+    private final MakeBarterController makeBarterController;
 
     @FXML private ListView<OfferBean> listViewReceived;
     @FXML private ListView<OfferBean> listViewSent;
 
+    public MyOffersController(Navigator navigator, SessionManager sm) {
+        super(navigator, sm, ViewType.MY_OFFERS);
+        this.makeBarterController = new MakeBarterController(sm);
+    }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void init() {
         this.setInSidebar(true);
-        MakeBarterController mbc = new MakeBarterController();
         List<OfferBean> received = List.of();
         this.listViewReceived.setCellFactory(lv -> new OfferListCell(true));
         this.listViewSent.setCellFactory(lv -> new OfferListCell(false));
         try {
-            received = mbc.loadReceivedOffers(SessionManager.getInstance().getLoggedUser().getUsername());
+            received = makeBarterController.loadReceivedOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }
         List<OfferBean> sent = List.of();
         try {
-            sent = mbc.loadSentOffers(SessionManager.getInstance().getLoggedUser().getUsername());
+            sent = makeBarterController.loadSentOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }

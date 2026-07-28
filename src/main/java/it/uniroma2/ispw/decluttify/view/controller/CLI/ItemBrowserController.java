@@ -2,7 +2,10 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.ItemBrowserView;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
+
 import java.util.List;
 
 
@@ -10,9 +13,13 @@ public class ItemBrowserController extends GraphicController<ItemBrowserView> {
 
     List<PreviewItemBean> items;
 
+    public ItemBrowserController(SessionManager sessionManager, NavigatorManager navigatorManager) {
+        super(sessionManager, navigatorManager);
+    }
+
     @Override
     protected ItemBrowserView createView() {
-        return new ItemBrowserView();
+        return new ItemBrowserView(sessionManager);
     }
 
     @Override
@@ -22,7 +29,7 @@ public class ItemBrowserController extends GraphicController<ItemBrowserView> {
 
     @Override
     protected void handleViewChoice(int index) {
-        navigatorManager.navigateToItemDetails(items.get(index-1).getId());
+        navigatorManager.navigateTo(ViewType.ITEM_DETAILS, items.get(index-1));
     }
 
     @Override

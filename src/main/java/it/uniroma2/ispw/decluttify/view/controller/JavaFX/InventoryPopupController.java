@@ -22,11 +22,11 @@ import java.util.List;
 public class InventoryPopupController {
     @FXML
     private ListView<PreviewItemBean> inventoryListView;
-    private MakeOfferController callerController;
+    private OfferFormController callerController;
     private Stage stage;
 
     // This method is to pass data to this object from caller
-    public void setParameters(MakeOfferController caller, Stage stage, List<PreviewItemBean> myItems) {
+    public void setParameters(OfferFormController caller, Stage stage, List<PreviewItemBean> myItems) {
         this.callerController = caller;
         this.stage = stage;
         //calling setCellFactory method for the customized list cell in the list view

@@ -2,10 +2,13 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,12 +21,16 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class MakeOfferController extends GraphicController implements Initializable, DataReceiver<PreviewItemBean> {
+import static java.lang.Thread.sleep;
+
+public class OfferFormController extends GraphicController {
+
+    private final MakeBarterController makeBarterController;
+    private PreviewItemBean targetItem;
+    private List<PreviewItemBean> offeredItems = new ArrayList<>();
 
     @FXML private ImageView requestedItemImage;
     @FXML private Label requestedItemName;
@@ -31,20 +38,19 @@ public class MakeOfferController extends GraphicController implements Initializa
     @FXML private VBox offeredItemsContainer;
     @FXML private Button confirmButton;
 
-    private PreviewItemBean targetItem;
-    private final List<PreviewItemBean> offeredItems = new ArrayList<>();
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.isInSidebar = false;
+    public OfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
+        super(navigator, sm, ViewType.OFFER_FORM);
+        this.targetItem = targetItem;
+        this.makeBarterController = new MakeBarterController(sm);
     }
 
-    public void setTargetItem(PreviewItemBean item) {
-        this.targetItem = item;
-        requestedItemName.setText(item.getName());
-        ownerName.setText("Owner: " + item.getOwner());
-        if (item.getImages() != null && !item.getImages().isEmpty()) {
-            try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + item.getImages().getFirst())) {
+    @Override
+    public void init() {
+        requestedItemName.setText(targetItem.getName());
+        ownerName.setText("Owner: " + targetItem.getOwner());
+        if (targetItem.getImages() != null && !targetItem.getImages().isEmpty()) {
+            try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + targetItem.getImages().getFirst())) {
                 Image image = new Image(is);
                 this.requestedItemImage.setImage(image);
             } catch (IOException e) {
@@ -67,15 +73,10 @@ public class MakeOfferController extends GraphicController implements Initializa
             popupStage.setTitle("Select an item from your inventory");
             popupStage.setScene(new Scene(root));
 
-            // Otteniamo il controller del popup e gli passiamo i dati
+            // Open popup inventory, get items and give items data to popup
             InventoryPopupController popupController = loader.getController();
-
-            // Get user inventory
-            MakeBarterController makeBarterController = new MakeBarterController();
-            List<PreviewItemBean> myItems = makeBarterController.loadUserInventory();
-
+            List<PreviewItemBean> myItems = makeBarterController.loadUserInventory(sessionManager.getLoggedUser());
             popupController.setParameters(this, popupStage, myItems);
-
             popupStage.showAndWait();
 
         }catch(Exception e){
@@ -94,26 +95,25 @@ public class MakeOfferController extends GraphicController implements Initializa
         confirmButton.setDisable(offeredItems.isEmpty());
     }
 
+    // Button to submit the barter proposal
     @FXML
-    private void handleSendProposal() throws Exception {
-        // Button to submit the barter proposal
-        System.out.println("Offer sent for: " + targetItem.getName());
-        MakeBarterController makeBarterController = new MakeBarterController();
+    private void handleSubmit(){
+        boolean result = false;
         try{
-            makeBarterController.makeOffer(this.offeredItems, this.targetItem);
+            makeBarterController.makeOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
+            result = true;
         }catch(Exception e){
-            this.handleException(e);
+            this.handleException(e);//TODO
         }
-        MainGraphicController.getInstance().handleOfferSent();
+        if (result) {
+            AlertProvider.showInfo("Success", "Offer submitted!");
+            navigator.navigateTo(ViewType.MY_OFFERS);
+        }
     }
 
     @FXML
     private void handleCancel(ActionEvent event) {
-        MainGraphicController.getInstance().goBack();
+        navigator.navigateBack();
     }
 
-    @Override
-    public void initData(PreviewItemBean data) {
-        this.setTargetItem(data);
-    }
 }

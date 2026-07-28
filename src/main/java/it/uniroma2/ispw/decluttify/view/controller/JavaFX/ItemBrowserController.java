@@ -2,10 +2,12 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,16 +18,28 @@ import javafx.scene.layout.VBox;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class ItemBrowserController extends GraphicController implements Initializable {
+public class ItemBrowserController extends GraphicController {
 
-    @FXML
-    private TilePane tilePane;
+    private final VisualizeItemController visualizeItemController;
+    @FXML private TilePane tilePane;
 
-    private ObservableList<PreviewItemBean> items = FXCollections.observableArrayList();
+    private ObservableList<PreviewItemBean> items = FXCollections.observableArrayList();  //TODO
 
+    public ItemBrowserController(Navigator navigator, SessionManager sm) {
+        super(navigator, sm, ViewType.ITEM_BROWSER);
+        this.visualizeItemController = new VisualizeItemController();
+    }
+
+    @Override
+    public void init(){
+        try{
+            items.addAll(this.visualizeItemController.loadAvailableItems());
+        }catch(Exception e){
+            this.handleException(e);
+        }
+        this.refreshTilePane();
+    }
 
     public Button initializeItemTile(PreviewItemBean item) {
         VBox tileContent = new VBox();
@@ -49,7 +63,6 @@ public class ItemBrowserController extends GraphicController implements Initiali
         Label itemConditionLabel = new Label("Condition: " + item.getCondition());
         Label itemDescriptionLabel = new Label(item.getDescription());
         Button itemOwnerButton = new Button(item.getOwner());
-        itemOwnerButton.setUserData(item);
 
         // Adding content to vbox
         tileContent.getChildren().addAll(itemImage, itemNameLabel, itemDescriptionLabel, itemConditionLabel, itemOwnerButton);
@@ -59,14 +72,10 @@ public class ItemBrowserController extends GraphicController implements Initiali
         itemButton.setGraphic(tileContent);
         itemButton.setPrefSize(200, 150);
 
-        // Set PreviewItemBean data in the button object
-        itemButton.setUserData(item);
-
         // Item tile click handler
         itemButton.setOnAction(event -> {
-            PreviewItemBean selectedItem = (PreviewItemBean) itemButton.getUserData();
             try {
-                MainGraphicController.getInstance().showItemDetailsView(selectedItem);
+                this.navigator.navigateTo(ViewType.ITEM_DETAILS, item);
             }catch(Exception e){
                 this.handleException(e);
             }
@@ -74,9 +83,8 @@ public class ItemBrowserController extends GraphicController implements Initiali
 
         //Item owner click handler
         itemOwnerButton.setOnAction(event -> {
-            PreviewItemBean selectedUser = (PreviewItemBean) itemOwnerButton.getUserData();
             try {
-                MainGraphicController.getInstance().showUserDetailsView(selectedUser.getOwner());
+                //this.navigator.navigateTo(ViewType.USER_DETAILS, selectedUser.getOwner());
             }catch(Exception e){
                 this.handleException(e);
             }
@@ -87,21 +95,12 @@ public class ItemBrowserController extends GraphicController implements Initiali
     }
 
     public void refreshTilePane(){
-        for (PreviewItemBean ib : items) {
-            tilePane.getChildren().add(initializeItemTile(ib));
+        if (tilePane != null) {
+            tilePane.getChildren().clear();
+            for (PreviewItemBean ib : items) {
+                tilePane.getChildren().add(initializeItemTile(ib));
+            }
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.isInSidebar = true;
-        VisualizeItemController vic = new VisualizeItemController();
-        try{
-            items.addAll(vic.loadAvailableItems());
-        }catch(Exception e){
-            this.handleException(e);
-        }
-        refreshTilePane();
     }
 
 }

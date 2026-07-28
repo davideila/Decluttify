@@ -9,24 +9,24 @@ import it.uniroma2.ispw.decluttify.exception.NotLoggedInException;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class ItemDetailsController extends GraphicController implements Initializable, DataReceiver<PreviewItemBean>, Observer {
+public class ItemDetailsController extends GraphicController implements Observer {
+
+    private PreviewItemBean visualizedItem;
 
     @FXML Button barterButton;
     @FXML Circle dot1;
@@ -41,26 +41,34 @@ public class ItemDetailsController extends GraphicController implements Initiali
     @FXML Label itemDescriptionLabel;
     @FXML Label itemConditionLabel;
     @FXML ImageView mainImageView;
-    private FullItemBean fullItemBean;
 
 
-    public void handleMakeOffer(ActionEvent actionEvent) throws IOException {
-        try {
-            MainGraphicController.getInstance().makeOfferView(this.fullItemBean);
-
-        } catch (NotLoggedInException e) {
-            MainGraphicController.getInstance().triggerLogin();
-        }
-    }
-
-    private void handleEditItem(PreviewItemBean item) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    public ItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
+        super(navigator, sm, ViewType.ITEM_DETAILS);
+        this.sessionManager = sm;
+        this.isInSidebar = false;
+        this.sessionManager.attach(this);
+        this.visualizedItem = selectedItem;
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.isInSidebar = false;
-        SessionManager.getInstance().attach(this);
+    public void update() {
+        this.refresh(this.visualizedItem);
+    }
+
+    @Override
+    public void init(){
+        // Show the information based on the initial bean with the partial information passed and starts an asynchronous call to get the full item information from persistence
+        this.loadItemDetails(visualizedItem);
+        this.refresh(visualizedItem);
+    }
+
+    public void handleMakeOffer(ActionEvent actionEvent){
+        try {
+            navigator.navigateTo(ViewType.OFFER_FORM, visualizedItem);
+        } catch (NotLoggedInException e) {
+            navigator.navigateTo(ViewType.LOGIN);
+        }
     }
 
     public void loadItemDetails(PreviewItemBean pib){
@@ -78,13 +86,12 @@ public class ItemDetailsController extends GraphicController implements Initiali
 
         // using Task for background processing in JAVAFX as best practice (https://docs.oracle.com/javafx/2/best_practices/jfxpub-best_practices.htm)
         // The item details gets initially filled with the previewBean, meanwhile the background task fetches the full item data
-        // The following shows the definition of the task
         Task<FullItemBean> getFullItemTask = new Task<>() {
             @Override
             protected FullItemBean call() {
                 FullItemBean fib;
                 VisualizeItemController vic = new VisualizeItemController();
-                fib = vic.loadItemDetails(pib.getId());
+                fib = vic.loadItemDetails(pib);
                 return fib;
             }
         };
@@ -97,7 +104,7 @@ public class ItemDetailsController extends GraphicController implements Initiali
             this.itemNumOfferLabel.setText(String.valueOf(fullData.getNumOffers()));
             //TODO this.ownerRatingLabel.setText(this.formatRating(fullData.getRating()));
             this.setupPaginationDots(fullData.getImages().size());
-            this.fullItemBean = fullData;
+            this.visualizedItem = fullData;
         });
 
         // Exception handling if fails
@@ -119,16 +126,9 @@ public class ItemDetailsController extends GraphicController implements Initiali
         t.start();
     }
 
-    @Override
-    public void initData(PreviewItemBean data) {
-        // Shows the information based on the bean passed and starts an asynchronous call to get the full item information from persistence
-        this.loadItemDetails(data);
-        this.refresh(data);
-    }
-
     public void refresh(PreviewItemBean data) {
-        if (SessionManager.getInstance().getLoggedUser() != null && data.getOwner() != null) {
-            if (data.getOwner().equals(SessionManager.getInstance().getLoggedUser().getUsername())) {
+        if (sessionManager.getLoggedUser() != null && data.getOwner() != null) {
+            if (data.getOwner().equals(sessionManager.getLoggedUser().getUsername())) {
                 this.barterButton.setText("EDIT ITEM");
                 this.barterButton.setOnAction(event -> {
                     try {
@@ -148,27 +148,6 @@ public class ItemDetailsController extends GraphicController implements Initiali
                 });
             }
         }
-    }
-
-    public void handleOwnerClick(ActionEvent actionEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleChatClick(ActionEvent actionEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleDot1(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleDot2(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleDot3(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-
     }
 
     // Private methods the controller needs to adjust the UI
@@ -214,8 +193,29 @@ public class ItemDetailsController extends GraphicController implements Initiali
         }
     }
 
-    @Override
-    public void update() {
-        this.refresh(this.fullItemBean);
+    //TBD
+    private void handleEditItem(PreviewItemBean item) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    }
+
+    public void handleOwnerClick(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    }
+
+    public void handleChatClick(ActionEvent actionEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    }
+
+    public void handleDot1(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    }
+
+    public void handleDot2(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    }
+
+    public void handleDot3(MouseEvent mouseEvent) {
+        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+
     }
 }

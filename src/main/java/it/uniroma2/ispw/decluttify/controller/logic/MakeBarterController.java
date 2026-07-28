@@ -15,50 +15,119 @@ import java.util.List;
 
 public class MakeBarterController {
 
-    public void makeOffer(List<PreviewItemBean> offeredItemsBean, PreviewItemBean targetItemBean) {
+    private SessionManager sessionManager;
+    private final OfferDAO offerDAO;
+    private final UserDAO userDAO;
+    private final BarterDAO barterDAO;
+    private final ItemDAO itemDAO;
+    private final NotificationDAO notificationDAO;
+
+    public MakeBarterController(SessionManager sessionManager){
+        this.sessionManager = sessionManager;
+        this.offerDAO = DAOFactory.getDAOFactory().createOfferDAO();
+        this.userDAO = DAOFactory.getDAOFactory().createUserDAO();
+        this.barterDAO = DAOFactory.getDAOFactory().createBarterDAO();
+        this.itemDAO = DAOFactory.getDAOFactory().createItemDAO();
+        this.notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
+    }
+
+    public List<PreviewItemBean> loadUserInventory(UserBean user) {
+        if(!this.isUserLogged()) throw new NotLoggedInException("Log in required");
+        else {
+            List<PreviewItemBean> pib = new ArrayList<>();
+            List<Item> itemlist;
+            
+            itemlist = itemDAO.retrieveItemsByOwner(user.getUsername());
+            for (Item item : itemlist) {
+                if (item.getStatus() == ItemStatus.AVAILABLE) {
+                    pib.add(BeanConverter.toPreviewItemBean(item));
+                }
+            }
+            return pib;
+        }
+    }
+
+    public void makeOffer(List<PreviewItemBean> offeredItemsBean, PreviewItemBean targetItemBean, UserBean offererBean) {
         //Get Target item and offered item from persistence
-        ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-        Item targetItem = itemdao.retrieveItemById(targetItemBean.getId());
+        Item targetItem = itemDAO.retrieveItemById(targetItemBean.getId());
         ArrayList<Integer> itemIDs = new ArrayList<>();
         for (PreviewItemBean bean : offeredItemsBean) {
             itemIDs.add(bean.getId());
         }
-        List<Item> offeredItems = itemdao.retrieveItemsByIds(itemIDs);
+        List<Item> offeredItems = itemDAO.retrieveItemsByIds(itemIDs);
 
         //Get offerer (=logged) user from persistence
         User offerer;
-        UserDAO userdao = DAOFactory.getDAOFactory().createUserDAO();
-        offerer = userdao.retrieveUserByUsername(SessionManager.getInstance().getLoggedUser().getUsername());
+        offerer = userDAO.retrieveUserByUsername(offererBean.getUsername());
 
         //Create offer
         Offer offer = targetItem.requestBarter(offerer, offeredItems);
 
         //Save offer on persistence
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        offerdao.createOffer(offer);
-        itemdao.updateItemOfferCounter(targetItem.getId(), +1);
+
+        offerDAO.createOffer(offer);
+        itemDAO.updateItemOfferCounter(targetItem.getId(), +1);
         for(Item item : offeredItems) {
-            itemdao.updateItemOfferCounter(item.getId(), +1);
+            itemDAO.updateItemOfferCounter(item.getId(), +1);
         }
 
         //Save Notifications on persistence
-        NotificationDAO notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
         notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New Offer!", "OFFER"));
 
+    }
+
+    public List<OfferBean> loadReceivedOffers(UserBean receiverBean) {
+        List<OfferBean> offersBeanList = new ArrayList<>();
+        List<Offer> offersList;
+        List<Integer> itemOfferedIds = new ArrayList<>();
+
+        offersList = offerDAO.retrieveOffersByReceiver(receiverBean.getUsername());
+        for(Offer offer: offersList) {
+            for (Item offeredItem : offer.getItemOffered()){
+                itemOfferedIds.add(offeredItem.getId());
+            }
+            offer.setItemOffered(itemDAO.retrieveItemsByIds(itemOfferedIds));
+            offer.setItemRequested(itemDAO.retrieveItemById(offer.getItemRequested().getId()));
+            itemOfferedIds.clear();
+        }
+
+        for (Offer offer : offersList) {
+            offersBeanList.add(BeanConverter.toOfferBean(offer));
+        }
+        return offersBeanList;
+    }
+
+    public List<OfferBean> loadSentOffers(UserBean senderBean) {
+        List<OfferBean> offersBeanList = new ArrayList<>();
+        List<Offer> offersList;
+        List<Integer> itemOfferedIds = new ArrayList<>();
+
+        offersList = offerDAO.retrieveOffersBySender(senderBean.getUsername());
+        for(Offer offer: offersList) {
+            for (Item offeredItem : offer.getItemOffered()){
+                itemOfferedIds.add(offeredItem.getId());
+            }
+            offer.setItemOffered(itemDAO.retrieveItemsByIds(itemOfferedIds));
+            offer.setItemRequested(itemDAO.retrieveItemById(offer.getItemRequested().getId()));
+            itemOfferedIds.clear();
+        }
+
+        for (Offer offer : offersList) {
+            offersBeanList.add(BeanConverter.toOfferBean(offer));
+        }
+        return offersBeanList;
     }
 
     public void acceptOffer(OfferBean offerBean) {
         // Get the offer from persistence
         List<Offer> collidingOffers;
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        Offer offer = offerdao.retrieveOfferById(offerBean.getID());
-        ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-        offer.setItemRequested(itemdao.retrieveItemById(offer.getItemRequested().getId()));
+        Offer offer = offerDAO.retrieveOfferById(offerBean.getID());
+        offer.setItemRequested(itemDAO.retrieveItemById(offer.getItemRequested().getId()));
         List<Integer> itemsOfferedIds = new ArrayList<>();
         for(Item item: offer.getItemOffered()){
             itemsOfferedIds.add(item.getId());
         }
-        offer.setItemOffered(itemdao.retrieveItemsByIds(itemsOfferedIds));
+        offer.setItemOffered(itemDAO.retrieveItemsByIds(itemsOfferedIds));
 
         //Call method accept of Model instance Offer
         Barter barter = offer.accept();
@@ -67,24 +136,22 @@ public class MakeBarterController {
         collidingOffers = this.getCollidingOffers(offer);
         itemsOfferedIds.clear();
         for (Offer o : collidingOffers) {
-            o.setItemRequested(itemdao.retrieveItemById(o.getItemRequested().getId()));
+            o.setItemRequested(itemDAO.retrieveItemById(o.getItemRequested().getId()));
             for(Item item: o.getItemOffered()){
                 itemsOfferedIds.add(item.getId());
             }
-            o.setItemOffered(itemdao.retrieveItemsByIds(itemsOfferedIds));
+            o.setItemOffered(itemDAO.retrieveItemsByIds(itemsOfferedIds));
             o.reject();
             itemsOfferedIds.clear();
         }
 
         //Update colliding offers and involved items on persistence, and update accepted offer. Everything as a single transaction because of concurrency
-        offerdao.acceptOffer(offer, collidingOffers);
+        offerDAO.acceptOffer(offer, collidingOffers);
 
         //Save barter on persistence
-        BarterDAO barterdao = DAOFactory.getDAOFactory().createBarterDAO();
-        barterdao.createBarter(barter);
+        barterDAO.createBarter(barter);
 
         //Save notification on Persistence
-        NotificationDAO notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
         notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "Offer Accepted!", "OFFER"));
 
     }
@@ -96,97 +163,28 @@ public class MakeBarterController {
     // (itemid is one of the offered item) and to use UNION/JOIN with "offer" table (because writing costs more than reading)
     private List<Offer> getCollidingOffers(Offer offer) {
         List<Offer> collidingOffers;
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        collidingOffers = offerdao.retrieveCollidingOffers(offer);
+        collidingOffers = offerDAO.retrieveCollidingOffers(offer);
         return collidingOffers;
     }
 
-
-
     public void rejectOffer(OfferBean offerBean) {
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        Offer offer = offerdao.retrieveOfferById(offerBean.getID());
+        Offer offer = offerDAO.retrieveOfferById(offerBean.getID());
         offer.reject();
-        offerdao.rejectOffer(offer);
+        offerDAO.rejectOffer(offer);
 
-        NotificationDAO notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
         notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "Offer Rejected!", "OFFER"));
     }
 
-
-    public List<PreviewItemBean> loadUserInventory() {
-        if(!this.isUserLogged()) throw new NotLoggedInException("Log in required");
-        else {
-            List<PreviewItemBean> pib = new ArrayList<>();
-            List<Item> itemlist;
-
-            ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-            itemlist = itemdao.retrieveItemsByOwner(SessionManager.getInstance().getLoggedUser().getUsername());
-            for (Item item : itemlist) {
-                if (item.getStatus() == ItemStatus.AVAILABLE) {
-                    pib.add(BeanConverter.toPreviewItemBean(item));
-                }
-            }
-            return pib;
-        }
-    }
-
     private boolean isUserLogged() {
-        return SessionManager.getInstance().isLoggedIn();
+        return sessionManager.isLoggedIn();
     }
 
-    public List<OfferBean> loadReceivedOffers(String receiver) {
-        List<OfferBean> offersBeanList = new ArrayList<>();
-        List<Offer> offersList;
-        List<Integer> itemOfferedIds = new ArrayList<>();
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-
-        offersList = offerdao.retrieveOffersByReceiver(receiver);
-        for(Offer offer: offersList) {
-            for (Item offeredItem : offer.getItemOffered()){
-                itemOfferedIds.add(offeredItem.getId());
-            }
-            offer.setItemOffered(itemdao.retrieveItemsByIds(itemOfferedIds));
-            offer.setItemRequested(itemdao.retrieveItemById(offer.getItemRequested().getId()));
-            itemOfferedIds.clear();
-        }
-
-        for (Offer offer : offersList) {
-            offersBeanList.add(BeanConverter.toOfferBean(offer));
-        }
-        return offersBeanList;
-    }
-
-    public List<OfferBean> loadSentOffers(String sender) {
-        List<OfferBean> offersBeanList = new ArrayList<>();
-        List<Offer> offersList;
-        List<Integer> itemOfferedIds = new ArrayList<>();
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-
-        offersList = offerdao.retrieveOffersBySender(sender);
-        for(Offer offer: offersList) {
-            for (Item offeredItem : offer.getItemOffered()){
-                itemOfferedIds.add(offeredItem.getId());
-            }
-            offer.setItemOffered(itemdao.retrieveItemsByIds(itemOfferedIds));
-            offer.setItemRequested(itemdao.retrieveItemById(offer.getItemRequested().getId()));
-            itemOfferedIds.clear();
-        }
-
-        for (Offer offer : offersList) {
-            offersBeanList.add(BeanConverter.toOfferBean(offer));
-        }
-        return offersBeanList;
-    }
-
-    public List<BarterBean> loadUserBarters() {
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+    public List<BarterBean> loadUserBarters(UserBean userBean) {
+        String username = userBean.getUsername();
         List<BarterBean> barterslist;
         List<Barter> barters;
-        BarterDAO barterdao = DAOFactory.getDAOFactory().createBarterDAO();
-        barters = barterdao.retrieveBartersByUsername(username);
+
+        barters = barterDAO.retrieveBartersByUsername(username);
         for (Barter barter : barters) {
             barter.setOffer(this.loadOffer(barter.getOffer().getId()));
         }
@@ -197,26 +195,23 @@ public class MakeBarterController {
     private Offer loadOffer(int id) {
         Offer offer;
         List<Integer> itemOfferedIds = new ArrayList<>();
-        OfferDAO offerdao = DAOFactory.getDAOFactory().createOfferDAO();
-        ItemDAO itemdao = DAOFactory.getDAOFactory().createItemDAO();
-        offer = offerdao.retrieveOfferById(id);
+        offer = offerDAO.retrieveOfferById(id);
         for (Item offeredItem : offer.getItemOffered()){
             itemOfferedIds.add(offeredItem.getId());
         }
-        offer.setItemOffered(itemdao.retrieveItemsByIds(itemOfferedIds));
-        offer.setItemRequested(itemdao.retrieveItemById(offer.getItemRequested().getId()));
+        offer.setItemOffered(itemDAO.retrieveItemsByIds(itemOfferedIds));
+        offer.setItemRequested(itemDAO.retrieveItemById(offer.getItemRequested().getId()));
         return offer;
     }
 
-    public boolean confirmBarter(BarterBean barterbean) {
-        BarterDAO barterdao = DAOFactory.getDAOFactory().createBarterDAO();
-        Barter barter = barterdao.retrieveBarterByID(barterbean.getId());
+    public boolean confirmBarter(BarterBean barterbean, UserBean confirmer) {
+        Barter barter = barterDAO.retrieveBarterByID(barterbean.getId());
         barter.setOffer(this.loadOffer(barter.getOffer().getId()));
-        barter.confirm(SessionManager.getInstance().getLoggedUser().getUsername());
+        barter.confirm(confirmer.getUsername());
 
-        barterdao.updateBarter(barter);
-        NotificationDAO notificationdao = DAOFactory.getDAOFactory().createNotificationDAO();
-        notificationdao.createNotification(new Notification(barterbean.getPartnerName(), "Barter Confirmed!", "BARTER"));
+        barterDAO.updateBarter(barter);
+
+        notificationDAO.createNotification(new Notification(barterbean.getPartnerName(), "Barter Confirmed!", "BARTER"));
 
         return barter.isCompleted();
     }

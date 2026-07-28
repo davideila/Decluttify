@@ -7,6 +7,10 @@ public class ItemDetailsView extends View {
 
     FullItemBean item;
 
+    public ItemDetailsView(SessionManager sessionManager) {
+        super(sessionManager);
+    }
+
     public void show() {
         printHeader("Item Details View");
         super.show();
@@ -21,7 +25,7 @@ public class ItemDetailsView extends View {
         System.out.println("OWNER: " + item.getOwner());
         System.out.println("LOCATION: " + item.getLocation());
         System.out.println("ACTUALLY IN: "+ item.getNumOffers() +" Offers");
-        if(SessionManager.getInstance().getLoggedUser() != null && item.getOwner().equals(SessionManager.getInstance().getLoggedUser().getUsername())){
+        if(sessionManager.getLoggedUser() != null && item.getOwner().equals(sessionManager.getLoggedUser().getUsername())){
             System.out.println("\n[0] Edit item");
         }
         else {

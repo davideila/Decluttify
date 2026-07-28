@@ -2,25 +2,16 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.Navigator;
+import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import java.util.Stack;
 
-public class NavigatorManager {
-    Stack<GraphicController> navigationHistory = new Stack<>();
+public class NavigatorManager implements Navigator {
+    protected Stack<GraphicController> navigationHistory = new Stack<>();
+    protected SessionManager sessionManager;
 
-    private static NavigatorManager instance = null;
-
-    protected NavigatorManager(){
-    }
-
-    public void start(){
-        this.navigateToHome();
-    }
-
-    public static synchronized NavigatorManager getInstance() {
-        if(instance == null){
-            instance = new NavigatorManager();
-        }
-        return instance;
+    public NavigatorManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     private void pushAndStart(GraphicController nextController) {
@@ -31,20 +22,50 @@ public class NavigatorManager {
         nextController.initialize();
     }
 
-    public void navigateToHome(){
-        GraphicController controller = new HomeController();
-        this.pushAndStart(controller);
-    }
-
     public void reset(){
         if(!navigationHistory.isEmpty()){
             navigationHistory.peek().listen(false);
             navigationHistory.clear();
         }
-        this.navigateToHome();
+        this.navigateTo(ViewType.HOME);
     }
 
-    public void navigateToBack() {
+    @Override
+    public void start() {
+        this.navigateTo(ViewType.HOME);
+    }
+
+    @Override
+    public void navigateTo(ViewType viewType) {
+        switch(viewType){
+            case ITEM_BROWSER -> pushAndStart(new ItemBrowserController(sessionManager, this));
+            case MY_BARTERS -> pushAndStart(new  MyBartersController(sessionManager, this));
+            case LOGIN ->  {
+                pushAndStart(new LoginController(sessionManager, this));
+                navigateBack();
+            }
+            case MY_OFFERS ->  pushAndStart(new MyOffersController(sessionManager, this));
+            case MY_INVENTORY ->  pushAndStart(new MyInventoryController(sessionManager, this));
+            case HOME ->  pushAndStart(new HomeController(sessionManager, this));
+            case null, default -> {
+                return; // TODO
+            }
+        }
+    }
+
+    @Override
+    public void navigateTo(ViewType viewType, Object data) {
+        switch(viewType){
+            case OFFER_FORM ->  pushAndStart(new MakeOfferController((PreviewItemBean) data, sessionManager, this));
+            case ITEM_DETAILS ->  pushAndStart(new ItemDetailsController((PreviewItemBean) data, sessionManager, this));
+            case null, default -> {
+                return; // TODO
+            }
+        }
+    }
+
+    @Override
+    public void navigateBack() {
         GraphicController controller = null;
         if (!navigationHistory.isEmpty()) {
             controller = navigationHistory.pop();
@@ -52,7 +73,7 @@ public class NavigatorManager {
         }
         while(!navigationHistory.isEmpty()){
             controller = navigationHistory.peek();
-            if(!SessionManager.getInstance().isLoggedIn() && controller.isLoginRequired()){
+            if(sessionManager.isLoggedIn() && controller.isLoginRequired()){
                 controller.listen(false);
                 navigationHistory.pop();
                 controller = null;
@@ -60,46 +81,9 @@ public class NavigatorManager {
             else break;
         }
         if(controller == null){
-            this.navigateToHome();
+            this.navigateTo(ViewType.HOME);
         }
         else controller.start();
     }
 
-    public void handleLogout() {
-        it.uniroma2.ispw.decluttify.controller.logic.LoginController loginController = new it.uniroma2.ispw.decluttify.controller.logic.LoginController(); //names!!!
-        loginController.logout();
-        reset();
-    }
-
-    public void navigateToProfile() {
-    }
-
-    public void navigateToLogin() {
-        pushAndStart(new LoginController());
-        navigateToBack();
-    }
-
-    public void navigateToItemBrowser() {
-        pushAndStart(new ItemBrowserController());
-    }
-
-    public void navigateToMyItems() {
-        pushAndStart(new MyInventoryController());
-    }
-
-    public void navigatetoMyBarters() {
-        pushAndStart(new MyBartersController());
-    }
-
-    public void navigateToMyOffers() {
-        pushAndStart(new MyOffersController());
-    }
-
-    public void navigateToItemDetails(int id) {
-        pushAndStart(new ItemDetailsController(id));
-    }
-
-    public void navigateToMakeOffer(PreviewItemBean pib) {
-        pushAndStart(new MakeOfferController(pib));
-    }
 }

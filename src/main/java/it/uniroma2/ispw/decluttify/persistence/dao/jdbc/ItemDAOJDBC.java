@@ -272,29 +272,39 @@ public class ItemDAOJDBC extends ItemDAO {
     }
 
     @Override
-    public void createItem(Item item) {
+    public void incrementItemsOfferCounters(List<Integer> iDs) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
+        if (iDs == null || iDs.isEmpty()) {
+            return;
+        }
 
-    }
-
-    @Override
-    public void deleteItemById(int itemId) {
-
-    }
-
-    @Override
-    public void updateItemOfferCounter(int id, int num) {
-        int rowsAffected;
+        int totalRowsAffected = 0;
         try {
-            rowsAffected = UpdateQueries.updateItemNumOffer(
-                    this.connection,
-                    id,
-                    num
-            );
-            if (rowsAffected != 1) {
-                throw new DAOException("Update failed: Item with ID " + id + " not found.");
+            connection.setAutoCommit(false);
+            for (Integer i : iDs) {
+                int rowsAffected = UpdateQueries.updateItemNumOffer(
+                        this.connection,
+                        i,
+                        1
+                );
+                totalRowsAffected += rowsAffected;
+            }
+            if (totalRowsAffected != iDs.size()) {
+                connection.rollback();
+                throw new DAOException("Update failed for items with IDs: " + iDs);
+            } else {
+                connection.commit();
             }
         } catch (SQLException e) {
-            throw new DAOException("Database error while updating offer counter for item " + id, e);
+            throw new DAOException("Database error while updating offer counter for item " + iDs, e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

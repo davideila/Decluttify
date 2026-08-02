@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -28,7 +28,7 @@ import static java.lang.Thread.sleep;
 
 public class OfferFormController extends GraphicController {
 
-    private final MakeBarterController makeBarterController;
+    private final MakeOfferController makeBarterController;
     private PreviewItemBean targetItem;
     private List<PreviewItemBean> offeredItems = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class OfferFormController extends GraphicController {
     public OfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
         super(navigator, sm, ViewType.OFFER_FORM);
         this.targetItem = targetItem;
-        this.makeBarterController = new MakeBarterController(sm);
+        this.makeBarterController = new MakeOfferController(sm);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class OfferFormController extends GraphicController {
     private void handleSubmit(){
         boolean result = false;
         try{
-            makeBarterController.makeOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
+            makeBarterController.submitOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
             result = true;
         }catch(Exception e){
             this.handleException(e);//TODO

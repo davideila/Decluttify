@@ -75,24 +75,64 @@ public class Item{
         }
     }
 
-    public Offer requestBarter(User offerer, List<Item> offeredItems) {
+    public Offer proposeBarter(User offerer, List<Item> offeredItems) {
         if(offerer == null || offeredItems == null || offeredItems.isEmpty()){
-            throw new ModelException("Error: invalid barter request");
+            throw new ModelException("Error: invalid offer");
         }
         if(offerer.getUsername().equals(this.getOwner().getUsername())){
             throw new ModelException("Self offer is not possible");
-        }
-        if (!this.isExchangeable()){
-            throw new ModelException("Requested item " + this.getName() + " with ID " + this.getId() + " is not exchangeable");
         }
         for(Item item : offeredItems){
             if (!item.getOwner().getUsername().equals(offerer.getUsername())) {
                 throw new ModelException("Offered Item " + item.getName() + " with ID " + item.getId() + " is not owned by offerer " + offerer.getUsername() + ".");
             }
-            if (!item.isExchangeable()){
-                throw new ModelException("Offered item " + item.getName() + " with ID " + item.getId() + " is not exchangeable");
-            }
         }
+
+        final boolean[] targetResult = { false }; /* Array because the runnable thread accepts only final local variables and to make it mutable array is used */
+        final boolean[] offeredResult = { false };
+
+        Thread targetThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (isExchangeable()) {
+                    targetResult[0] = true;
+                }
+            }
+        });
+
+        Thread offeredThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (offeredItems != null && !offeredItems.isEmpty()) {
+                    boolean allOk = true;
+                    for (Item item : offeredItems) {
+                        if (!item.isExchangeable()) {
+                            allOk = false;
+                            break;
+                        }
+                    }
+                    offeredResult[0] = allOk;
+                }
+            }
+        });
+
+        targetThread.start();
+        offeredThread.start();
+        try {
+            targetThread.join();
+            offeredThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ModelException("Availability check interrupted!");
+        }
+
+        if (!targetResult[0]) {
+            throw new ModelException("Requested item is not available!");
+        }
+        if (!offeredResult[0]) {
+            throw new ModelException("Some of the offered items are not available!");
+        }
+
         return new Offer(offerer, this.getOwner(), offeredItems, this);
     }
 
@@ -106,7 +146,7 @@ public class Item{
 
     public void decrOffersCounter(){
         if(this.offersCounter <= 0){
-            throw new ModelException("Cannot decrease offers counter when offers count is less than 0.");
+            throw new ModelException("Item has no offers.");
         }
         else this.offersCounter--;
     }

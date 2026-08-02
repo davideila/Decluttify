@@ -1,17 +1,18 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.MyOffersView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public class MyOffersController extends GraphicController<MyOffersView>{
-    private final MakeBarterController makeBarterController;
+    private final ManageOfferController manageOfferController;
 
     public MyOffersController(SessionManager sessionManager, Navigator navigatorManager) {
         super(sessionManager, navigatorManager);
-        this.makeBarterController = new MakeBarterController(sessionManager);
+        this.manageOfferController = new ManageOfferController(sessionManager);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class MyOffersController extends GraphicController<MyOffersView>{
              switch(index){
                  case 0:
                      try{
-                         makeBarterController.acceptOffer(this.view.getSelectedOffer());
+                         manageOfferController.acceptOffer(this.view.getSelectedOffer());
                          this.view.showMessage("Offer successfully accepted", false);
                          this.navigatorManager.navigateTo(ViewType.MY_BARTERS);
                      }catch(Exception e){
@@ -52,7 +53,7 @@ public class MyOffersController extends GraphicController<MyOffersView>{
                      break;
                  case 1:
                      try{
-                         makeBarterController.rejectOffer(this.view.getSelectedOffer());
+                         manageOfferController.rejectOffer(this.view.getSelectedOffer());
                          this.view.showMessage("Offer successfully rejected", false);
                      }catch(Exception e){
                          this.handleException(e);
@@ -125,8 +126,8 @@ public class MyOffersController extends GraphicController<MyOffersView>{
     @Override
     protected void setupData() {
         try {
-            this.view.setReceivedOffers(makeBarterController.loadReceivedOffers(sessionManager.getLoggedUser()));
-            this.view.setSentOffers(makeBarterController.loadSentOffers(sessionManager.getLoggedUser()));
+            this.view.setReceivedOffers(manageOfferController.loadReceivedOffers(sessionManager.getLoggedUser()));
+            this.view.setSentOffers(manageOfferController.loadSentOffers(sessionManager.getLoggedUser()));
         }catch(Exception e){
             this.handleException(e);
         }

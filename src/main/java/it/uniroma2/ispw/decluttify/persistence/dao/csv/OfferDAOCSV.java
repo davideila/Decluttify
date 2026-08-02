@@ -62,6 +62,9 @@ public class OfferDAOCSV extends OfferDAO {
 
     @Override
     public void acceptOffer(Offer offer, List<Offer> collidingOffers) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         String tempOfferFilePath = OFFER_FILE_PATH + "_tmp";
         File tempOfferFile = new File(tempOfferFilePath);
         File originalOfferFile = new File(OFFER_FILE_PATH);
@@ -221,6 +224,9 @@ public class OfferDAOCSV extends OfferDAO {
 
     @Override
     public synchronized void createOffer(Offer offer) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         File offerFile = new File(OFFER_FILE_PATH);
         File offeredFile = new File(OFFERED_FILE_PATH);
         if (!offerFile.exists() || !offeredFile.exists()) throw new DAOException("Error: offers file does not exist.");
@@ -276,14 +282,10 @@ public class OfferDAOCSV extends OfferDAO {
     }
 
     @Override
-    public void deleteOffer(int id) {
-
-    }
-
-
-    @Override
     public void rejectOffer(Offer offer) {
-
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
     }
 
     @Override

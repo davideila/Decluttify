@@ -2,7 +2,8 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class OfferListCellController extends GraphicController{
 
-    private final MakeBarterController makeBarterController;
+    private final ManageOfferController manageOfferController;
     @FXML Label labelUserLeft;
     @FXML FlowPane flowPaneLeft;
     @FXML Label labelUserRight;
@@ -27,7 +28,7 @@ public class OfferListCellController extends GraphicController{
 
     public OfferListCellController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, null);
-        this.makeBarterController = new MakeBarterController(sm);
+        this.manageOfferController = new ManageOfferController(sessionManager);
     }
 
     public void setData(OfferBean offerBean, boolean isReceived) {
@@ -88,7 +89,7 @@ public class OfferListCellController extends GraphicController{
 
     public void handleAccept(ActionEvent actionEvent) {
         try {
-            makeBarterController.acceptOffer(this.offerBean);
+            manageOfferController.acceptOffer(this.offerBean);
         }catch(Exception e){
             this.handleException(e);
         }
@@ -99,7 +100,7 @@ public class OfferListCellController extends GraphicController{
 
     public void handleReject(ActionEvent actionEvent) {
         try {
-            makeBarterController.rejectOffer(this.offerBean);
+            manageOfferController.rejectOffer(this.offerBean);
         }catch(Exception e){
             this.handleException(e);
         }

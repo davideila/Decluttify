@@ -75,6 +75,9 @@ public class BarterDAOCSV extends BarterDAO {
 
     @Override
     public void updateBarter(Barter barter) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         String tempFilePath = BARTER_FILE_PATH + "_tmp";
         File tempFile = new File(tempFilePath);
         File originalFile = new File(BARTER_FILE_PATH);
@@ -116,6 +119,9 @@ public class BarterDAOCSV extends BarterDAO {
 
     @Override
     public void createBarter(Barter barter) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         File barterFile = new File(BARTER_FILE_PATH);
         if (!barterFile.exists()) throw new DAOException("Persistence error: Barter CSV file does not exist.");
         if (barterFile.length() == 0) throw new DAOException("No header found in barters file.");

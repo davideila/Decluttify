@@ -62,6 +62,9 @@ public class BarterDAOJDBC extends BarterDAO {
 
     @Override
     public void createBarter(Barter barter) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             int geratedId = InsertQueries.insertBarter(
                     this.connection,
@@ -75,6 +78,9 @@ public class BarterDAOJDBC extends BarterDAO {
 
     @Override
     public void updateBarter(Barter barter) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         int rowsAffected;
         try {
             rowsAffected = UpdateQueries.updateBarter(

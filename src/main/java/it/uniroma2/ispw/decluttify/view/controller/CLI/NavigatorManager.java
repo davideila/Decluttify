@@ -40,10 +40,7 @@ public class NavigatorManager implements Navigator {
         switch(viewType){
             case ITEM_BROWSER -> pushAndStart(new ItemBrowserController(sessionManager, this));
             case MY_BARTERS -> pushAndStart(new  MyBartersController(sessionManager, this));
-            case LOGIN ->  {
-                pushAndStart(new LoginController(sessionManager, this));
-                navigateBack();
-            }
+            case LOGIN ->  {pushAndStart(new LoginController(sessionManager, this));}
             case MY_OFFERS ->  pushAndStart(new MyOffersController(sessionManager, this));
             case MY_INVENTORY ->  pushAndStart(new MyInventoryController(sessionManager, this));
             case HOME ->  pushAndStart(new HomeController(sessionManager, this));
@@ -56,7 +53,7 @@ public class NavigatorManager implements Navigator {
     @Override
     public void navigateTo(ViewType viewType, Object data) {
         switch(viewType){
-            case OFFER_FORM ->  pushAndStart(new MakeOfferController((PreviewItemBean) data, sessionManager, this));
+            case OFFER_FORM ->  pushAndStart(new OfferFormController((PreviewItemBean) data, sessionManager, this));
             case ITEM_DETAILS ->  pushAndStart(new ItemDetailsController((PreviewItemBean) data, sessionManager, this));
             case null, default -> {
                 return; // TODO

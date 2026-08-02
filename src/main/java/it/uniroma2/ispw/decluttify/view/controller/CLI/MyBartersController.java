@@ -1,6 +1,6 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.ManageBarterController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -9,11 +9,11 @@ import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 
 public class MyBartersController extends GraphicController<MyBartersView>{
-    private final MakeBarterController makeBarterController;
+    private final ManageBarterController manageBarterController;
 
     public MyBartersController(SessionManager sessionManager, Navigator navigatorManager) {
         super(sessionManager, navigatorManager);
-        this.makeBarterController = new MakeBarterController(sessionManager);
+        this.manageBarterController = new ManageBarterController(sessionManager);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                         else {
-                            makeBarterController.confirmBarter(this.view.getSelectedBarter(), sessionManager.getLoggedUser());
+                            manageBarterController.confirmBarter(this.view.getSelectedBarter(), sessionManager.getLoggedUser());
                             this.view.showMessage("Barter successfully confirmed", false);
                             this.navigatorManager.navigateTo(ViewType.MY_BARTERS);
                         }
@@ -67,11 +67,11 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                 case 1:
                     try{
                         if(this.view.getSelectedBarter().getStatus().equalsIgnoreCase("COMPLETED") || this.view.getSelectedBarter().isYouConfirmed()){
-                            makeBarterController.viewBarterDetails(this.view.getSelectedBarter());
+                            manageBarterController.viewBarterDetails(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                         else {
-                            makeBarterController.disputeBarter(this.view.getSelectedBarter());
+                            manageBarterController.disputeBarter(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                     }catch(Exception e){
@@ -88,7 +88,7 @@ public class MyBartersController extends GraphicController<MyBartersView>{
                             this.view.showMessage("Select a valid option.", true);
                         }
                         else {
-                            makeBarterController.viewBarterDetails(this.view.getSelectedBarter());
+                            manageBarterController.viewBarterDetails(this.view.getSelectedBarter());
                             this.view.showMessage("TO BE IMPLEMENTED", false);
                         }
                     }catch(Exception e){
@@ -162,7 +162,7 @@ public class MyBartersController extends GraphicController<MyBartersView>{
     @Override
     protected void setupData() {
         try {
-            this.view.setOngoingBarters(makeBarterController.loadUserBarters(sessionManager.getLoggedUser()));
+            this.view.setOngoingBarters(manageBarterController.loadUserBarters(sessionManager.getLoggedUser()));
         }catch(Exception e){
             this.handleException(e);
         }

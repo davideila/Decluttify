@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.model.Notification;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
 import it.uniroma2.ispw.decluttify.utils.ConfigReader;
@@ -23,13 +24,23 @@ public class LoginController {
     }
 
     public boolean login(String username, String inputPassword) {
+        if(username == null || inputPassword == null){
+            throw new DecluttifyException("Please provide username and password.");
+        }
+        if (sessionManager.isLoggedIn()){
+            throw new DecluttifyException("You are already logged in.");
+        }
+        if (sessionManager.isLoginLocked()){
+
+        }
         User user = userDAO.retrieveUserByUsername(username);
         if(user == null){
-            return false;
+            sessionManager.login(null, false);
+            throw new DecluttifyException("User " + username + " not found.");
         }
         else {
             if (user.checkPassword(inputPassword, ConfigReader.getInstance().getPepper())) {
-                sessionManager.login(BeanConverter.toUserBean(user));
+                sessionManager.login(BeanConverter.toUserBean(user), true);
                 this.checkForNotifications();
                 return true;
             } else return false;

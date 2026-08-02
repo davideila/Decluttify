@@ -49,7 +49,9 @@ public class OfferDAOJDBC extends OfferDAO {
 
     @Override
     public void acceptOffer(Offer offer, List<Offer> collidingOffers) {
-
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             // All the operations have to be atomic = transaction
             this.connection.setAutoCommit(false);
@@ -132,6 +134,9 @@ public class OfferDAOJDBC extends OfferDAO {
 
     @Override
     public void createOffer(Offer offer) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             // Atomicity (2 operations on 2 different tables)
             this.connection.setAutoCommit(false);
@@ -167,12 +172,10 @@ public class OfferDAOJDBC extends OfferDAO {
     }
 
     @Override
-    public void deleteOffer(int id) {
-
-    }
-
-    @Override
     public void rejectOffer(Offer offer) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             //atomicity
             this.connection.setAutoCommit(false);

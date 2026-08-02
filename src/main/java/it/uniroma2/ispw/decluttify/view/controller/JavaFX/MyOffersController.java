@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -16,14 +16,14 @@ import java.util.List;
 
 public class MyOffersController extends GraphicController {
 
-    private final MakeBarterController makeBarterController;
+    private final ManageOfferController manageOfferController;
 
     @FXML private ListView<OfferBean> listViewReceived;
     @FXML private ListView<OfferBean> listViewSent;
 
     public MyOffersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, ViewType.MY_OFFERS);
-        this.makeBarterController = new MakeBarterController(sm);
+        this.manageOfferController = new ManageOfferController(sm);
     }
 
     public void init() {
@@ -32,13 +32,13 @@ public class MyOffersController extends GraphicController {
         this.listViewReceived.setCellFactory(lv -> new OfferListCell(true));
         this.listViewSent.setCellFactory(lv -> new OfferListCell(false));
         try {
-            received = makeBarterController.loadReceivedOffers(this.sessionManager.getLoggedUser());
+            received = manageOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }
         List<OfferBean> sent = List.of();
         try {
-            sent = makeBarterController.loadSentOffers(this.sessionManager.getLoggedUser());
+            sent = manageOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }

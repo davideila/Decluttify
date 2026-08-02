@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemDAOCSV extends ItemDAO {
     private final String ITEMS_FILE_PATH =  PersistenceManager.getInstance().getCSVPathPrefix() + "items.csv";
     private final String IMAGES_FILE_PATH =  PersistenceManager.getInstance().getCSVPathPrefix() + "images.csv";
+    private static final Object ITEMS_FILE_LOCK = new Object();
 
     @Override
     public Item retrieveItemById(int itemId) {
@@ -125,45 +126,38 @@ public class ItemDAOCSV extends ItemDAO {
     }
 
     @Override
-    public void createItem(Item item) {
-        //TODO
-    }
-
-    @Override
-    public void deleteItemById(int itemId) {
-        //TODO
-    }
-
-    @Override
-    public void updateItemOfferCounter(int id, int num) {
-        String tempFilePath = ITEMS_FILE_PATH + "_tmp";
-        File tempFile = new File(tempFilePath);
-        File originalFile = new File(ITEMS_FILE_PATH);
-        boolean success = false;
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
-             BufferedReader br = new BufferedReader(new FileReader(originalFile))) {
-            String line;
-            line = br.readLine();
-            bw.write(line + "\r\n");
-            String[] tmpRow;
-            while ((line = br.readLine()) != null) {
-                tmpRow = line.split(";");
-                if (tmpRow[0].equals(String.valueOf(id))) {
-                    tmpRow[7] = String.valueOf(Integer.parseInt(tmpRow[7]) + num);
-                    bw.write(String.join(";",tmpRow) + "\r\n");
-                    success = true;
-                } else {
-                    bw.write(line + "\r\n");
+    public void incrementItemsOfferCounters(List<Integer> iDs) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
+        synchronized (ITEMS_FILE_LOCK) {
+            String tempFilePath = ITEMS_FILE_PATH + "_tmp";
+            File tempFile = new File(tempFilePath);
+            File originalFile = new File(ITEMS_FILE_PATH);
+            boolean success = false;
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
+                 BufferedReader br = new BufferedReader(new FileReader(originalFile))) {
+                String line;
+                line = br.readLine();
+                bw.write(line + "\r\n");
+                String[] tmpRow;
+                while ((line = br.readLine()) != null) {
+                    tmpRow = line.split(";");
+                    if (tmpRow[0].equals(String.valueOf(iDs))) {
+                        tmpRow[7] = String.valueOf(Integer.parseInt(tmpRow[7]) + 1);
+                        bw.write(String.join(";", tmpRow) + "\r\n");
+                        success = true;
+                    } else {
+                        bw.write(line + "\r\n");
+                    }
                 }
+            } catch (IOException e) {
+                if (tempFile.exists()) tempFile.delete();
+                throw new DAOException("Error: cannot access to file");
             }
-        }
-
-        catch (IOException e) {
-            if(tempFile.exists()) tempFile.delete();
-            throw new DAOException("Error: cannot access to file");
-        }
-        if (success && (!originalFile.delete() || !tempFile.renameTo(originalFile))) {
-            throw new DAOException("Error: cannot delete original file and rename temp file");
+            if (success && (!originalFile.delete() || !tempFile.renameTo(originalFile))) {
+                throw new DAOException("Error: cannot delete original file and rename temp file");
+            }
         }
     }
 

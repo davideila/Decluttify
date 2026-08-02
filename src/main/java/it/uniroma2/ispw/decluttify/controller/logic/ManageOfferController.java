@@ -1,79 +1,33 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
-import it.uniroma2.ispw.decluttify.bean.BarterBean;
-import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
-import it.uniroma2.ispw.decluttify.exception.NotLoggedInException;
-import it.uniroma2.ispw.decluttify.model.*;
+import it.uniroma2.ispw.decluttify.model.Barter;
+import it.uniroma2.ispw.decluttify.model.Item;
+import it.uniroma2.ispw.decluttify.model.Notification;
+import it.uniroma2.ispw.decluttify.model.Offer;
 import it.uniroma2.ispw.decluttify.persistence.dao.*;
 import it.uniroma2.ispw.decluttify.persistence.dao.factory.DAOFactory;
 import it.uniroma2.ispw.decluttify.utils.BeanConverter;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MakeBarterController {
+public class ManageOfferController {
 
     private SessionManager sessionManager;
     private final OfferDAO offerDAO;
-    private final UserDAO userDAO;
     private final BarterDAO barterDAO;
     private final ItemDAO itemDAO;
     private final NotificationDAO notificationDAO;
 
-    public MakeBarterController(SessionManager sessionManager){
+    public ManageOfferController(SessionManager sessionManager){
         this.sessionManager = sessionManager;
         this.offerDAO = DAOFactory.getDAOFactory().createOfferDAO();
-        this.userDAO = DAOFactory.getDAOFactory().createUserDAO();
         this.barterDAO = DAOFactory.getDAOFactory().createBarterDAO();
         this.itemDAO = DAOFactory.getDAOFactory().createItemDAO();
         this.notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
-    }
-
-    public List<PreviewItemBean> loadUserInventory(UserBean user) {
-        if(!this.isUserLogged()) throw new NotLoggedInException("Log in required");
-        else {
-            List<PreviewItemBean> pib = new ArrayList<>();
-            List<Item> itemlist;
-            
-            itemlist = itemDAO.retrieveItemsByOwner(user.getUsername());
-            for (Item item : itemlist) {
-                if (item.getStatus() == ItemStatus.AVAILABLE) {
-                    pib.add(BeanConverter.toPreviewItemBean(item));
-                }
-            }
-            return pib;
-        }
-    }
-
-    public void makeOffer(List<PreviewItemBean> offeredItemsBean, PreviewItemBean targetItemBean, UserBean offererBean) {
-        //Get Target item and offered item from persistence
-        Item targetItem = itemDAO.retrieveItemById(targetItemBean.getId());
-        ArrayList<Integer> itemIDs = new ArrayList<>();
-        for (PreviewItemBean bean : offeredItemsBean) {
-            itemIDs.add(bean.getId());
-        }
-        List<Item> offeredItems = itemDAO.retrieveItemsByIds(itemIDs);
-
-        //Get offerer (=logged) user from persistence
-        User offerer;
-        offerer = userDAO.retrieveUserByUsername(offererBean.getUsername());
-
-        //Create offer
-        Offer offer = targetItem.requestBarter(offerer, offeredItems);
-
-        //Save offer on persistence
-
-        offerDAO.createOffer(offer);
-        itemDAO.updateItemOfferCounter(targetItem.getId(), +1);
-        for(Item item : offeredItems) {
-            itemDAO.updateItemOfferCounter(item.getId(), +1);
-        }
-
-        //Save Notifications on persistence
-        notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New Offer!", "OFFER"));
-
     }
 
     public List<OfferBean> loadReceivedOffers(UserBean receiverBean) {
@@ -175,56 +129,4 @@ public class MakeBarterController {
         notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "Offer Rejected!", "OFFER"));
     }
 
-    private boolean isUserLogged() {
-        return sessionManager.isLoggedIn();
-    }
-
-    public List<BarterBean> loadUserBarters(UserBean userBean) {
-        String username = userBean.getUsername();
-        List<BarterBean> barterslist;
-        List<Barter> barters;
-
-        barters = barterDAO.retrieveBartersByUsername(username);
-        for (Barter barter : barters) {
-            barter.setOffer(this.loadOffer(barter.getOffer().getId()));
-        }
-        barterslist = BeanConverter.toBarterBeanList(barters, username);
-        return barterslist;
-    }
-
-    private Offer loadOffer(int id) {
-        Offer offer;
-        List<Integer> itemOfferedIds = new ArrayList<>();
-        offer = offerDAO.retrieveOfferById(id);
-        for (Item offeredItem : offer.getItemOffered()){
-            itemOfferedIds.add(offeredItem.getId());
-        }
-        offer.setItemOffered(itemDAO.retrieveItemsByIds(itemOfferedIds));
-        offer.setItemRequested(itemDAO.retrieveItemById(offer.getItemRequested().getId()));
-        return offer;
-    }
-
-    public boolean confirmBarter(BarterBean barterbean, UserBean confirmer) {
-        Barter barter = barterDAO.retrieveBarterByID(barterbean.getId());
-        barter.setOffer(this.loadOffer(barter.getOffer().getId()));
-        barter.confirm(confirmer.getUsername());
-
-        barterDAO.updateBarter(barter);
-
-        notificationDAO.createNotification(new Notification(barterbean.getPartnerName(), "Barter Confirmed!", "BARTER"));
-
-        return barter.isCompleted();
-    }
-
-    public void createItem(PreviewItemBean item, UserBean user) {
-        //TODO
-    }
-
-    public void disputeBarter(BarterBean selectedBarter) {
-        //TODO
-    }
-
-    public void viewBarterDetails(BarterBean selectedBarter) {
-        //TODO
-    }
 }

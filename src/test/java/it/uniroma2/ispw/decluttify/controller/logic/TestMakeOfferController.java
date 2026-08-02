@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestMakeBarterController {
+public class TestMakeOfferController {
 
     @BeforeEach
     public void setupTestEnvironment(){
@@ -29,7 +29,7 @@ public class TestMakeBarterController {
 
 
     @Test
-    public void testMakeOfferCounterIncr() {
+    public void testSubmitOfferCounterIncr() {
         List<PreviewItemBean> itemOfferList = new ArrayList<>();
         PreviewItemBean itemBean1 = new PreviewItemBean();
         itemBean1.setId(1); // owner dave
@@ -42,8 +42,8 @@ public class TestMakeBarterController {
         targetItemBean.setId(3); // owner richard
         int offersCounterItemTarget_PreIncr = itemdao.retrieveItemById(targetItemBean.getId()).getOffersCounter();
 
-        //MakeBarterController makeBarterController = new MakeBarterController();
-       // makeBarterController.makeOffer(itemOfferList,targetItemBean);
+        //OfferFormController makeBarterController = new OfferFormController();
+       // makeBarterController.submitOffer(itemOfferList,targetItemBean);
 
         //int offersCounterItem1_PostIncr = itemdao.retrieveItemById(itemBean1.getId()).getOffersCounter();
         int offersCounterItemTarget_PostIncr = itemdao.retrieveItemById(targetItemBean.getId()).getOffersCounter();
@@ -52,20 +52,20 @@ public class TestMakeBarterController {
     } 
 
     @Test
-    public void testMakeOfferSelf() {
-       // MakeBarterController controller = new MakeBarterController();
+    public void testSubmitOfferSelf() {
+       // OfferFormController controller = new OfferFormController();
         PreviewItemBean targetBean = new PreviewItemBean();
         targetBean.setId(1);
         List<PreviewItemBean> itemOfferList = new ArrayList<>();
         PreviewItemBean itemBean1 = new PreviewItemBean();
         itemBean1.setId(1);
         itemOfferList.add(itemBean1);
-        //assertThrows(ModelException.class, () -> controller.makeOffer(itemOfferList, targetBean));
+        //assertThrows(ModelException.class, () -> controller.submitOffer(itemOfferList, targetBean));
     }
 
     @Test
     public void testAcceptOfferCorrectNotification() {
-       // MakeBarterController controller = new MakeBarterController();
+       // OfferFormController controller = new OfferFormController();
         List<OfferBean> offerList = new ArrayList<>();
        // offerList = controller.loadReceivedOffers("richard");
        // controller.acceptOffer(offerList.getLast());

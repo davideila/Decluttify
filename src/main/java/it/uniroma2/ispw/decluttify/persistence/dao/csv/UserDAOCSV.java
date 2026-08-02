@@ -38,14 +38,4 @@ public class UserDAOCSV extends UserDAO {
         return null;
     }
 
-    @Override
-    public void createUser(User user) {
-
-    }
-
-    @Override
-    public void deleteUser(String username) {
-
-    }
-
 }

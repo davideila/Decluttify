@@ -3,6 +3,8 @@ package it.uniroma2.ispw.decluttify.utils;
 import it.uniroma2.ispw.decluttify.bean.NotificationBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Subject;
+
+import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -13,11 +15,13 @@ public class SessionManager extends Subject {
     private boolean loggedIn;
     private List<NotificationBean>  notifications = new ArrayList<>();
     private boolean loginLocked;
+    private int loginTries;
 
     public SessionManager() {
         this.loggedUser = null;
         this.loggedIn = false;
         this.loginLocked = false;
+        loginTries = 0;
     }
 
     public UserBean getLoggedUser(){
@@ -36,10 +40,23 @@ public class SessionManager extends Subject {
         this.loggedIn = isLoggedIn;
     }
 
-    public void login(UserBean userBean){
-        this.setLoggedUser(userBean);
-        this.setLoggedIn(true);
-        notifyObservers();
+    public void login(UserBean userBean, boolean success) {
+        if(isLoginLocked()){
+        }
+        else {
+            if (success) {
+                this.setLoggedUser(userBean);
+                this.setLoggedIn(true);
+                notifyObservers();
+            } else {
+                this.setLoggedUser(null);
+                this.setLoggedIn(false);
+                loginTries++;
+                if (loginTries == 3) {
+                    lockLogin();
+                }
+            }
+        }
     }
 
     public void logout(){
@@ -73,5 +90,6 @@ public class SessionManager extends Subject {
     }
     private void unlockLogin(){
         this.loginLocked = false;
+        this.loginTries = 0;
     }
 }

@@ -18,6 +18,9 @@ public class NotificationDAOJDBC extends NotificationDAO {
 
     @Override
     public void createNotification(Notification notification) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             int generatedId = InsertQueries.insertNotification(
                     this.connection,
@@ -32,6 +35,9 @@ public class NotificationDAOJDBC extends NotificationDAO {
 
     @Override
     public void update(Notification notification) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         try {
             int rowsAffected = UpdateQueries.updateNotification(connection, notification.getId());
             if (rowsAffected != 1) {

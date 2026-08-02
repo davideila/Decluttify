@@ -51,38 +51,38 @@ public class TestItem {
     }
 
     @Test
-    public void testRequestBarterNotExchangeable() {
+    public void testProposeBarterNotExchangeable() {
         Item item = CreateTestItem("TRADED");
         List<Item> offeredItems = new ArrayList<>();
         offeredItems.add(CreateTestItem("AVAILABLE"));
-        assertThrows(ModelException.class, () ->{item.requestBarter(this.CreateTestUser(), offeredItems);});
+        assertThrows(ModelException.class, () ->{item.proposeBarter(this.CreateTestUser(), offeredItems);});
     }
 
     @Test
-    public void testRequestBarterOfferNotOwner() {
+    public void testProposeBarterOfferNotOwner() {
         Item item = CreateTestItem("richard", "AVAILABLE");
         List<Item> offeredItems = new ArrayList<>();
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
-        assertThrows(ModelException.class, () ->{item.requestBarter(this.CreateTestUser("testUser"), offeredItems);});
+        assertThrows(ModelException.class, () ->{item.proposeBarter(this.CreateTestUser("testUser"), offeredItems);});
     }
 
     @Test
-    public void testRequestBarterSelfOffer() {
+    public void testProposeBarterSelfOffer() {
         Item item = CreateTestItem("dave", "AVAILABLE");
         List<Item> offeredItems = new ArrayList<>();
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
-        assertThrows(ModelException.class, () ->{item.requestBarter(this.CreateTestUser("dave"), offeredItems);});
+        assertThrows(ModelException.class, () ->{item.proposeBarter(this.CreateTestUser("dave"), offeredItems);});
     }
 
     @Test
-    public void testRequestBarterCorrect() {
+    public void testProposeBarterCorrect() {
         Item item = CreateTestItem("mario","AVAILABLE");
         List<Item> offeredItems = new ArrayList<>();
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
         offeredItems.add(CreateTestItem("dave", "AVAILABLE"));
-        assertNotNull(item.requestBarter(this.CreateTestUser("dave"), offeredItems));
+        assertNotNull(item.proposeBarter(this.CreateTestUser("dave"), offeredItems));
     }
 
     @Test

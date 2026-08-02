@@ -14,6 +14,9 @@ public class NotificationDAOCSV extends NotificationDAO {
 
     @Override
     public synchronized void createNotification(Notification notification) {
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
         File notificationFile = new File(NOTIFICATION_FILE_PATH);
         if (!notificationFile.exists()) throw new DAOException("Error: Notifications file does not exist.");
         if (notificationFile.length() == 0) throw new DAOException("No header found in file notifications.");
@@ -59,7 +62,9 @@ public class NotificationDAOCSV extends NotificationDAO {
 
     @Override
     public void update(Notification notification) {
-
+        if (PersistenceManager.getInstance().isDemoMode()){
+            return;
+        }
     }
 
     @Override

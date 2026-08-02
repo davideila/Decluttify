@@ -35,7 +35,7 @@ public abstract class GraphicController<V extends View> {
     protected void handleMenuInput(String choice) {
         switch (choice){
             case "l","L":
-                if(sessionManager.isLoggedIn()){
+                if(!sessionManager.isLoggedIn()){
                     handleLogin();
                 }
                 else{
@@ -123,7 +123,6 @@ public abstract class GraphicController<V extends View> {
         if(sessionManager.isLoggedIn()) {
             //TODO navigatorManager.navigateToProfile();
         }
-
     }
 
     public void initialize() {

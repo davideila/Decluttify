@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
-import it.uniroma2.ispw.decluttify.exception.NotLoggedInException;
+import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -97,7 +97,7 @@ public class NavigatorManager implements Observer, Navigator {
             default -> false;
         };
         if (requiresAuth && !sessionManager.isLoggedIn()) {
-            throw new NotLoggedInException("Login required for: " + viewType);
+            throw new LoginException("Login required for: " + viewType);
         }
     }
 

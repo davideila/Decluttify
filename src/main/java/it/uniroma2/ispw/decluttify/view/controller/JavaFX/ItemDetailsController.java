@@ -5,7 +5,7 @@ import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
-import it.uniroma2.ispw.decluttify.exception.NotLoggedInException;
+import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -66,7 +66,7 @@ public class ItemDetailsController extends GraphicController implements Observer
     public void handleMakeOffer(ActionEvent actionEvent){
         try {
             navigator.navigateTo(ViewType.OFFER_FORM, visualizedItem);
-        } catch (NotLoggedInException e) {
+        } catch (LoginException e) {
             navigator.navigateTo(ViewType.LOGIN);
         }
     }

@@ -36,14 +36,4 @@ public class UserDAOJDBC extends UserDAO {
         return user;
     }
 
-        @Override
-    public void createUser(User user) {
-        //TODO
-    }
-
-    @Override
-    public void deleteUser(String username) {
-
-    }
-
 }

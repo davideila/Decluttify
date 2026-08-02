@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.BarterBean;
-import it.uniroma2.ispw.decluttify.controller.logic.MakeBarterController;
+import it.uniroma2.ispw.decluttify.controller.logic.ManageBarterController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
@@ -20,13 +20,13 @@ import java.util.List;
 
 public class MyBartersController extends GraphicController{
 
-    private final MakeBarterController makeBarterController;
+    private final ManageBarterController manageBarterController;
     private List<BarterBean> barters;
     @FXML ListView<BarterBean> barterList;
 
     public MyBartersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, ViewType.MY_BARTERS);
-        this.makeBarterController = new MakeBarterController(sessionManager);
+        this.manageBarterController = new ManageBarterController(sessionManager);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MyBartersController extends GraphicController{
         barterList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         barterList.setCellFactory(lv -> new BarterListCell(sessionManager));
         try {
-            this.barters = this.makeBarterController.loadUserBarters(sessionManager.getLoggedUser());
+            this.barters = this.manageBarterController.loadUserBarters(sessionManager.getLoggedUser());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -55,11 +55,11 @@ public class MyBartersController extends GraphicController{
         @FXML Label partnerLabel;
         private Parent root;
         private BarterBean barterBean;
-        private final MakeBarterController makeBarterController;
+        private final ManageBarterController manageBarterController;
         private final SessionManager sessionManager;
 
         public BarterListCell(SessionManager sm) {
-            this.makeBarterController = new MakeBarterController(sm);
+            this.manageBarterController = new ManageBarterController(sm);
             this.sessionManager = sm;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/barter_list_cell.fxml"));
@@ -123,7 +123,7 @@ public class MyBartersController extends GraphicController{
 
         public void handleConfirmBarter(ActionEvent actionEvent) {
             try {
-                this.makeBarterController.confirmBarter(barterBean, sessionManager.getLoggedUser());
+                this.manageBarterController.confirmBarter(barterBean, sessionManager.getLoggedUser());
             }catch(Exception e){
                 if (e instanceof DAOException) {
                     AlertProvider.showError("System error", "Service not available. Please try again later.");

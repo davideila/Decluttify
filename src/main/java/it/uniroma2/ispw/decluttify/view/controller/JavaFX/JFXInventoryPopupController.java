@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class InventoryPopupController {
+public class JFXInventoryPopupController {
     @FXML
     private ListView<PreviewItemBean> inventoryListView;
-    private OfferFormController callerController;
+    private JFXOfferFormController callerController;
     private Stage stage;
 
     // This method is to pass data to this object from caller
-    public void setParameters(OfferFormController caller, Stage stage, List<PreviewItemBean> myItems) {
+    public void setParameters(JFXOfferFormController caller, Stage stage, List<PreviewItemBean> myItems) {
         this.callerController = caller;
         this.stage = stage;
         //calling setCellFactory method for the customized list cell in the list view

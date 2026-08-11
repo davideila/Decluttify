@@ -14,14 +14,14 @@ import javafx.scene.control.ListView;
 import java.io.IOException;
 import java.util.List;
 
-public class MyOffersController extends GraphicController {
+public class JFXMyOffersController extends JFXGraphicController {
 
     private final ManageOfferController manageOfferController;
 
     @FXML private ListView<OfferBean> listViewReceived;
     @FXML private ListView<OfferBean> listViewSent;
 
-    public MyOffersController(Navigator navigator, SessionManager sm) {
+    public JFXMyOffersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, ViewType.MY_OFFERS);
         this.manageOfferController = new ManageOfferController(sm);
     }
@@ -50,7 +50,7 @@ public class MyOffersController extends GraphicController {
     // https://openjfx.io/javadoc/14/javafx.controls/javafx/scene/control/Cell.html#updateItem(T,boolean)
     public static class OfferListCell extends ListCell<OfferBean> {
         private boolean isReceived; // Needed to identify the tab of the offer view
-        private OfferListCellController controller;
+        private JFXOfferListCellController controller;
         private Parent root;
 
         public OfferListCell(boolean isReceived) {

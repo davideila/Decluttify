@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMakeOfferController {
 
-    @BeforeEach
+    /*@BeforeEach
     public void setupTestEnvironment(){
         PersistenceManager.getInstance().setupTestEnvironment();
-    }
+    }*/
 
     @BeforeEach
     public void setupSession() {
@@ -42,7 +42,7 @@ public class TestMakeOfferController {
         targetItemBean.setId(3); // owner richard
         int offersCounterItemTarget_PreIncr = itemdao.retrieveItemById(targetItemBean.getId()).getOffersCounter();
 
-        //OfferFormController makeBarterController = new OfferFormController();
+        //JFXOfferFormController makeBarterController = new JFXOfferFormController();
        // makeBarterController.submitOffer(itemOfferList,targetItemBean);
 
         //int offersCounterItem1_PostIncr = itemdao.retrieveItemById(itemBean1.getId()).getOffersCounter();
@@ -53,7 +53,7 @@ public class TestMakeOfferController {
 
     @Test
     public void testSubmitOfferSelf() {
-       // OfferFormController controller = new OfferFormController();
+       // JFXOfferFormController controller = new JFXOfferFormController();
         PreviewItemBean targetBean = new PreviewItemBean();
         targetBean.setId(1);
         List<PreviewItemBean> itemOfferList = new ArrayList<>();
@@ -65,7 +65,7 @@ public class TestMakeOfferController {
 
     @Test
     public void testAcceptOfferCorrectNotification() {
-       // OfferFormController controller = new OfferFormController();
+       // JFXOfferFormController controller = new JFXOfferFormController();
         List<OfferBean> offerList = new ArrayList<>();
        // offerList = controller.loadReceivedOffers("richard");
        // controller.acceptOffer(offerList.getLast());

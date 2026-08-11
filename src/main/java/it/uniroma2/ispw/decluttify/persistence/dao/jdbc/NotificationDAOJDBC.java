@@ -14,16 +14,15 @@ import java.util.List;
 
 public class NotificationDAOJDBC extends NotificationDAO {
 
-    Connection connection = PersistenceManager.getInstance().getConnection();
-
     @Override
     public void createNotification(Notification notification) {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             int generatedId = InsertQueries.insertNotification(
-                    this.connection,
+                    connection,
                     notification.getUsername(),
                     notification.getMessage(),
                     notification.getType());
@@ -38,6 +37,7 @@ public class NotificationDAOJDBC extends NotificationDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             int rowsAffected = UpdateQueries.updateNotification(connection, notification.getId());
             if (rowsAffected != 1) {
@@ -51,6 +51,7 @@ public class NotificationDAOJDBC extends NotificationDAO {
     @Override
     public List<Notification> retrieveNotificationByUser(String username) {
         List<Notification> notifications = new ArrayList<>();
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmt = connection.createStatement()) {
             ResultSet rs = SelectQueries.selectNotificationsByUser(stmt, username);
             while (rs.next()) {

@@ -16,13 +16,16 @@ public class PersistenceManager {
 
     private PersistenceManager(){
         switch(ConfigReader.getInstance().getMode()){
-            case "TEST":
+            case "TEST", "test":
                 this.testEnvironment = true;
                 break;
-            case "DEMO":
+            case "DEMO", "demo":
                 this.demoMode = true;
                 break;
-            case "FULL":
+            case "FULL", "full":
+                this.testEnvironment = false;
+                this.demoMode = false;
+                break;
             case null, default:
                 throw new DecluttifyException("Cannot read configuration properties... closing app.");
         }

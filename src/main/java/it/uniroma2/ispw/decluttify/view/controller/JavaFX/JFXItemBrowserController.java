@@ -19,14 +19,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ItemBrowserController extends GraphicController {
+public class JFXItemBrowserController extends JFXGraphicController {
 
     private final VisualizeItemController visualizeItemController;
     @FXML private TilePane tilePane;
 
     private ObservableList<PreviewItemBean> items = FXCollections.observableArrayList();  //TODO
 
-    public ItemBrowserController(Navigator navigator, SessionManager sm) {
+    public JFXItemBrowserController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, ViewType.ITEM_BROWSER);
         this.visualizeItemController = new VisualizeItemController();
     }

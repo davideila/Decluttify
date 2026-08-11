@@ -174,7 +174,6 @@ public abstract class GraphicController<V extends View> {
     public void handleExit(){
         this.listen(false);
         this.view.showMessage("Exiting... goodbye!", false);
-        PersistenceManager.getInstance().closeConnection();
         System.exit(0);
     }
 

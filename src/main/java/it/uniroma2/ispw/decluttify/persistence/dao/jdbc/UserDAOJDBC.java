@@ -11,12 +11,10 @@ import java.sql.Statement;
 
 public class UserDAOJDBC extends UserDAO {
 
-    Connection connection = PersistenceManager.getInstance().getConnection();
-
     @Override
     public User retrieveUserByUsername(String username) {
         User user = null;
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+        try (Statement stmt = PersistenceManager.getInstance().getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             ResultSet rs = SelectQueries.selectUserByUsername(stmt, username);
 
             if (!rs.first()) { // rs empty

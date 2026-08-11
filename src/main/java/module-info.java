@@ -7,6 +7,7 @@ module it.uniroma2.ispw.decluttify {
     requires javafx.base;
     requires password4j;
     requires org.slf4j;
+    requires org.junit.jupiter.api;
 
     opens it.uniroma2.ispw.decluttify to javafx.fxml;
     exports it.uniroma2.ispw.decluttify;

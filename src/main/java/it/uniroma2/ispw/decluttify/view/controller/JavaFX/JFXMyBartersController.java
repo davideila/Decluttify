@@ -18,13 +18,13 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.List;
 
-public class MyBartersController extends GraphicController{
+public class JFXMyBartersController extends JFXGraphicController {
 
     private final ManageBarterController manageBarterController;
     private List<BarterBean> barters;
     @FXML ListView<BarterBean> barterList;
 
-    public MyBartersController(Navigator navigator, SessionManager sm) {
+    public JFXMyBartersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, ViewType.MY_BARTERS);
         this.manageBarterController = new ManageBarterController(sessionManager);
     }

@@ -5,6 +5,8 @@ import it.uniroma2.ispw.decluttify.model.Barter;
 import it.uniroma2.ispw.decluttify.model.BarterStatus;
 import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.BarterDAO;
+import org.junit.jupiter.api.AfterEach;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,11 +16,10 @@ import java.util.List;
 
 public class BarterDAOJDBC extends BarterDAO {
 
-    Connection connection = PersistenceManager.getInstance().getConnection();
-
     @Override
     public List<Barter> retrieveBartersByUsername(String username) {
         List<Barter> barters = new ArrayList<>();
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try(Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
             ResultSet rs = SelectQueries.selectBartersByUser(stmt, username);
             while(rs.next()){
@@ -41,6 +42,7 @@ public class BarterDAOJDBC extends BarterDAO {
     @Override
     public Barter retrieveBarterByID(int id) {
         Barter barter = null;
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try(Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
             ResultSet rs = SelectQueries.selectBarterByID(stmt, id);
             while(rs.next()){
@@ -65,14 +67,28 @@ public class BarterDAOJDBC extends BarterDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             int geratedId = InsertQueries.insertBarter(
-                    this.connection,
+                    connection,
                     barter.getOffer().getId(),
                     barter.getStartDate());
             barter.setId(geratedId);
         } catch (SQLException e) {
             throw new DAOException("Database error while creating barter.", e);
+        }finally{
+            try {
+                connection.close();
+            }catch (SQLException e) {
+                throw new DAOException("Database error while closing connection.", e);
+            }finally{
+                try {
+                    connection.close();
+                }catch (SQLException e) {
+                    throw new DAOException("Database error while closing connection.", e);
+                }
+            }
         }
     }
 
@@ -81,10 +97,12 @@ public class BarterDAOJDBC extends BarterDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
         int rowsAffected;
         try {
             rowsAffected = UpdateQueries.updateBarter(
-                    this.connection,
+                    connection,
                     barter.getId(),
                     barter.getCompletionDate(),
                     barter.getStatus().toString().toUpperCase(),
@@ -94,8 +112,21 @@ public class BarterDAOJDBC extends BarterDAO {
             if (rowsAffected == 0) {
                 throw new DAOException("Update failed: barter with ID " + barter.getId() + " not found.");
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             throw new DAOException("Database error while updating barter status.", e);
+        }finally{
+            try {
+                connection.close();
+            }catch (SQLException e) {
+                throw new DAOException("Database error while closing connection.", e);
+            }finally{
+                try {
+                    connection.close();
+                }catch (SQLException e) {
+                    throw new DAOException("Database error while closing connection.", e);
+                }
+            }
         }
     }
+
 }

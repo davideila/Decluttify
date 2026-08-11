@@ -26,7 +26,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class OfferFormController extends GraphicController {
+public class JFXOfferFormController extends JFXGraphicController {
 
     private final MakeOfferController makeBarterController;
     private PreviewItemBean targetItem;
@@ -39,7 +39,7 @@ public class OfferFormController extends GraphicController {
     @FXML private Button confirmButton;
 
 
-    public OfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
+    public JFXOfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
         super(navigator, sm, ViewType.OFFER_FORM);
         this.targetItem = targetItem;
         this.makeBarterController = new MakeOfferController(sm);
@@ -74,7 +74,7 @@ public class OfferFormController extends GraphicController {
             popupStage.setScene(new Scene(root));
 
             // Open popup inventory, get items and give items data to popup
-            InventoryPopupController popupController = loader.getController();
+            JFXInventoryPopupController popupController = loader.getController();
             List<PreviewItemBean> myItems = makeBarterController.loadUserInventory(sessionManager.getLoggedUser());
             popupController.setParameters(this, popupStage, myItems);
             popupStage.showAndWait();

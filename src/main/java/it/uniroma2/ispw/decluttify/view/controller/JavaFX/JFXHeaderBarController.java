@@ -1,11 +1,9 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
-import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +20,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class HeaderBarController extends GraphicController implements Observer{
+public class JFXHeaderBarController {
 
-    private final LoginController  loginController;
+    private LoginController loginController;
+    private Navigator navigator;
+    private SessionManager sessionManager;
+    private final String LOGIN_FXML = "/it/uniroma2/ispw/decluttify/views/LoginPopupView.fxml";
 
     @FXML Button profileButton;
     @FXML TextField usernameField;
@@ -34,16 +35,11 @@ public class HeaderBarController extends GraphicController implements Observer{
     @FXML private StackPane badgePane;
     @FXML private Label notificationCountLabel;
 
-    public HeaderBarController(Navigator navigator, SessionManager sm, ViewType viewType) {
-        super(navigator, sm, viewType);
-        this.loginController = new LoginController(sm);
+    public JFXHeaderBarController(Navigator navigator, SessionManager sessionManager) {
+        this.loginController = new LoginController(sessionManager);
+        this.navigator = navigator;
+        this.sessionManager = sessionManager;
     }
-
-    public void init() {
-        this.sessionManager.attach(this);
-    }
-
-    // Methods for onAction button click event linked through fxml
 
     @FXML
     void handleBackButton(ActionEvent event) {
@@ -59,8 +55,8 @@ public class HeaderBarController extends GraphicController implements Observer{
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle("Login");
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/LoginPopupView.fxml"));
-                LoginPopupController popupController = new LoginPopupController(navigator, sessionManager, null);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML));
+                JFXLoginPopupController popupController = new JFXLoginPopupController(navigator, sessionManager);
                 loader.setController(popupController);
                 Parent root = loader.load();
                 popupStage.setScene(new Scene(root));
@@ -74,7 +70,9 @@ public class HeaderBarController extends GraphicController implements Observer{
             }
         }
         else{
-            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+            if (event != null){
+                AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+            }
         }
     }
 
@@ -89,7 +87,6 @@ public class HeaderBarController extends GraphicController implements Observer{
         }
     }
 
-    @Override
     public void update() {
         if (sessionManager.isLoggedIn()) {
             profileButton.setText(sessionManager.getLoggedUser().getUsername());

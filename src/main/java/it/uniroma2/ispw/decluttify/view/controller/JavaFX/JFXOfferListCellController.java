@@ -2,7 +2,6 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
-import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
 import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -17,7 +16,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import java.util.List;
 
-public class OfferListCellController extends GraphicController{
+public class JFXOfferListCellController extends JFXGraphicController {
 
     private final ManageOfferController manageOfferController;
     @FXML Label labelUserLeft;
@@ -26,7 +25,7 @@ public class OfferListCellController extends GraphicController{
     @FXML FlowPane flowPaneRight;
     private OfferBean offerBean;
 
-    public OfferListCellController(Navigator navigator, SessionManager sm) {
+    public JFXOfferListCellController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, null);
         this.manageOfferController = new ManageOfferController(sessionManager);
     }

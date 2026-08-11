@@ -22,4 +22,8 @@ public class AlertProvider {
         alert.showAndWait();
     }
 
+    public static void showComingSoon() {
+        showInfo("Feature coming soon", "This feature is not yet available in this version");
+    }
+
 }

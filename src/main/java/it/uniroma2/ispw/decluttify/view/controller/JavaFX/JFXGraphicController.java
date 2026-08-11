@@ -9,7 +9,7 @@ import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
-public abstract class GraphicController {
+public abstract class JFXGraphicController {
     protected boolean isInSidebar;
     protected Navigator navigator;
     protected SessionManager sessionManager;
@@ -18,7 +18,7 @@ public abstract class GraphicController {
     @FXML
     Parent rootView;
 
-    public GraphicController(Navigator navigator, SessionManager sm, ViewType viewType) {
+    public JFXGraphicController(Navigator navigator, SessionManager sm, ViewType viewType) {
         this.navigator = navigator;
         this.sessionManager = sm;
         this.viewType = viewType;

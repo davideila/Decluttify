@@ -16,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class LoginPopupController extends GraphicController{
+public class JFXLoginPopupController extends JFXGraphicController {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginPopupController.class);
+    private static final Logger log = LoggerFactory.getLogger(JFXLoginPopupController.class);
     private final LoginController loginController = new LoginController(sessionManager);;
 
     @FXML
@@ -28,8 +28,8 @@ public class LoginPopupController extends GraphicController{
     @FXML
     Label failedLogin;
 
-    public LoginPopupController(Navigator navigator, SessionManager sm, ViewType viewType) {
-        super(navigator, sm, viewType);
+    public JFXLoginPopupController(Navigator navigator, SessionManager sm) {
+        super(navigator, sm, ViewType.LOGIN);
     }
 
     public void onActionSignInButton(ActionEvent actionEvent) {

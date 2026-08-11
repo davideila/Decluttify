@@ -12,12 +12,11 @@ import java.util.List;
 
 public class ItemDAOJDBC extends ItemDAO {
 
-    Connection connection = PersistenceManager.getInstance().getConnection();
-
     @Override
     public Item retrieveItemById(int id) {
         Item item = null;
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmtItem = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              Statement stmtUser = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              Statement stmtImages = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
@@ -87,6 +86,7 @@ public class ItemDAOJDBC extends ItemDAO {
         Item item;
         ArrayList<Item> itemList = new ArrayList<>();
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmtItem = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              Statement stmtUser = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
              Statement stmtImages = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
@@ -151,6 +151,7 @@ public class ItemDAOJDBC extends ItemDAO {
 
         List<Item> itemList = new ArrayList<>();
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmtItem = connection.createStatement();
              Statement stmtUser = connection.createStatement();
              Statement stmtImages = connection.createStatement()) {
@@ -210,9 +211,9 @@ public class ItemDAOJDBC extends ItemDAO {
     }
 
     public List<Item> retrieveItemsByOwner(String username) {
-
         ArrayList<Item> items = new ArrayList<>();
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try(Statement stmtItem = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement stmtUser = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement stmtImages = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
@@ -280,12 +281,13 @@ public class ItemDAOJDBC extends ItemDAO {
             return;
         }
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         int totalRowsAffected = 0;
         try {
             connection.setAutoCommit(false);
             for (Integer i : iDs) {
                 int rowsAffected = UpdateQueries.updateItemNumOffer(
-                        this.connection,
+                        connection,
                         i,
                         1
                 );
@@ -302,6 +304,7 @@ public class ItemDAOJDBC extends ItemDAO {
         } finally {
             try {
                 connection.setAutoCommit(true);
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

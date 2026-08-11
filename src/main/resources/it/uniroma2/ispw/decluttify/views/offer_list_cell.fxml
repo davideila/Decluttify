@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox fx:id="rootPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="200.0" spacing="10.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1 0; -fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.OfferListCellController">
+<HBox fx:id="rootPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="200.0" spacing="10.0" style="-fx-border-color: #dddddd; -fx-border-width: 0 0 1 0; -fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.uniroma2.ispw.decluttify.view.controller.JavaFX.JFXOfferListCellController">
     <children>
 
         <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">

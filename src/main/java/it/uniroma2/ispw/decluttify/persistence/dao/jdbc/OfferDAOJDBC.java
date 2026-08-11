@@ -13,13 +13,11 @@ import java.util.List;
 
 public class OfferDAOJDBC extends OfferDAO {
 
-    Connection connection = PersistenceManager.getInstance().getConnection();
-
     @Override
     public Offer retrieveOfferById(int id) {
         List<Item> itemofflist = new ArrayList<>();
         Offer offer;
-        try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
+        try (Statement stmt = PersistenceManager.getInstance().getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
             ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmt, id);
             while (rsItems.next()) {
                 itemofflist.add(new Item(rsItems.getInt("item")));
@@ -52,9 +50,11 @@ public class OfferDAOJDBC extends OfferDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             // All the operations have to be atomic = transaction
-            this.connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
             int rowsAffected;
             rowsAffected = UpdateQueries.updateOfferStatus(connection, offer.getId(), offer.getStatus().name());
             if (rowsAffected == 0) {
@@ -94,18 +94,18 @@ public class OfferDAOJDBC extends OfferDAO {
                 }
             }
 
-            this.connection.commit();
+            connection.commit();
 
         } catch (SQLException e) {
             try {
-                if (this.connection != null) this.connection.rollback();
+                if (connection != null) connection.rollback();
             } catch (SQLException rollbackEx) {
                 throw new DAOException("Error: Transaction rollback failed.", rollbackEx);
             }
             throw new DAOException("Database error during transaction: Offer acceptance and collision updates failed.", e);
         } finally {
             try {
-                if (this.connection != null) this.connection.setAutoCommit(true);
+                if (connection != null) connection.setAutoCommit(true);
             } catch (SQLException e) {
                 System.err.println("Warning: Could not reset auto-commit.");
             }
@@ -121,7 +121,7 @@ public class OfferDAOJDBC extends OfferDAO {
             collidingItemsIDs.add(items.getId());
         }
         try {
-            List<Integer> offerIds = SelectQueries.selectCollidingOffers(this.connection, offer.getId(), collidingItemsIDs);
+            List<Integer> offerIds = SelectQueries.selectCollidingOffers(PersistenceManager.getInstance().getConnection(), offer.getId(), collidingItemsIDs);
             for (Integer id : offerIds) {
                 Offer found = this.retrieveOfferById(id);
                 if (found != null) collidingOffers.add(found);
@@ -137,12 +137,14 @@ public class OfferDAOJDBC extends OfferDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             // Atomicity (2 operations on 2 different tables)
-            this.connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
 
             int generatedId = InsertQueries.insertOffer(
-                    this.connection,
+                    connection,
                     offer.getOfferer().getUsername(),
                     offer.getReceiver().getUsername(),
                     offer.getItemRequested().getId(),
@@ -153,18 +155,18 @@ public class OfferDAOJDBC extends OfferDAO {
             for (Item item : offer.getItemOffered()) {
                 InsertQueries.insertOffered(connection, offer.getId(), item.getId());
             }
-            this.connection.commit();
+            connection.commit();
 
         } catch (SQLException e) {
             try {
-                if (this.connection != null) this.connection.rollback();
+                if (connection != null) connection.rollback();
             } catch (SQLException rollbackEx) {
                 throw new DAOException("Error: Rollback failed during offer creation.", rollbackEx);
             }
             throw new DAOException("Failed to save offer and its items to database.", e);
         } finally {
             try {
-                if (this.connection != null) this.connection.setAutoCommit(true);
+                if (connection != null) connection.setAutoCommit(true);
             } catch (SQLException e) {
                 System.err.println("Warning: Could not reset auto-commit.");
             }
@@ -176,9 +178,11 @@ public class OfferDAOJDBC extends OfferDAO {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;
         }
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try {
             //atomicity
-            this.connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
             int rowsAffected;
             rowsAffected = UpdateQueries.updateOfferStatus(connection, offer.getId(), offer.getStatus().name());
             if (rowsAffected == 0) {
@@ -194,17 +198,17 @@ public class OfferDAOJDBC extends OfferDAO {
                     throw new SQLException("Item update failed: Offered Item ID " + item.getId() + " not found.");
                 }
             }
-            this.connection.commit();
+            connection.commit();
         } catch (SQLException e) {
             try {
-                if (this.connection != null) this.connection.rollback();
+                if (connection != null) connection.rollback();
             } catch (SQLException rollbackEx) {
                 throw new DAOException("Error: rollback failed during offer rejection.", rollbackEx);
             }
             throw new DAOException("Database error during offer rejection. Transaction rolled back.", e);
         } finally {
             try {
-                if (this.connection != null) this.connection.setAutoCommit(true);
+                if (connection != null) connection.setAutoCommit(true);
             } catch (SQLException e) {
                 System.err.println("Warning: Could not reset auto-commit.");
             }
@@ -215,6 +219,7 @@ public class OfferDAOJDBC extends OfferDAO {
     public List<Offer> retrieveOffersByReceiver(String receiver) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmt = connection.createStatement();
              Statement stmtItems = connection.createStatement()) {
             ResultSet rs = SelectQueries.selectOffersByReceiver(stmt, receiver);
@@ -247,6 +252,7 @@ public class OfferDAOJDBC extends OfferDAO {
     public List<Offer> retrieveOffersBySender(String sender) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
 
+        Connection connection = PersistenceManager.getInstance().getConnection();
         try (Statement stmt = connection.createStatement();
              Statement stmtItems = connection.createStatement()) {
 

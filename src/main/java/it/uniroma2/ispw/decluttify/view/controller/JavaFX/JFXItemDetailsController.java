@@ -24,7 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ItemDetailsController extends GraphicController implements Observer {
+public class JFXItemDetailsController extends JFXGraphicController implements Observer {
 
     private PreviewItemBean visualizedItem;
 
@@ -43,7 +43,7 @@ public class ItemDetailsController extends GraphicController implements Observer
     @FXML ImageView mainImageView;
 
 
-    public ItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
+    public JFXItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
         super(navigator, sm, ViewType.ITEM_DETAILS);
         this.sessionManager = sm;
         this.isInSidebar = false;

@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
-import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -14,19 +13,22 @@ public class JFXNavigatorManager implements Navigator {
     private final Stack<JFXGraphicController> navigationStack = new Stack<>();
     private JFXUI ui;
 
-    public JFXNavigatorManager(Stage stage) {
-        this.sessionManager = new SessionManager();
-        this.ui = new JFXUI(this, this.sessionManager, stage);
+    public JFXNavigatorManager(Stage stage, SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+        this.ui = new JFXUI(this, sessionManager, stage);
     }
 
     @Override
     public void navigateTo(ViewType viewType) {
-        if(checkAuthRequirement(viewType)){
+        if (!(viewType instanceof JFXViewType)) {
+            throw new IllegalArgumentException("Unsupported view for JavaFX: " + viewType);
+        }
+        if(checkAuthRequirement((JFXViewType) viewType)){
             triggerLogin();
             if(sessionManager.getLoggedUser() == null || !sessionManager.isLoggedIn()) return;
         }
         try {
-            pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController(viewType, sessionManager, this));
+            pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController((JFXViewType) viewType, sessionManager, this));
         } catch (Exception e) {
             e.printStackTrace();
             AlertProvider.showError("Server error", "Service temporarily not available");
@@ -35,12 +37,15 @@ public class JFXNavigatorManager implements Navigator {
 
     @Override
     public void navigateTo(ViewType viewType, Object data) {
-        if(checkAuthRequirement(viewType)){
+        if (!(viewType instanceof JFXViewType)) {
+            throw new IllegalArgumentException("Unsupported view for JavaFX: " + viewType);
+        }
+        if(checkAuthRequirement((JFXViewType) viewType)){
             triggerLogin();
             if(sessionManager.getLoggedUser() == null || !sessionManager.isLoggedIn()) return;
         }
         try {
-            pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController(viewType, sessionManager, this, data));
+            pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController((JFXViewType) viewType, sessionManager, this, data));
         } catch (Exception e) {
             e.printStackTrace();
             AlertProvider.showError("Server error", "Service temporarily not available");
@@ -53,12 +58,8 @@ public class JFXNavigatorManager implements Navigator {
         controller.init();
     }
 
-    private boolean checkAuthRequirement(ViewType viewType) {
-        boolean requiresAuth = switch (viewType) {
-            case MY_OFFERS, MY_BARTERS, OFFER_FORM -> true;
-            default -> false;
-        };
-        return requiresAuth;
+    private boolean checkAuthRequirement(JFXViewType viewType) {
+        return viewType.isLoginRequired();
     }
 
     @Override
@@ -79,12 +80,12 @@ public class JFXNavigatorManager implements Navigator {
     @Override
     public void reset() {
         this.navigationStack.clear();
-        this.navigateTo(ViewType.ITEM_BROWSER);
+        this.navigateTo(JFXViewType.ITEM_BROWSER);
     }
 
     @Override
     public void start() {
-        this.navigateTo(ViewType.ITEM_BROWSER);
+        this.navigateTo(JFXViewType.ITEM_BROWSER);
     }
 
 }

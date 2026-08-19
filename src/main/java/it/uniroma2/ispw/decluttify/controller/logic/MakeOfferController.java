@@ -3,7 +3,7 @@ package it.uniroma2.ispw.decluttify.controller.logic;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.LoginException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.exception.SessionExpiredException;
 import it.uniroma2.ispw.decluttify.model.*;
 import it.uniroma2.ispw.decluttify.persistence.dao.*;
@@ -34,7 +34,7 @@ public class MakeOfferController {
     }
 
     public List<PreviewItemBean> loadUserInventory(UserBean user) {
-        if(!sessionManager.isLoggedIn() || sessionManager.getLoggedUser().getUsername() != user.getUsername()) throw new LoginException("Log in required");
+        if(!sessionManager.isLoggedIn() || sessionManager.getLoggedUser().getUsername() != user.getUsername()) throw new DecluttifyException("Operation not permitted");
         else {
             this.startSessionTimer();
             List<PreviewItemBean> pib = new ArrayList<>();
@@ -104,7 +104,7 @@ public class MakeOfferController {
         }
 
         //Save Notifications on persistence
-        notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New Offer!", "OFFER"));
+        notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New OfferStateMachine!", "OFFER"));
     }
 
 }

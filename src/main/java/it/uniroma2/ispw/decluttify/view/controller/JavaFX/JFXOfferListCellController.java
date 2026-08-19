@@ -6,7 +6,6 @@ import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -92,8 +91,8 @@ public class JFXOfferListCellController extends JFXGraphicController {
         }catch(Exception e){
             this.handleException(e);
         }
-        AlertProvider.showInfo("Success!", "Offer has been accepted");
-        navigator.navigateTo(ViewType.MY_BARTERS);
+        AlertProvider.showInfo("Success!", "OfferStateMachine has been accepted");
+        navigator.navigateTo(JFXViewType.MY_BARTERS);
     }
 
 
@@ -103,6 +102,6 @@ public class JFXOfferListCellController extends JFXGraphicController {
         }catch(Exception e){
             this.handleException(e);
         }
-        AlertProvider.showInfo("Success!", "Offer has been rejected");
+        AlertProvider.showInfo("Success!", "OfferStateMachine has been rejected");
     }
 }

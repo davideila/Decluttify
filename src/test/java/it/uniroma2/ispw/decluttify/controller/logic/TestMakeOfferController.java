@@ -23,7 +23,7 @@ public class TestMakeOfferController {
 
     @BeforeEach
     public void setupSession() {
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         //loginController.login("dave", "dave");
     }
 
@@ -71,7 +71,7 @@ public class TestMakeOfferController {
        // controller.acceptOffer(offerList.getLast());
         NotificationDAO notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
         List<Notification> notifications = notificationDAO.retrieveNotificationByUser("dave");
-        assertEquals("Offer Accepted!", notifications.getLast().getMessage());
+        assertEquals("OfferStateMachine Accepted!", notifications.getLast().getMessage());
     }
 
 }

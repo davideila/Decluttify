@@ -2,7 +2,6 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,13 +27,13 @@ public class JFXSidebarController {
     @FXML void handleInventoryButton(ActionEvent event) { AlertProvider.showComingSoon(); }
     @FXML void handleDonateButton(ActionEvent event) { AlertProvider.showComingSoon(); }
     @FXML void handleItemBrowseButton(ActionEvent event) {
-        navigator.navigateTo(ViewType.ITEM_BROWSER);
+        navigator.navigateTo(JFXViewType.ITEM_BROWSER);
     }
     @FXML void handleOfferButton(ActionEvent event) {
-        navigator.navigateTo(ViewType.MY_OFFERS);
+        navigator.navigateTo(JFXViewType.MY_OFFERS);
     }
     @FXML void handleBarterButton(ActionEvent event) {
-        navigator.navigateTo(ViewType.MY_BARTERS);
+        navigator.navigateTo(JFXViewType.MY_BARTERS);
     }
 
     public void update(boolean enable){
@@ -46,10 +45,10 @@ public class JFXSidebarController {
 
     public void init(){
         this.update(false);
-        refreshCurrentButton(ViewType.ITEM_BROWSER);
+        refreshCurrentButton(JFXViewType.ITEM_BROWSER);
     }
 
-    public void refreshCurrentButton(ViewType viewType) {
+    public void refreshCurrentButton(JFXViewType viewType) {
             switch (viewType) {
                 case ITEM_BROWSER:
                     this.itemBrowseButton.setDisable(true);

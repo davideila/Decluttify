@@ -7,7 +7,6 @@ import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +24,9 @@ public class JFXMyBartersController extends JFXGraphicController {
     @FXML ListView<BarterBean> barterList;
 
     public JFXMyBartersController(Navigator navigator, SessionManager sm) {
-        super(navigator, sm, ViewType.MY_BARTERS);
+        super(navigator, sm, JFXViewType.MY_BARTERS);
         this.manageBarterController = new ManageBarterController(sessionManager);
+        this.setInSidebar(true);
     }
 
     @Override

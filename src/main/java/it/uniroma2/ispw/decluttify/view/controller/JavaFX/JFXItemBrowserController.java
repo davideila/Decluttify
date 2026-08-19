@@ -4,7 +4,6 @@ import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +26,8 @@ public class JFXItemBrowserController extends JFXGraphicController {
     private ObservableList<PreviewItemBean> items = FXCollections.observableArrayList();  //TODO
 
     public JFXItemBrowserController(Navigator navigator, SessionManager sm) {
-        super(navigator, sm, ViewType.ITEM_BROWSER);
+        super(navigator, sm, JFXViewType.ITEM_BROWSER);
+        this.setInSidebar(true);
         this.visualizeItemController = new VisualizeItemController();
     }
 
@@ -75,7 +75,7 @@ public class JFXItemBrowserController extends JFXGraphicController {
         // Item tile click handler
         itemButton.setOnAction(event -> {
             try {
-                this.navigator.navigateTo(ViewType.ITEM_DETAILS, item);
+                this.navigator.navigateTo(JFXViewType.ITEM_DETAILS, item);
             }catch(Exception e){
                 this.handleException(e);
             }
@@ -84,7 +84,7 @@ public class JFXItemBrowserController extends JFXGraphicController {
         //Item owner click handler
         itemOwnerButton.setOnAction(event -> {
             try {
-                //this.navigator.navigateTo(ViewType.USER_DETAILS, selectedUser.getOwner());
+                //this.navigator.navigateTo(JFXViewType.USER_DETAILS, selectedUser.getOwner());
             }catch(Exception e){
                 this.handleException(e);
             }

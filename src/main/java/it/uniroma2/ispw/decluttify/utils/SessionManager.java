@@ -2,13 +2,13 @@ package it.uniroma2.ispw.decluttify.utils;
 
 import it.uniroma2.ispw.decluttify.bean.NotificationBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
-import it.uniroma2.ispw.decluttify.patterns.Observer.Subject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SessionManager extends Subject {
+public class SessionManager extends SessionSubject {
     private UserBean loggedUser;
     private boolean loggedIn;
     private List<NotificationBean>  notifications = new ArrayList<>();

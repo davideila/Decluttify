@@ -5,7 +5,6 @@ import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,9 +39,10 @@ public class JFXOfferFormController extends JFXGraphicController {
 
 
     public JFXOfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
-        super(navigator, sm, ViewType.OFFER_FORM);
+        super(navigator, sm, JFXViewType.OFFER_FORM);
         this.targetItem = targetItem;
         this.makeBarterController = new MakeOfferController(sm);
+        this.setInSidebar(false);
     }
 
     @Override
@@ -106,8 +106,8 @@ public class JFXOfferFormController extends JFXGraphicController {
             this.handleException(e);//TODO
         }
         if (result) {
-            AlertProvider.showInfo("Success", "Offer submitted!");
-            navigator.navigateTo(ViewType.MY_OFFERS);
+            AlertProvider.showInfo("Success", "OfferStateMachine submitted!");
+            navigator.navigateTo(JFXViewType.MY_OFFERS);
         }
     }
 

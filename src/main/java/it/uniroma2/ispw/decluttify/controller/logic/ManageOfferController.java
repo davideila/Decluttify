@@ -83,7 +83,7 @@ public class ManageOfferController {
         }
         offer.setItemOffered(itemDAO.retrieveItemsByIds(itemsOfferedIds));
 
-        //Call method accept of Model instance Offer
+        //Call method accept of Model instance OfferStateMachine
         Barter barter = offer.accept();
 
         //Get colliding offers from persistence and cancel them on Model entity level
@@ -106,7 +106,7 @@ public class ManageOfferController {
         barterDAO.createBarter(barter);
 
         //Save notification on Persistence
-        notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "Offer Accepted!", "OFFER"));
+        notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "OfferStateMachine Accepted!", "OFFER"));
 
     }
 
@@ -126,7 +126,7 @@ public class ManageOfferController {
         offer.reject();
         offerDAO.rejectOffer(offer);
 
-        notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "Offer Rejected!", "OFFER"));
+        notificationDAO.createNotification(new Notification(offer.getOfferer().getUsername(), "OfferStateMachine Rejected!", "OFFER"));
     }
 
 }

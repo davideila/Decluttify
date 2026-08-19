@@ -5,7 +5,6 @@ import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
@@ -13,24 +12,15 @@ public abstract class JFXGraphicController {
     protected boolean isInSidebar;
     protected Navigator navigator;
     protected SessionManager sessionManager;
-    protected ViewType viewType;
+    protected JFXViewType viewType;
 
     @FXML
     Parent rootView;
 
-    public JFXGraphicController(Navigator navigator, SessionManager sm, ViewType viewType) {
+    public JFXGraphicController(Navigator navigator, SessionManager sm, JFXViewType viewType) {
         this.navigator = navigator;
         this.sessionManager = sm;
         this.viewType = viewType;
-        switch(viewType) {
-            case OFFER_FORM -> this.isInSidebar = false;
-            case MY_BARTERS ->  this.isInSidebar = true;
-            case LOGIN ->  this.isInSidebar = false;
-            case MY_OFFERS ->   this.isInSidebar = true;
-            case ITEM_DETAILS ->   this.isInSidebar = false;
-            case ITEM_BROWSER ->   this.isInSidebar = true;
-            case null, default ->  this.isInSidebar = false; //exception
-        }
     }
 
     public void init(){};
@@ -55,7 +45,7 @@ public abstract class JFXGraphicController {
         e.printStackTrace();
     }
 
-    public ViewType getViewType() {
+    public JFXViewType getViewType() {
         return viewType;
     }
 }

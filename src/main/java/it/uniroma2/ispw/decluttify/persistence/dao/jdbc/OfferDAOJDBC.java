@@ -58,7 +58,7 @@ public class OfferDAOJDBC extends OfferDAO {
             int rowsAffected;
             rowsAffected = UpdateQueries.updateOfferStatus(connection, offer.getId(), offer.getStatus().name());
             if (rowsAffected == 0) {
-                throw new SQLException("Accept failed: Offer ID " + offer.getId() + " not found or status changed.");
+                throw new SQLException("Accept failed: OfferStateMachine ID " + offer.getId() + " not found or status changed.");
             }
 
             // Update Involved Items
@@ -79,7 +79,7 @@ public class OfferDAOJDBC extends OfferDAO {
                 for (Offer coll : collidingOffers) {
                     rowsAffected = UpdateQueries.updateOfferStatus(connection, coll.getId(), coll.getStatus().name());
                     if (rowsAffected == 0) {
-                        throw new SQLException("Collision rejection failed: Offer ID " + coll.getId());
+                        throw new SQLException("Collision rejection failed: OfferStateMachine ID " + coll.getId());
                     }
                     rowsAffected = UpdateQueries.updateItemNumOffer(connection, coll.getItemRequested().getId(), -1);
                     if (rowsAffected == 0) {
@@ -102,7 +102,7 @@ public class OfferDAOJDBC extends OfferDAO {
             } catch (SQLException rollbackEx) {
                 throw new DAOException("Error: Transaction rollback failed.", rollbackEx);
             }
-            throw new DAOException("Database error during transaction: Offer acceptance and collision updates failed.", e);
+            throw new DAOException("Database error during transaction: OfferStateMachine acceptance and collision updates failed.", e);
         } finally {
             try {
                 if (connection != null) connection.setAutoCommit(true);
@@ -186,7 +186,7 @@ public class OfferDAOJDBC extends OfferDAO {
             int rowsAffected;
             rowsAffected = UpdateQueries.updateOfferStatus(connection, offer.getId(), offer.getStatus().name());
             if (rowsAffected == 0) {
-                throw new SQLException("Offer update failed: offer with ID " + offer.getId() + " not found.");
+                throw new SQLException("OfferStateMachine update failed: offer with ID " + offer.getId() + " not found.");
             }
             rowsAffected = UpdateQueries.updateItemNumOffer(connection, offer.getItemRequested().getId(), -1);
             if (rowsAffected == 0) {

@@ -9,47 +9,47 @@ public class TestLoginController {
 /*
     @Test
     public void testLoginCorrect(){
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         boolean result = loginController.login("dave", "dave");
         assertTrue(result);
     }
 
     @Test
     public void testLoginIncorrect(){
-       // LoginController loginController = new LoginController();
+       // CLILoginController loginController = new CLILoginController();
         boolean result = loginController.login("dave", "wrong");
         assertFalse(result);
     }
 
     @Test
     public void testLoginUsernameNull(){
-       // LoginController loginController = new LoginController();
+       // CLILoginController loginController = new CLILoginController();
         //boolean result = loginController.login(null, "dave");
        // assertFalse(result);
     }
 
     @Test
     public void testLoginPasswordNull(){
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         //assertThrows(ModelException.class, () -> {loginController.login("dave", null);});
     }
 
     @Test
     public void testLoginPasswordEmpty(){
-        LoginController loginController = new LoginController();
+        CLILoginController loginController = new CLILoginController();
         assertThrows(ModelException.class, () -> {loginController.login("dave", "");});
     }
 
     @Test
     public void testLoginUsernameEmpty(){
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         //boolean result = loginController.login("", "pwd");
         //assertFalse(result);
     }
 
     @Test
     public void testLogoutIfLoggedIn(){
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         //loginController.login("dave", "dave");
         //loginController.logout();
         //assertFalse(SessionManager.getInstance().isLoggedIn());
@@ -57,7 +57,7 @@ public class TestLoginController {
 
     @Test
     public void testLogoutIfLoggedOut(){
-        //LoginController loginController = new LoginController();
+        //CLILoginController loginController = new CLILoginController();
         //loginController.logout();
         //assertFalse(SessionManager.getInstance().isLoggedIn());
     }*/

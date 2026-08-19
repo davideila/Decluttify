@@ -1,8 +1,8 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.patterns.State.Offer.Events;
-import it.uniroma2.ispw.decluttify.patterns.State.Offer.StateMachineImpl;
-import it.uniroma2.ispw.decluttify.patterns.State.StateMachine;
+import it.uniroma2.ispw.decluttify.model.OfferStateMachine.Events;
+import it.uniroma2.ispw.decluttify.model.OfferStateMachine.StateMachineImpl;
+import it.uniroma2.ispw.decluttify.model.OfferStateMachine.StateMachine;
 import java.util.List;
 
 public class Offer {

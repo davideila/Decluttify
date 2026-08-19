@@ -2,7 +2,7 @@ package it.uniroma2.ispw.decluttify.bean;
 
 public class FullItemBean extends PreviewItemBean{
 
-    //This class is used for the representation of a detailed item information, needed for the Visualize Item Details View. It extends the class for a summarized item view, used in the item browser view
+    //This class is used for the representation of a detailed item information, needed for the Visualize Item Details CLIView. It extends the class for a summarized item view, used in the item browser view
 
     private String location;
     private String creationDate;

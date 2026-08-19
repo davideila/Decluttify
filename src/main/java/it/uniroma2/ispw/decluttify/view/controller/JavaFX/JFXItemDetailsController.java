@@ -5,12 +5,9 @@ import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
-import it.uniroma2.ispw.decluttify.exception.LoginException;
-import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class JFXItemDetailsController extends JFXGraphicController implements Observer {
+public class JFXItemDetailsController extends JFXGraphicController implements SessionObserver {
 
     private PreviewItemBean visualizedItem;
 
@@ -44,7 +41,7 @@ public class JFXItemDetailsController extends JFXGraphicController implements Ob
 
 
     public JFXItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
-        super(navigator, sm, ViewType.ITEM_DETAILS);
+        super(navigator, sm, JFXViewType.ITEM_DETAILS);
         this.sessionManager = sm;
         this.isInSidebar = false;
         this.sessionManager.attach(this);
@@ -64,11 +61,7 @@ public class JFXItemDetailsController extends JFXGraphicController implements Ob
     }
 
     public void handleMakeOffer(ActionEvent actionEvent){
-        try {
-            navigator.navigateTo(ViewType.OFFER_FORM, visualizedItem);
-        } catch (LoginException e) {
-            navigator.navigateTo(ViewType.LOGIN);
-        }
+        navigator.navigateTo(JFXViewType.OFFER_FORM, visualizedItem);
     }
 
     public void loadItemDetails(PreviewItemBean pib){

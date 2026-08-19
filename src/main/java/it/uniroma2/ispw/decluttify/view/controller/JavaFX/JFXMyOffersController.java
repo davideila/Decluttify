@@ -5,7 +5,6 @@ import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,12 +21,12 @@ public class JFXMyOffersController extends JFXGraphicController {
     @FXML private ListView<OfferBean> listViewSent;
 
     public JFXMyOffersController(Navigator navigator, SessionManager sm) {
-        super(navigator, sm, ViewType.MY_OFFERS);
+        super(navigator, sm, JFXViewType.MY_OFFERS);
         this.manageOfferController = new ManageOfferController(sm);
+        this.setInSidebar(true);
     }
 
     public void init() {
-        this.setInSidebar(true);
         List<OfferBean> received = List.of();
         this.listViewReceived.setCellFactory(lv -> new OfferListCell(true));
         this.listViewSent.setCellFactory(lv -> new OfferListCell(false));

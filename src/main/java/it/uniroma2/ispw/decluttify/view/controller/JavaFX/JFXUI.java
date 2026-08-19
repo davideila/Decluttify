@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
-import it.uniroma2.ispw.decluttify.patterns.Observer.Observer;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -16,14 +15,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class JFXUI implements Observer {
+public class JFXUI implements SessionObserver {
 
     private static final double RESIZE_CONSTANT = 0.75;
-    private final String ITEM_BROWSER_FXML = "/it/uniroma2/ispw/decluttify/views/ItemBrowserView.fxml";
-    private final String ITEM_DETAILS_FXML = "/it/uniroma2/ispw/decluttify/views/ItemDetailsView.fxml";
-    private final String OFFER_FORM_FXML = "/it/uniroma2/ispw/decluttify/views/OfferFormView.fxml";
-    private final String MY_OFFERS_FXML = "/it/uniroma2/ispw/decluttify/views/MyOffersView.fxml";
-    private final String MY_BARTERS_FXML = "/it/uniroma2/ispw/decluttify/views/MyBartersView.fxml";
     private final String HEADER_BAR_FXML = "/it/uniroma2/ispw/decluttify/views/HeaderBar.fxml";
     private final String SIDE_BAR_FXML = "/it/uniroma2/ispw/decluttify/views/SideBar.fxml";
     private final String JFXUI_FXML = "/it/uniroma2/ispw/decluttify/views/JFXUI.fxml";
@@ -70,26 +64,7 @@ public class JFXUI implements Observer {
     }
 
     void loadViewAndSetController(JFXGraphicController graphicController) {
-        FXMLLoader loader;
-        switch(graphicController.getViewType()) {
-            case ITEM_BROWSER:
-                loader = new FXMLLoader(getClass().getResource(ITEM_BROWSER_FXML));
-                break;
-            case ITEM_DETAILS:
-                loader = new FXMLLoader(getClass().getResource(ITEM_DETAILS_FXML));
-                break;
-            case OFFER_FORM:
-                loader = new FXMLLoader(getClass().getResource(OFFER_FORM_FXML));
-                break;
-            case MY_OFFERS:
-                loader = new FXMLLoader(getClass().getResource(MY_OFFERS_FXML));
-                break;
-            case MY_BARTERS:
-                loader = new FXMLLoader(getClass().getResource(MY_BARTERS_FXML));
-                break;
-            case null, default:
-                throw new RuntimeException("Cannot load view: view type unknown");
-        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(graphicController.getViewType().getFxmlPath()));
         loader.setController(graphicController);
         sidebarController.refreshCurrentButton(graphicController.getViewType());
         sidebarController.update(sessionManager.isLoggedIn());

@@ -4,7 +4,6 @@ import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import it.uniroma2.ispw.decluttify.view.controller.ViewType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,15 +11,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
-public class JFXLoginPopupController extends JFXGraphicController {
+public class JFXLoginPopupController{
 
-    private static final Logger log = LoggerFactory.getLogger(JFXLoginPopupController.class);
-    private final LoginController loginController = new LoginController(sessionManager);;
+    private LoginController loginController;
 
+    private Navigator navigator;
+    private SessionManager sessionManager;
     @FXML
     TextField usernameField;
     @FXML
@@ -29,7 +27,8 @@ public class JFXLoginPopupController extends JFXGraphicController {
     Label failedLogin;
 
     public JFXLoginPopupController(Navigator navigator, SessionManager sm) {
-        super(navigator, sm, ViewType.LOGIN);
+        this.navigator = navigator;
+        new LoginController(sessionManager);
     }
 
     public void onActionSignInButton(ActionEvent actionEvent) {
@@ -38,11 +37,11 @@ public class JFXLoginPopupController extends JFXGraphicController {
         boolean loginRes = false;
         try{
         loginRes = loginController.login(username, password);
-                if(sessionManager.isLoginLocked()) {
-                    AlertProvider.showInfo("Warning", "Too many failed attempts. Try again later.");
-                }
+            if(sessionManager.isLoginLocked()) {
+                AlertProvider.showInfo("Warning", "Too many failed attempts. Try again later.");
+            }
         }catch(Exception e){
-            this.handleException(e);
+            AlertProvider.showInfo("Error", "Login failed.");
         }
 
         if (loginRes) {

@@ -56,7 +56,7 @@ public class JFXHeaderBarController {
             popupStage.setTitle("Login");
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML));
-                JFXLoginPopupController popupController = new JFXLoginPopupController(navigator, sessionManager);
+                JFXLoginPopupController popupController = new JFXLoginPopupController(sessionManager, loginController);
                 loader.setController(popupController);
                 Parent root = loader.load();
                 popupStage.setScene(new Scene(root));
@@ -71,7 +71,7 @@ public class JFXHeaderBarController {
         }
         else{
             if (event != null){
-                AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+                AlertProvider.showComingSoon();
             }
         }
     }
@@ -83,7 +83,7 @@ public class JFXHeaderBarController {
            this.navigator.reset();
         }
         else{
-            AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+            AlertProvider.showComingSoon();
         }
     }
 
@@ -105,7 +105,7 @@ public class JFXHeaderBarController {
     }
 
     public void handleNotificationClick(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+        AlertProvider.showComingSoon();
     }
 
 }

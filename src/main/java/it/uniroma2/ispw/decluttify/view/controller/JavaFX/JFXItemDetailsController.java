@@ -18,13 +18,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class JFXItemDetailsController extends JFXGraphicController implements SessionObserver {
 
     private PreviewItemBean visualizedItem;
-
+    private final VisualizeItemController visualizeItemController;
     @FXML Button barterButton;
     @FXML Circle dot1;
     @FXML Circle dot2;
@@ -43,61 +42,61 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
     public JFXItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
         super(navigator, sm, JFXViewType.ITEM_DETAILS);
         this.sessionManager = sm;
-        this.isInSidebar = false;
         this.sessionManager.attach(this);
         this.visualizedItem = selectedItem;
-    }
-
-    @Override
-    public void update() {
-        this.refresh(this.visualizedItem);
+        this.visualizeItemController = new VisualizeItemController();
     }
 
     @Override
     public void init(){
         // Show the information based on the initial bean with the partial information passed and starts an asynchronous call to get the full item information from persistence
-        this.loadItemDetails(visualizedItem);
-        this.refresh(visualizedItem);
+        this.showItemDetails();
+        this.loadItemDetailsAsync();
+        this.update();
     }
 
-    public void handleMakeOffer(ActionEvent actionEvent){
-        navigator.navigateTo(JFXViewType.OFFER_FORM, visualizedItem);
-    }
+    private void showItemDetails() {
+        // Data always ready (PreviewItemBean)
+        this.itemNameLabel.setText(this.visualizedItem.getName());
+        this.itemDescriptionLabel.setText(this.visualizedItem.getDescription());
+        this.itemConditionLabel.setText(this.visualizedItem.getCondition());
+        this.ownerButton.setText(this.visualizedItem.getOwner());
+        this.loadImage(this.visualizedItem.getMainImagePath());
 
-    public void loadItemDetails(PreviewItemBean pib){
-        this.itemNameLabel.setText(pib.getName());
-        this.itemDescriptionLabel.setText(pib.getDescription());
-        this.itemConditionLabel.setText(pib.getCondition());
-        this.ownerButton.setText(pib.getOwner());
-        try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + pib.getImages().getFirst())) {
-            Image image = new Image(is);
-            this.mainImageView.setImage(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-            mainImageView.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
+        // Data completed after asynchronous call (FullItemBean)
+        if (this.visualizedItem instanceof FullItemBean fullItem) {
+            this.itemCreationDateLabel.setText(fullItem.getCreationDate());
+            this.itemLocationLabel.setText(fullItem.getLocation());
+            this.itemNumOfferLabel.setText(String.valueOf(fullItem.getNumOffers()));
+            this.setupPaginationDots(fullItem.getImages().size());
         }
+    }
 
+    private void loadImage(String imagePath) {
+        if (imagePath == null) return;
+        try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + imagePath)) {
+            this.mainImageView.setImage(new Image(is));
+        } catch (Exception e) {
+            this.mainImageView.setImage(new Image(System.getProperty("user.dir") + "\\placeholder_item.png"));
+        }
+    }
+
+    private void loadItemDetailsAsync(){
         // using Task for background processing in JAVAFX as best practice (https://docs.oracle.com/javafx/2/best_practices/jfxpub-best_practices.htm)
         // The item details gets initially filled with the previewBean, meanwhile the background task fetches the full item data
         Task<FullItemBean> getFullItemTask = new Task<>() {
             @Override
             protected FullItemBean call() {
                 FullItemBean fib;
-                VisualizeItemController vic = new VisualizeItemController();
-                fib = vic.loadItemDetails(pib);
+                fib = visualizeItemController.loadItemDetails(visualizedItem);
                 return fib;
             }
         };
 
-        // Complete the UI if the call is successfull
+        // Refresh the UI with complete data if the call is successfull
         getFullItemTask.setOnSucceeded(event -> {
-            FullItemBean fullData = getFullItemTask.getValue();
-            this.itemCreationDateLabel.setText(fullData.getCreationDate());
-            this.itemLocationLabel.setText(fullData.getLocation());
-            this.itemNumOfferLabel.setText(String.valueOf(fullData.getNumOffers()));
-            //TODO this.ownerRatingLabel.setText(this.formatRating(fullData.getRating()));
-            this.setupPaginationDots(fullData.getImages().size());
-            this.visualizedItem = fullData;
+            this.visualizedItem = getFullItemTask.getValue();
+            this.showItemDetails();
         });
 
         // Exception handling if fails
@@ -119,19 +118,20 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
         t.start();
     }
 
-    public void refresh(PreviewItemBean data) {
-        if (sessionManager.getLoggedUser() != null && data.getOwner() != null) {
-            if (data.getOwner().equals(sessionManager.getLoggedUser().getUsername())) {
+    @Override
+    public void update() {
+        if (sessionManager.getLoggedUser() != null && this.visualizedItem.getOwner() != null) {
+            if (this.visualizedItem.getOwner().equals(sessionManager.getLoggedUser().getUsername())) {
                 this.barterButton.setText("EDIT ITEM");
                 this.barterButton.setOnAction(event -> {
                     try {
-                        handleEditItem(data);
+                        handleEditItem(this.visualizedItem);
                     }catch(Exception e){
                         this.handleException(e);
                     }
                 });
             } else {
-                this.barterButton.setText("PROPOSE BARTER");
+                this.barterButton.setText("MAKE OFFER");
                 this.barterButton.setOnAction(event -> {
                     try {
                         handleMakeOffer(event);
@@ -140,10 +140,8 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
                     }
                 });
             }
-        }
+        };
     }
-
-    // Private methods the controller needs to adjust the UI
 
     private String formatRating(double rating) {
         StringBuilder sb = new StringBuilder();
@@ -163,7 +161,6 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
     }
 
     private void setupPaginationDots(int numImages) {
-
         dot1.setVisible(false);
         dot1.setManaged(false); // managed(false) = no space used by dot on layout
         dot2.setVisible(false);
@@ -186,29 +183,24 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
         }
     }
 
-    //TBD
-    private void handleEditItem(PreviewItemBean item) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    // On action events FXML buttons
+    public void handleMakeOffer(ActionEvent actionEvent){
+        navigator.navigateTo(JFXViewType.OFFER_FORM, visualizedItem);
     }
 
-    public void handleOwnerClick(ActionEvent actionEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    public void handleEditItem(PreviewItemBean item) {AlertProvider.showComingSoon();}
+    public void handleOwnerClick(ActionEvent event) { AlertProvider.showComingSoon(); }
+    public void handleChatClick(ActionEvent event) { AlertProvider.showComingSoon(); }
+
+    public void handleDot1(MouseEvent event) {
+        this.loadImage(this.visualizedItem.getMainImagePath());
     }
 
-    public void handleChatClick(ActionEvent actionEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
+    public void handleDot2(MouseEvent event) {
+        this.loadImage(((FullItemBean)this.visualizedItem).getImages().get(1));
     }
 
-    public void handleDot1(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleDot2(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-    }
-
-    public void handleDot3(MouseEvent mouseEvent) {
-        AlertProvider.showInfo("Feature coming soon", "This feature is not yet available on this version");
-
+    public void handleDot3(MouseEvent event) {
+        this.loadImage(((FullItemBean) this.visualizedItem).getImages().get(2));
     }
 }

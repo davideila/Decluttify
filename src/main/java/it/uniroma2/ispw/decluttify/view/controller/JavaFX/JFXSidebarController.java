@@ -17,7 +17,7 @@ public class JFXSidebarController {
     @FXML private Button donateButton;
     @FXML private BorderPane borderPane;
     private static final String ACTIVE_BUTTON_STYLE =
-            "-fx-opacity: 1.0; -fx-background-color: #4CAF50; -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 10, 0, 0, 0);";
+            "-fx-opacity: 1.0; -fx-background-color: #3498db; -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 10, 0, 0, 0);";
 
     public JFXSidebarController(Navigator navigator) {
         this.navigator = navigator;

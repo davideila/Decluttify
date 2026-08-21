@@ -70,6 +70,7 @@ public class JFXUI implements SessionObserver {
         sidebarController.update(sessionManager.isLoggedIn());
         try {
             Parent nextView = loader.load();
+            graphicController.setView(nextView);
             borderPane.setCenter(nextView);
         } catch (IOException e) {
             e.printStackTrace();

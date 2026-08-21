@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
+import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -32,7 +33,7 @@ public class JFXGraphicControllerFactory {
         switch (viewType)
         {
             case ITEM_DETAILS: return new JFXItemDetailsController(navigator, sessionManager, (PreviewItemBean) data);
-            case OFFER_FORM: return new JFXOfferFormController(navigator, sessionManager, (PreviewItemBean) data);
+            case OFFER_FORM: return new JFXOfferFormController(navigator, sessionManager, (FullItemBean) data);
             default: throw new Exception("Invalid view type : " + viewType);
         }
     }

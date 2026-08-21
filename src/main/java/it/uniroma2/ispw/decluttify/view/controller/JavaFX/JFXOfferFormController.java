@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
+import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
@@ -28,7 +29,7 @@ import static java.lang.Thread.sleep;
 public class JFXOfferFormController extends JFXGraphicController {
 
     private final MakeOfferController makeBarterController;
-    private PreviewItemBean targetItem;
+    private FullItemBean targetItem;
     private List<PreviewItemBean> offeredItems = new ArrayList<>();
 
     @FXML private ImageView requestedItemImage;
@@ -38,11 +39,10 @@ public class JFXOfferFormController extends JFXGraphicController {
     @FXML private Button confirmButton;
 
 
-    public JFXOfferFormController(Navigator navigator, SessionManager sm, PreviewItemBean targetItem) {
+    public JFXOfferFormController(Navigator navigator, SessionManager sm, FullItemBean targetItem) {
         super(navigator, sm, JFXViewType.OFFER_FORM);
         this.targetItem = targetItem;
         this.makeBarterController = new MakeOfferController(sm);
-        this.setInSidebar(false);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class JFXOfferFormController extends JFXGraphicController {
 
     // Method for the button to add item to an offer. It opens a popup for the item to choose on logged user inventory
     @FXML
-    private void handleAddMyItem() {
+    public void handleAddMyItem() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/InventoryPopup.fxml"));
             Parent root = loader.load();
@@ -97,7 +97,7 @@ public class JFXOfferFormController extends JFXGraphicController {
 
     // Button to submit the barter proposal
     @FXML
-    private void handleSubmit(){
+    public void handleSubmit(){
         boolean result = false;
         try{
             makeBarterController.submitOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
@@ -112,7 +112,7 @@ public class JFXOfferFormController extends JFXGraphicController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    public void handleCancel(ActionEvent event) {
         navigator.navigateBack();
     }
 

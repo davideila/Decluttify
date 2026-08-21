@@ -23,7 +23,6 @@ public class JFXMyOffersController extends JFXGraphicController {
     public JFXMyOffersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, JFXViewType.MY_OFFERS);
         this.manageOfferController = new ManageOfferController(sm);
-        this.setInSidebar(true);
     }
 
     public void init() {

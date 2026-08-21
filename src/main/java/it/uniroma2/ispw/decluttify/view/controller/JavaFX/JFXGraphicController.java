@@ -5,17 +5,13 @@ import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
 public abstract class JFXGraphicController {
-    protected boolean isInSidebar;
     protected Navigator navigator;
     protected SessionManager sessionManager;
     protected JFXViewType viewType;
-
-    @FXML
-    Parent rootView;
+    public Parent rootView;
 
     public JFXGraphicController(Navigator navigator, SessionManager sm, JFXViewType viewType) {
         this.navigator = navigator;
@@ -23,15 +19,15 @@ public abstract class JFXGraphicController {
         this.viewType = viewType;
     }
 
-    public void init(){};
+    public abstract void init();
 
     // Get the view from the controller
     public Parent getView() {
         return rootView;
     }
 
-    public void setInSidebar(boolean isInSidebar) {
-        this.isInSidebar = isInSidebar;
+    public void setView(Parent view){
+        rootView = view;
     }
 
     protected void handleException(Exception e) {

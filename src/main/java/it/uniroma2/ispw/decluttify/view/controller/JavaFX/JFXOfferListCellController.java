@@ -15,17 +15,18 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import java.util.List;
 
-public class JFXOfferListCellController extends JFXGraphicController {
+public class JFXOfferListCellController{
 
-    private final ManageOfferController manageOfferController;
+    private Navigator navigator;
+    private ManageOfferController manageOfferController;
     @FXML Label labelUserLeft;
     @FXML FlowPane flowPaneLeft;
     @FXML Label labelUserRight;
     @FXML FlowPane flowPaneRight;
     private OfferBean offerBean;
 
-    public JFXOfferListCellController(Navigator navigator, SessionManager sm) {
-        super(navigator, sm, null);
+    public JFXOfferListCellController(Navigator navigator, SessionManager sessionManager) {
+        this.navigator = navigator;
         this.manageOfferController = new ManageOfferController(sessionManager);
     }
 
@@ -75,7 +76,7 @@ public class JFXOfferListCellController extends JFXGraphicController {
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
         imageView.setPreserveRatio(true);
-        // imageView.setImage(item.getImage()); // Se hai l'immagine nel bean
+        // imageView.setImage(item.getMainImagePath()); // Se hai l'immagine nel bean
 
         // Condition Label
         Label condLabel = new Label(itemBean.getCondition());
@@ -89,7 +90,7 @@ public class JFXOfferListCellController extends JFXGraphicController {
         try {
             manageOfferController.acceptOffer(this.offerBean);
         }catch(Exception e){
-            this.handleException(e);
+            //this.handleException(e);
         }
         AlertProvider.showInfo("Success!", "OfferStateMachine has been accepted");
         navigator.navigateTo(JFXViewType.MY_BARTERS);
@@ -100,7 +101,7 @@ public class JFXOfferListCellController extends JFXGraphicController {
         try {
             manageOfferController.rejectOffer(this.offerBean);
         }catch(Exception e){
-            this.handleException(e);
+            //this.handleException(e);
         }
         AlertProvider.showInfo("Success!", "OfferStateMachine has been rejected");
     }

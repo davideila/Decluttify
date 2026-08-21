@@ -26,7 +26,6 @@ public class JFXMyBartersController extends JFXGraphicController {
     public JFXMyBartersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, JFXViewType.MY_BARTERS);
         this.manageBarterController = new ManageBarterController(sessionManager);
-        this.setInSidebar(true);
     }
 
     @Override

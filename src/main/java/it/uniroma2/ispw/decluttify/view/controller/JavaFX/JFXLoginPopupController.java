@@ -16,8 +16,6 @@ import javafx.stage.Stage;
 public class JFXLoginPopupController{
 
     private LoginController loginController;
-
-    private Navigator navigator;
     private SessionManager sessionManager;
     @FXML
     TextField usernameField;
@@ -26,9 +24,9 @@ public class JFXLoginPopupController{
     @FXML
     Label failedLogin;
 
-    public JFXLoginPopupController(Navigator navigator, SessionManager sm) {
-        this.navigator = navigator;
-        new LoginController(sessionManager);
+    public JFXLoginPopupController(SessionManager sm, LoginController loginController) {
+        this.loginController = loginController;
+        this.sessionManager = sm;
     }
 
     public void onActionSignInButton(ActionEvent actionEvent) {
@@ -36,7 +34,7 @@ public class JFXLoginPopupController{
         String password = passwordField.getText();
         boolean loginRes = false;
         try{
-        loginRes = loginController.login(username, password);
+            loginRes = loginController.login(username, password);
             if(sessionManager.isLoginLocked()) {
                 AlertProvider.showInfo("Warning", "Too many failed attempts. Try again later.");
             }

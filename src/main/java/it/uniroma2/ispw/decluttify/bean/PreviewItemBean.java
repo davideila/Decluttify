@@ -1,7 +1,5 @@
 package it.uniroma2.ispw.decluttify.bean;
 
-import java.util.ArrayList;
-
 public class PreviewItemBean {
 
     // this class is used for a representation of a previewed item, as it needs only limited information to show to users
@@ -10,20 +8,20 @@ public class PreviewItemBean {
     private String name;
     private String description;
     private String owner;
-    private ArrayList<String> images;
+    private String mainImagePath;
     private String category;
     private String condition;
 
     public PreviewItemBean() {
     }
 
-    public PreviewItemBean(int id, String name, String description, String owner, ArrayList<String> images,
+    public PreviewItemBean(int id, String name, String description, String owner, String imagePath,
                            String category, String condition) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.owner = owner;
-        this.setImages(images);
+        this.mainImagePath = imagePath;
         this.category = category;
         this.condition = condition;
     }
@@ -65,26 +63,11 @@ public class PreviewItemBean {
         this.owner = owner;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
+    public String getMainImagePath() {
+        return mainImagePath;
     }
 
-    public void setImages(ArrayList<String> images) {
-        for (String image : images) {
-            this.addImage(image);
-        }
-    }
-
-    public void addImage(String image) {
-        if (this.getImages() == null) {
-            this.images = new ArrayList<>();
-        }
-        if (this.getImages().size() < 3) {
-            this.getImages().add("uploads/item_images/" + image);
-        } else
-            throw new IllegalArgumentException("Images can't be more than 3"); //mettere exception giusta/////////////////////////////////////////////////
-    }
-
+    public void setMainImage(String mainImagePath) {this.mainImagePath = "uploads/item_images/" + mainImagePath;}
 
     public String getCategory() {
         return category;
@@ -103,7 +86,3 @@ public class PreviewItemBean {
     }
 
 }
-
-
-
-

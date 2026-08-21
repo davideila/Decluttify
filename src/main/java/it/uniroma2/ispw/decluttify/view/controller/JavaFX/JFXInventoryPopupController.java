@@ -93,7 +93,7 @@ public class JFXInventoryPopupController {
                 nameLabel.setText(item.getName());
                 Image image = null;
                 //Get the item image form the uploads folder of the project
-                try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + item.getImages().getFirst())) {
+                try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + item.getMainImagePath())) {
                     image = new Image(is);
                     itemImage.setImage(image);
 

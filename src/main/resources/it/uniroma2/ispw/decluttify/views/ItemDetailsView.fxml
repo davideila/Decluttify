@@ -70,7 +70,7 @@
                     <Separator />
 
                     <HBox spacing="20">
-                        <Button fx:id="barterButton" onAction="#handleMakeOffer" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand; -fx-background-radius: 5;" text="PROPOSE BARTER" />
+                        <Button fx:id="barterButton" onAction="#handleMakeOffer" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand; -fx-background-radius: 5;" text="MAKE OFFER" />
                         <Button onAction="#handleChatClick" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-cursor: hand; -fx-background-radius: 5;" text="CHAT" />
                     </HBox>
                 </VBox>

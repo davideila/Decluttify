@@ -16,14 +16,13 @@ public class BeanConverter {
 
     public static PreviewItemBean toPreviewItemBean(Item item) {
         PreviewItemBean ib = new PreviewItemBean();
-        //TODO
         ib.setId(item.getId());
         ib.setName(item.getName());
         ib.setDescription(item.getDescription());
         ib.setCategory(item.getCategory());
         ib.setCondition(item.getCondition());
         ib.setOwner(item.getOwner().getUsername());
-        ib.setImages(item.getImages());
+        ib.setMainImage(item.getImages().getFirst());
         return ib;
     }
 

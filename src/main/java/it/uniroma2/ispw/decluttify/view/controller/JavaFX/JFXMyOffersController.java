@@ -2,23 +2,22 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
-import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.offerTile.JFXOfferTile;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import java.io.IOException;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 import java.util.List;
 
 public class JFXMyOffersController extends JFXGraphicController {
 
     private final ManageOfferController manageOfferController;
 
-    @FXML private ListView<OfferBean> listViewReceived;
-    @FXML private ListView<OfferBean> listViewSent;
+    @FXML VBox vboxReceivedOffers;
+    @FXML VBox vboxSentOffers;
 
     public JFXMyOffersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, JFXViewType.MY_OFFERS);
@@ -26,55 +25,77 @@ public class JFXMyOffersController extends JFXGraphicController {
     }
 
     public void init() {
-        List<OfferBean> received = List.of();
-        this.listViewReceived.setCellFactory(lv -> new OfferListCell(true));
-        this.listViewSent.setCellFactory(lv -> new OfferListCell(false));
+        List<OfferBean> receivedOffers = List.of();
         try {
-            received = manageOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
+            receivedOffers = manageOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }
-        List<OfferBean> sent = List.of();
+        List<OfferBean> sentOffers = List.of();
         try {
-            sent = manageOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
+            sentOffers = manageOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
         }catch(Exception e){
             this.handleException(e);
         }
-        listViewReceived.getItems().addAll(received);
-        listViewSent.getItems().addAll(sent);
-    }
 
-    // This class is for customizing a list cell in the list view as stated in oracle doc:
-    // https://openjfx.io/javadoc/14/javafx.controls/javafx/scene/control/Cell.html#updateItem(T,boolean)
-    public static class OfferListCell extends ListCell<OfferBean> {
-        private boolean isReceived; // Needed to identify the tab of the offer view
-        private JFXOfferListCellController controller;
-        private Parent root;
-
-        public OfferListCell(boolean isReceived) {
-            this.isReceived = isReceived;
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/uniroma2/ispw/decluttify/views/offer_list_cell.fxml"));
-                root = loader.load();
-                controller = loader.getController();
-            } catch (IOException e) {
-                e.printStackTrace();
-                AlertProvider.showError("System error", "Service not available. Please try again later");
+        this.vboxReceivedOffers.getChildren().clear();
+        this.vboxSentOffers.getChildren().clear();
+        if (receivedOffers.isEmpty()) {
+            this.vboxReceivedOffers.getChildren().add(new Label("You currently have no pending offers received"));
+        }
+        else {
+            for (OfferBean offer : receivedOffers) {
+                JFXOfferTile offerTile = new JFXOfferTile(offer);
+                offerTile.init(true);
+                this.vboxReceivedOffers.getChildren().add(offerTile);
+                Button acceptButton = offerTile.getAcceptButton();
+                Button rejectButton = offerTile.getRejectButton();
+                acceptButton.setOnAction(event -> {
+                    handleAcceptOffer(offer);
+                });
+                rejectButton.setOnAction(event -> {
+                    handleRejectOffer(offer);
+                });
             }
         }
 
-        @Override
-        protected void updateItem(OfferBean offerBean, boolean empty) {
-            super.updateItem(offerBean, empty);
-            if (empty || offerBean == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                // Give data to the new controller of the specific listcell
-                controller.setData(offerBean, isReceived);
-                setGraphic(root);
-
+        if(sentOffers.isEmpty()) {
+            this.vboxSentOffers.getChildren().add(new Label("You currently have no pending offers sent"));
+        }
+        else{
+            for (OfferBean offer : sentOffers) {
+                JFXOfferTile offerTile = new JFXOfferTile(offer);
+                offerTile.init(false);
+                this.vboxSentOffers.getChildren().add(offerTile);
+                Button acceptButton = offerTile.getAcceptButton();
+                Button rejectButton = offerTile.getRejectButton();
+                acceptButton.setOnAction(event -> {
+                    handleAcceptOffer(offer);
+                });
+                rejectButton.setOnAction(event -> {
+                    handleRejectOffer(offer);
+                });
             }
         }
+
     }
+
+    private void handleAcceptOffer(OfferBean offer) {
+        try {
+            manageOfferController.acceptOffer(offer);
+        }catch(Exception e){
+            this.handleException(e);
+        }
+        this.init();
+    }
+
+    private void handleRejectOffer(OfferBean offer){
+        try {
+            manageOfferController.rejectOffer(offer);
+        }catch(Exception e){
+            this.handleException(e);
+        }
+        this.init();
+    }
+
 }

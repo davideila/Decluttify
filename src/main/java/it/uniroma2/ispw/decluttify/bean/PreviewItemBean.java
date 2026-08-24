@@ -8,25 +8,24 @@ public class PreviewItemBean {
     private String name;
     private String description;
     private String owner;
-    private String mainImagePath;
+    private String mainImageName;
     private String category;
     private String condition;
+    private int numOffers;
 
     public PreviewItemBean() {
     }
 
-    public PreviewItemBean(int id, String name, String description, String owner, String imagePath,
-                           String category, String condition) {
+    public PreviewItemBean(int id, String name, String description, String owner, String imageName,
+                           String category, String condition, int numOffers) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.owner = owner;
-        this.mainImagePath = imagePath;
+        this.mainImageName = imageName;
         this.category = category;
         this.condition = condition;
-    }
-
-    public PreviewItemBean(int id, String owner, String name, String description, java.sql.Date creationDate, int category, int condition, int numOffers) {
+        this.numOffers = numOffers;
     }
 
     // --- Getters & Setters ---
@@ -63,11 +62,17 @@ public class PreviewItemBean {
         this.owner = owner;
     }
 
-    public String getMainImagePath() {
-        return mainImagePath;
+    public void setNumOffers(int numOffers) {
+        this.numOffers = numOffers;
     }
 
-    public void setMainImage(String mainImagePath) {this.mainImagePath = "uploads/item_images/" + mainImagePath;}
+    public int getNumOffers() { return numOffers; }
+
+    public String getMainImageName() {
+        return mainImageName;
+    }
+
+    public void setMainImage(String mainImagePath) {this.mainImageName = mainImagePath;}
 
     public String getCategory() {
         return category;

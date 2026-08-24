@@ -15,29 +15,16 @@ public class BeanConverter {
     }
 
     public static PreviewItemBean toPreviewItemBean(Item item) {
-        PreviewItemBean ib = new PreviewItemBean();
-        ib.setId(item.getId());
-        ib.setName(item.getName());
-        ib.setDescription(item.getDescription());
-        ib.setCategory(item.getCategory());
-        ib.setCondition(item.getCondition());
-        ib.setOwner(item.getOwner().getUsername());
-        ib.setMainImage(item.getImages().getFirst());
+        PreviewItemBean ib = new PreviewItemBean(item.getId(), item.getName(), item.getDescription(), item.getOwner().getUsername(),
+                item.getImages().getFirst(), item.getCategory(), item.getCondition(), item.getOffersCounter());
         return ib;
     }
 
     public static FullItemBean toFullItemBean(Item item){
-        FullItemBean ib = new FullItemBean();
-        ib.setId(item.getId());
-        ib.setName(item.getName());
-        ib.setDescription(item.getDescription());
-        ib.setCategory(item.getCategory());
-        ib.setCondition(item.getCondition());
-        ib.setOwner(item.getOwner().getUsername());
+        FullItemBean ib = new FullItemBean(toPreviewItemBean(item));
         ib.setImages(item.getImages());
         ib.setCreationDate(item.getCreationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         ib.setLocation(item.getLocation());
-        ib.setNumOffers(item.getOffersCounter());
         return ib;
     }
 

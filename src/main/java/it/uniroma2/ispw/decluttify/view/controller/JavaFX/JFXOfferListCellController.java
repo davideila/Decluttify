@@ -25,6 +25,9 @@ public class JFXOfferListCellController{
     @FXML FlowPane flowPaneRight;
     private OfferBean offerBean;
 
+    public JFXOfferListCellController() {
+    }
+
     public JFXOfferListCellController(Navigator navigator, SessionManager sessionManager) {
         this.navigator = navigator;
         this.manageOfferController = new ManageOfferController(sessionManager);
@@ -76,7 +79,7 @@ public class JFXOfferListCellController{
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
         imageView.setPreserveRatio(true);
-        // imageView.setImage(item.getMainImagePath()); // Se hai l'immagine nel bean
+        // imageView.setImage(item.getMainImageName()); // Se hai l'immagine nel bean
 
         // Condition Label
         Label condLabel = new Label(itemBean.getCondition());

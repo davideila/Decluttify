@@ -6,6 +6,7 @@ import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
+import it.uniroma2.ispw.decluttify.utils.MediaLoader;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import javafx.concurrent.Task;
@@ -13,16 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 public class JFXItemDetailsController extends JFXGraphicController implements SessionObserver {
 
-    private PreviewItemBean visualizedItem;
+    private FullItemBean visualizedItem;
     private final VisualizeItemController visualizeItemController;
     @FXML Button barterButton;
     @FXML Circle dot1;
@@ -36,14 +34,14 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
     @FXML Label itemNameLabel;
     @FXML Label itemDescriptionLabel;
     @FXML Label itemConditionLabel;
-    @FXML ImageView mainImageView;
+    @FXML ImageView itemImageView;
 
 
     public JFXItemDetailsController(Navigator navigator, SessionManager sm, PreviewItemBean selectedItem) {
         super(navigator, sm, JFXViewType.ITEM_DETAILS);
         this.sessionManager = sm;
         this.sessionManager.attach(this);
-        this.visualizedItem = selectedItem;
+        this.visualizedItem = new FullItemBean(selectedItem);
         this.visualizeItemController = new VisualizeItemController();
     }
 
@@ -61,7 +59,7 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
         this.itemDescriptionLabel.setText(this.visualizedItem.getDescription());
         this.itemConditionLabel.setText(this.visualizedItem.getCondition());
         this.ownerButton.setText(this.visualizedItem.getOwner());
-        this.loadImage(this.visualizedItem.getMainImagePath());
+        this.itemImageView.setImage(MediaLoader.getInstance().loadItemImage(this.visualizedItem.getMainImageName()));
 
         // Data completed after asynchronous call (FullItemBean)
         if (this.visualizedItem instanceof FullItemBean fullItem) {
@@ -69,15 +67,6 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
             this.itemLocationLabel.setText(fullItem.getLocation());
             this.itemNumOfferLabel.setText(String.valueOf(fullItem.getNumOffers()));
             this.setupPaginationDots(fullItem.getImages().size());
-        }
-    }
-
-    private void loadImage(String imagePath) {
-        if (imagePath == null) return;
-        try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + imagePath)) {
-            this.mainImageView.setImage(new Image(is));
-        } catch (Exception e) {
-            this.mainImageView.setImage(new Image(System.getProperty("user.dir") + "\\placeholder_item.png"));
         }
     }
 
@@ -193,14 +182,14 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
     public void handleChatClick(ActionEvent event) { AlertProvider.showComingSoon(); }
 
     public void handleDot1(MouseEvent event) {
-        this.loadImage(this.visualizedItem.getMainImagePath());
+        this.itemImageView.setImage(MediaLoader.getInstance().loadItemImage(this.visualizedItem.getMainImageName()));
     }
 
     public void handleDot2(MouseEvent event) {
-        this.loadImage(((FullItemBean)this.visualizedItem).getImages().get(1));
+        this.itemImageView.setImage(MediaLoader.getInstance().loadItemImage(((FullItemBean)this.visualizedItem).getImages().get(1)));
     }
 
     public void handleDot3(MouseEvent event) {
-        this.loadImage(((FullItemBean) this.visualizedItem).getImages().get(2));
+        this.itemImageView.setImage(MediaLoader.getInstance().loadItemImage(((FullItemBean)this.visualizedItem).getImages().get(2)));
     }
 }

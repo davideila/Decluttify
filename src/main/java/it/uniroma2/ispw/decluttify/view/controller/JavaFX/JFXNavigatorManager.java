@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
+import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -43,6 +44,11 @@ public class JFXNavigatorManager implements Navigator {
         if(checkAuthRequirement((JFXViewType) viewType)){
             triggerLogin();
             if(sessionManager.getLoggedUser() == null || !sessionManager.isLoggedIn()) return;
+            if(JFXViewType.OFFER_FORM == viewType) {
+                if(sessionManager.getLoggedUser().getUsername().equals(((PreviewItemBean) data).getOwner())){
+                    return;
+                }
+            }
         }
         try {
             pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController((JFXViewType) viewType, sessionManager, this, data));

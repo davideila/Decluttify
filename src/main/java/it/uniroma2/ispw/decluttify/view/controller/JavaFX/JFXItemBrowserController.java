@@ -3,20 +3,16 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
+import it.uniroma2.ispw.decluttify.utils.MediaLoader;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,20 +90,7 @@ public class JFXItemBrowserController extends JFXGraphicController {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(140);
         imageView.setFitHeight(140);
-
-        String imagePath = System.getProperty("user.dir") + File.separator + item.getMainImagePath();
-
-        try (InputStream is = new FileInputStream(imagePath)) {
-            imageView.setImage(new Image(is));
-        } catch (IOException e) {
-            //If no image found, then use placeholder
-            String placeholderPath = System.getProperty("user.dir") + File.separator + "placeholder_item.png";
-            try (InputStream is = new FileInputStream(placeholderPath)) {
-                imageView.setImage(new Image(is));
-            } catch (IOException ex) {
-                //if also placeholder image cannot be loaded, then do nothing and leave it empty
-            }
-        }
+        imageView.setImage(MediaLoader.getInstance().loadItemImage(item.getMainImageName()));
         return imageView;
     }
 

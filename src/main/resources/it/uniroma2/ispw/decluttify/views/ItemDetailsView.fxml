@@ -13,7 +13,7 @@
             <HBox alignment="CENTER" spacing="50">
 
                 <VBox alignment="TOP_CENTER" spacing="15">
-                    <ImageView fx:id="mainImageView" fitHeight="400" fitWidth="450" preserveRatio="true" />
+                    <ImageView fx:id="itemImageView" fitHeight="400" fitWidth="450" preserveRatio="true" />
 
                     <HBox alignment="CENTER" spacing="12">
                         <Circle fx:id="dot1" fill="DODGERBLUE" radius="6" stroke="BLACK" strokeType="INSIDE" strokeWidth="0" onMouseClicked="#handleDot1" style="-fx-cursor: hand;" />

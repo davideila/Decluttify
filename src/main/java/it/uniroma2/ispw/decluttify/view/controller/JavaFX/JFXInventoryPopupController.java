@@ -1,111 +1,140 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
+import it.uniroma2.ispw.decluttify.bean.UserBean;
+import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
+import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.itemTile.JFXItemTileInventory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JFXInventoryPopupController {
-    @FXML
-    private ListView<PreviewItemBean> inventoryListView;
-    private JFXOfferFormController callerController;
-    private Stage stage;
+    @FXML private GridPane grid;
+    private List<PreviewItemBean> inventoryItems = new ArrayList<>();
+    private List<JFXItemTileInventory> itemTiles = new ArrayList<>();
+    private boolean confirmed = false;
+    private final int MAX_SELECTIONS = 3;
 
     // This method is to pass data to this object from caller
-    public void setParameters(JFXOfferFormController caller, Stage stage, List<PreviewItemBean> myItems) {
-        this.callerController = caller;
-        this.stage = stage;
-        //calling setCellFactory method for the customized list cell in the list view
-        this.inventoryListView.setCellFactory(lv -> new InventoryListCell());
-        this.inventoryListView.getItems().addAll(myItems);
+    public void init(MakeOfferController makeOfferController, UserBean user, List<PreviewItemBean> alreadySelectedItems) {
+        if(inventoryItems.isEmpty()) {
+            this.inventoryItems.addAll(makeOfferController.loadUserInventory(user));
+        }
+        populateGrid();
+        for(PreviewItemBean item : alreadySelectedItems) {
+            for(JFXItemTileInventory tile : itemTiles) {
+                if (item.getId() == tile.getItem().getId()){
+                    if(!isSelectionLimitReached()) {
+                        tile.setSelected(true);
+                    }
+                }
+                else{
+                    tile.setSelected(false);
+                }
+            }
+        }
+        this.confirmed = false;
     }
 
-    @FXML
-    private void handleSelectItem() {
-        PreviewItemBean selected = inventoryListView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            // Give the object to the caller controller
-            callerController.addOfferedItem(selected);
-            stage.close();
+    private void populateGrid() {
+        this.grid.getChildren().clear();
+        this.itemTiles.clear();
+
+        if(this.inventoryItems.isEmpty()) {
+            Label label = new Label("You currently have no items");
+            Button button = new Button("POST ITEM");
+            button.setStyle("-fx-background-color: #3498db;");
+            button.setOnAction(event -> {
+                AlertProvider.showComingSoon();
+            });
+            grid.add(label, 0, 0);
+            grid.add(button, 0, 1);
+            return;
+        }
+
+        for (int i = 0; i < inventoryItems.size(); i++) {
+            PreviewItemBean item = inventoryItems.get(i);
+            JFXItemTileInventory tile = new JFXItemTileInventory(item);
+            tile.setOnMouseClicked(new javafx.event.EventHandler<javafx.scene.input.MouseEvent>() {
+                @Override
+                public void handle(javafx.scene.input.MouseEvent event) {
+                    handleTileClick(tile);
+                }
+            });
+
+            int col = i % 2; // column is 0 or 1
+            int row = i / 2; // every 2 item there will be a new row
+
+            this.itemTiles.add(tile);
+            this.grid.add(tile, col, row);
+        }
+    }
+
+    private void handleTileClick(JFXItemTileInventory clickedTile) {
+        // if tile was already selected, deselect it
+        if (clickedTile.isSelected()) {
+            clickedTile.setSelected(false);
+        }
+        else {
+            if (!isSelectionLimitReached()) {
+                clickedTile.setSelected(true);
+            } else {
+                AlertProvider.showInfo("Items number limit reached", "You cannot select more than " + MAX_SELECTIONS + " items.");
+            }
+        }
+    }
+
+    private boolean isSelectionLimitReached(){
+        int count = 0;
+        for (JFXItemTileInventory tile : this.itemTiles) {
+            if (tile.isSelected()) {
+                count++;
+            }
+        }
+        if (count < MAX_SELECTIONS) {
+            return false;
+        }
+        else{
+            return true;
         }
     }
 
     @FXML
-    private void handleClose(ActionEvent event) {
+    private void handleAddItems(ActionEvent event) {
+        this.confirmed = true;
+        closeStage(event);;
+    }
+
+    @FXML
+    private void handleCancel(ActionEvent event) {
+        this.confirmed = false;
+        closeStage(event);
+    }
+
+    public List<PreviewItemBean> getSelectedItems() {
+        List<PreviewItemBean> selectedItems = new ArrayList<>();
+        for (JFXItemTileInventory tile : this.itemTiles) {
+            if (tile.isSelected()) {
+                selectedItems.add(tile.getItem());
+            }
+        }
+        return selectedItems;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    private void closeStage(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
 
-    // This class is for customizing a list cell in the list view as stated in oracle doc:
-    // https://openjfx.io/javadoc/14/javafx.controls/javafx/scene/control/Cell.html#updateItem(T,boolean)
-    public static class InventoryListCell extends ListCell<PreviewItemBean> {
-
-        private final VBox vbox = new VBox();
-        private final VBox vbox2 = new VBox();
-        private final HBox hbox = new HBox();
-        //private CheckBox checkBox = new CheckBox();
-        private final Label nameLabel = new Label();
-        private final Label conditionLabel = new Label();
-        private final Label conditionHeaderLabel = new Label();
-        private final Label descriptionLabel = new Label();
-        private final ImageView itemImage = new ImageView();
-
-        public InventoryListCell() {
-            hbox.setSpacing(15);
-            vbox.setSpacing(5);
-            vbox2.setSpacing(5);
-            vbox.getChildren().addAll(nameLabel, itemImage);
-            vbox2.getChildren().addAll(conditionHeaderLabel, conditionLabel);
-            hbox.getChildren().addAll(vbox, vbox2, descriptionLabel); //+ checkbox
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            Region filler = new Region();
-            HBox.setHgrow(filler, javafx.scene.layout.Priority.ALWAYS);
-            vbox.setAlignment(Pos.CENTER);
-            conditionHeaderLabel.setText("Condition");
-            conditionHeaderLabel.setAlignment(Pos.CENTER);
-            vbox2.setAlignment(Pos.CENTER);
-            //checkBox.setMaxHeight(Double.MAX_VALUE);
-
-        }
-
-        @Override
-        protected void updateItem(PreviewItemBean item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                setGraphic(hbox);
-                nameLabel.setText(item.getName());
-                Image image = null;
-                //Get the item image form the uploads folder of the project
-                try (InputStream is = new FileInputStream(System.getProperty("user.dir") + "\\" + item.getMainImagePath())) {
-                    image = new Image(is);
-                    itemImage.setImage(image);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    itemImage.setImage(new Image(System.getProperty("user.dir") + "\\" + "placeholder_item.png"));
-                }
-                itemImage.setFitWidth(60);
-                itemImage.setFitHeight(60);
-                conditionLabel.setText(item.getCondition());
-                descriptionLabel.setText(item.getDescription());
-            }
-        }
-    }
 }

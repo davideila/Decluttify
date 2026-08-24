@@ -22,4 +22,6 @@ module it.uniroma2.ispw.decluttify {
     exports it.uniroma2.ispw.decluttify.view.controller to javafx.fxml, javafx.graphics;
     opens it.uniroma2.ispw.decluttify.view.controller to javafx.fxml, javafx.graphics;
     opens it.uniroma2.ispw.decluttify.utils to javafx.fxml, javafx.graphics;
+    exports it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.itemTile to javafx.fxml, javafx.graphics;
+    opens it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.itemTile to javafx.fxml, javafx.graphics;
 }

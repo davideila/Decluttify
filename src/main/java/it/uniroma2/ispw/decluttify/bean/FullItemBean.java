@@ -9,8 +9,12 @@ public class FullItemBean extends PreviewItemBean{
 
     private String location;
     private String creationDate;
-    private int numOffers;
     private ArrayList<String> images = new ArrayList<>();
+
+    public FullItemBean(PreviewItemBean previewItemBean) {
+        super(previewItemBean.getId(), previewItemBean.getName(), previewItemBean.getDescription(), previewItemBean.getOwner(),
+                previewItemBean.getMainImageName(), previewItemBean.getCategory(), previewItemBean.getCondition(),  previewItemBean.getNumOffers());
+    }
 
     public String getCreationDate() { return creationDate; }
     public void setCreationDate(String creationDate) { this.creationDate = creationDate; }
@@ -19,11 +23,6 @@ public class FullItemBean extends PreviewItemBean{
         this.location = location;
     }
     public String getLocation() { return location; }
-
-    public void setNumOffers(int numOffers) {
-        this.numOffers = numOffers;
-    }
-    public int getNumOffers() { return numOffers; }
 
     public ArrayList<String> getImages() {
         return images;
@@ -35,9 +34,9 @@ public class FullItemBean extends PreviewItemBean{
         }
     }
 
-    public void addImage(String image) {
+    public void addImage(String imageName) {
         if (this.images.size() < 3) {
-            this.images.add("uploads/item_images/" + image);
+            this.images.add(imageName);
         } else {
             throw new DecluttifyException("Images can't be more than 3");
         }

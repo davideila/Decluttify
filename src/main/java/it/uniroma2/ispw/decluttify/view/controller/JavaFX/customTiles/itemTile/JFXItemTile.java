@@ -18,7 +18,7 @@ public abstract class JFXItemTile extends StackPane {
     protected ImageView categoryIcon;
     protected VBox tileVbox;
     protected PreviewItemBean item;
-    private final String ITEM_IMAGES_PATH_FROM_RESOURCES = "/it.uniroma2.ispw.decluttify/images" ;
+    protected String baseStyle = "-fx-border-width: 2px; -fx-border-radius: 5px; -fx-background-radius: 5px; ";
 
 
     protected JFXItemTile() {
@@ -38,17 +38,7 @@ public abstract class JFXItemTile extends StackPane {
         tileVbox.setAlignment(Pos.CENTER_LEFT);
         tileVbox.setSpacing(5.0);
         tileVbox.setPadding(new Insets(10.0, 10.0, 10.0, 10.0));
-        tileVbox.setStyle("-fx-border-color: #3498db; -fx-border-width: 2px; -fx-border-radius: 5px;");
-
-        // Category icon on top of stack pane and tile on bottom
-        this.categoryIcon = new ImageView();
-        this.categoryIcon.setFitWidth(24.0);
-        this.categoryIcon.setFitHeight(24.0);
-        this.categoryIcon.setPreserveRatio(true);
-        this.getChildren().addAll(tileVbox, this.categoryIcon);
-        StackPane.setAlignment(this.categoryIcon, Pos.TOP_RIGHT);
-        StackPane.setMargin(this.categoryIcon, new Insets(0.0, 8.0, 0.0, 8.0));
-
+        tileVbox.setStyle(baseStyle + "-fx-border-color: #ddd;");
 
         // Top VBox containing the ImageView and title
         VBox topVbox = new VBox();
@@ -60,6 +50,7 @@ public abstract class JFXItemTile extends StackPane {
         this.itemImageView.setNodeOrientation(NodeOrientation.INHERIT);
         this.itemImageView.setPreserveRatio(true);
         this.nameLabel = new Label();
+        this.nameLabel.setStyle("-fx-font-weight: bold;");
         topVbox.getChildren().add(this.itemImageView);
         topVbox.getChildren().add(this.nameLabel);
 
@@ -71,6 +62,16 @@ public abstract class JFXItemTile extends StackPane {
                 topVbox,
                 this.conditionLabel
         );
+
+        // Category icon on top of item vbox tile in stack pane
+        this.categoryIcon = new ImageView();
+        this.categoryIcon.setFitWidth(30.0);
+        this.categoryIcon.setFitHeight(30.0);
+        this.categoryIcon.setPreserveRatio(true);
+        StackPane.setAlignment(this.categoryIcon, Pos.TOP_RIGHT);
+        StackPane.setMargin(this.categoryIcon, new Insets(5));
+
+        this.getChildren().addAll(tileVbox, this.categoryIcon);
     }
 
     public void setItemData(PreviewItemBean item) {
@@ -86,26 +87,20 @@ public abstract class JFXItemTile extends StackPane {
 
     
     protected void loadCategoryIcon(){
-        switch (item.getCategory()) {
-            case "Music":
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("music_icon.png"));
-                break;
-            case "Tech":
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("tech_icon.png"));
-                break;
-            case "Book":
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("book_icon.png"));
-                break;
-            case "Clothing":
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("cloth_icon.png"));
-                break;
-            case "Miscellaneous":
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("misc_icon"));
-                break;
-            case null, default:
-                this.categoryIcon.setImage(MediaLoader.getInstance().loadItemImage("category_icon.png"));
-                break;
+        if (item == null || item.getCategory() == null) {
+            this.categoryIcon.setImage(MediaLoader.MISC_ICON);
+            return;
         }
+
+        switch (item.getCategory()) {
+            case "Music" -> this.categoryIcon.setImage(MediaLoader.MUSIC_ICON);
+            case "Tech" -> this.categoryIcon.setImage(MediaLoader.TECH_ICON);
+            case "Book" -> this.categoryIcon.setImage(MediaLoader.BOOK_ICON);
+            case "Clothing" -> this.categoryIcon.setImage(MediaLoader.CLOTH_ICON);
+            case "Sport" -> this.categoryIcon.setImage(MediaLoader.SPORT_ICON);
+            default -> this.categoryIcon.setImage(MediaLoader.MISC_ICON);
+        }
+
     }
 
     public PreviewItemBean getItem() {

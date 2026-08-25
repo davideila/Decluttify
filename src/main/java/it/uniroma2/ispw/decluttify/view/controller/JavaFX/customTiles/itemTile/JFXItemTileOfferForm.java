@@ -37,7 +37,7 @@ public class JFXItemTileOfferForm extends JFXItemTile{
         this.deleteIcon.setPreserveRatio(true);
         StackPane.setAlignment(this.deleteIcon, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(this.deleteIcon, new Insets(0.0, 8.0, 8.0, 0.0));
-        this.deleteIcon.setImage(MediaLoader.getInstance().loadUIImage("delete_icon.png"));
+        this.deleteIcon.setImage(MediaLoader.DELETE_ICON);
         this.deleteIcon.setOnMouseClicked(event -> {
             setPlaceholder();
             event.consume();

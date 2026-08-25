@@ -10,9 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class JFXOfferTile extends HBox {
 
@@ -51,10 +51,10 @@ public class JFXOfferTile extends HBox {
         optionsVbox.setFillWidth(true);
         optionsVbox.setSpacing(20);
         optionsVbox.setAlignment(Pos.CENTER);
-        ImageView shippingIcon = new ImageView(MediaLoader.getInstance().loadUIImage("shipping_icon.png"));
+        ImageView shippingIcon = new ImageView(MediaLoader.SHIPPING_ICON);
         shippingIcon.setFitHeight(80);
         shippingIcon.setFitWidth(80);
-        ImageView escrowIcon = new ImageView(MediaLoader.getInstance().loadUIImage("escrow_icon.png"));
+        ImageView escrowIcon = new ImageView(MediaLoader.ESCROW_ICON);
         escrowIcon.setFitHeight(80);
         escrowIcon.setFitWidth(80);
         optionsVbox.getChildren().addAll(shippingIcon, escrowIcon);

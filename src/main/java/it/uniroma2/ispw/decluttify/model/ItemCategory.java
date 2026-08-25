@@ -5,7 +5,8 @@ public enum ItemCategory{
     TECH ("Tech"),
     BOOK ("Book"),
     CLOTHING ("Clothing"),
-    MISCELLANEOUS ("Miscellaneous"),;
+    MISCELLANEOUS ("Miscellaneous"),
+    SPORT("Sport"),;
 
     private final String category;
 

@@ -13,7 +13,7 @@
         <VBox alignment="TOP_CENTER" spacing="10.0">
             <Label text="Discover your next barter">
             <VBox.margin>
-               <Insets top="10.0" />
+               <Insets top="15.0" />
             </VBox.margin>
             <font>
                <Font size="30.0" />
@@ -22,7 +22,7 @@
             <children>
                <HBox alignment="BOTTOM_LEFT" prefHeight="64.0" prefWidth="730.0">
                   <children>
-                     <TextField text="Find...">
+                     <TextField promptText="Find...">
                         <font>
                            <Font size="16.0" />
                         </font>
@@ -36,13 +36,14 @@
                         <children>
                            <Label text="Order by: " HBox.hgrow="ALWAYS">
                               <HBox.margin>
-                                 <Insets bottom="4.0" />
+                                 <Insets bottom="5.0" />
                               </HBox.margin>
                               <font>
                                  <Font size="16.0" />
                               </font>
                            </Label>
-                            <ComboBox fx:id="sortComboBox" prefWidth="130.0" style="-fx-background-color: #3498db; -fx-font-size: 16px; -fx-text-base-color: white; -fx-prompt-text-fill: white; -fx-cursor: hand; -fx-background-radius: 10; -fx-border-radius: 10;" value="Latest">
+                            <ComboBox fx:id="sortComboBox" prefWidth="125.0" style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db;
+                             -fx-underline: true;-fx-cursor: hand; -fx-background-radius: 10; -fx-border-radius: 10; -fx-mark-color: #3498db;" value="Latest">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
                                         <String fx:value="Latest" />
@@ -55,8 +56,9 @@
                            <Insets />
                         </HBox.margin>
                      </HBox>
-                     <Region prefWidth="48.0" />
-                     <Button mnemonicParsing="false" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-cursor: hand;" text="More filters">
+                     <Region prefWidth="65.0" />
+                     <Button fx:id="filtersButton" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-background-radius: 10; -fx-border-radius: 10;
+                     -fx-cursor: hand;" text="More filters" underline="true">
                         <font>
                            <Font size="16.0" />
                         </font>

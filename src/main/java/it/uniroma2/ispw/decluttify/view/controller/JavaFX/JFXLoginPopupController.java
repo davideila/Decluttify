@@ -3,7 +3,6 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
-import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -17,12 +16,9 @@ public class JFXLoginPopupController{
 
     private LoginController loginController;
     private SessionManager sessionManager;
-    @FXML
-    TextField usernameField;
-    @FXML
-    PasswordField passwordField;
-    @FXML
-    Label failedLogin;
+    @FXML TextField usernameField;
+    @FXML PasswordField passwordField;
+    @FXML Label failedLogin;
 
     public JFXLoginPopupController(SessionManager sm, LoginController loginController) {
         this.loginController = loginController;

@@ -43,7 +43,8 @@ public class JFXOfferFormController extends JFXGraphicController {
     @FXML private Label locationLabel;
     @FXML private Label descriptionLabel;
     @FXML private Label conditionsLabel;
-    @FXML private Label activeOffersLabel;
+    @FXML private Label popularityLabel;
+    @FXML private Button optionsButton;
 
 
     public JFXOfferFormController(Navigator navigator, SessionManager sm, FullItemBean targetItem) {
@@ -56,14 +57,30 @@ public class JFXOfferFormController extends JFXGraphicController {
     public void init() {
         // Target item layout
         requestedItemName.setText(targetItem.getName());
-        ownerLabel.setText("Owner: " + targetItem.getOwner());
+        ownerLabel.setText(targetItem.getOwner());
         this.requestedItemImage.setImage(MediaLoader.getInstance().loadItemImage(targetItem.getMainImageName()));
-        this.locationLabel.setText("Location: " + targetItem.getLocation());
-        this.descriptionLabel.setText("Description: " + targetItem.getDescription());
-        this.activeOffersLabel.setText("Active offers: " + targetItem.getNumOffers());
-        this.conditionsLabel.setText("Conditions: " + targetItem.getCondition());
+        this.locationLabel.setText(targetItem.getLocation());
+        this.descriptionLabel.setText(targetItem.getDescription());
+        this.conditionsLabel.setText(targetItem.getCondition());
+        String popularity;
+        if(targetItem.getNumOffers() == 0){
+            popularity = "No offers yet";
+        }
+        else if(targetItem.getNumOffers() < 3){
+            popularity = "In demand";
+        }
+        else if(targetItem.getNumOffers() < 7){
+            popularity = "Popular";
+        }
+        else {
+            popularity = "Trending";
+        }
+        this.popularityLabel.setText(popularity);
 
         // Offered items layout
+        this.optionsButton.setOnMouseClicked(event -> {
+            AlertProvider.showComingSoon();
+        });
         this.vboxItemsOffered.getChildren().clear();
         item1 = new JFXItemTileOfferForm();
         item2 = new JFXItemTileOfferForm();

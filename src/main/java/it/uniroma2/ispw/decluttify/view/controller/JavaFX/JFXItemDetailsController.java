@@ -28,7 +28,7 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
     @FXML Circle dot3;
     @FXML Button ownerButton;
     @FXML Label itemLocationLabel;
-    @FXML Label itemNumOfferLabel;
+    @FXML Label popularityLabel;
     @FXML Label ownerRatingLabel;
     @FXML Label itemCreationDateLabel;
     @FXML Label itemNameLabel;
@@ -65,7 +65,20 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
         if (this.visualizedItem instanceof FullItemBean fullItem) {
             this.itemCreationDateLabel.setText(fullItem.getCreationDate());
             this.itemLocationLabel.setText(fullItem.getLocation());
-            this.itemNumOfferLabel.setText(String.valueOf(fullItem.getNumOffers()));
+            String popularity;
+            if(fullItem.getNumOffers() == 0){
+                popularity = "No offers yet";
+            }
+            else if(fullItem.getNumOffers() < 3){
+                popularity = "In demand";
+            }
+            else if(fullItem.getNumOffers() < 7){
+                popularity = "Popular";
+            }
+            else {
+                popularity = "Trending";
+            }
+            this.popularityLabel.setText(popularity);
             this.setupPaginationDots(fullItem.getImages().size());
         }
     }

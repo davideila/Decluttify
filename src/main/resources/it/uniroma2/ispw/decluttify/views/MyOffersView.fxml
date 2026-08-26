@@ -5,6 +5,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-tab-min-width: 150;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <tabs>
         <!-- TAB 1: RECEIVED OFFERS -->
@@ -15,6 +17,38 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Filter status:" />
+                                <ComboBox fx:id="statusFilterComboBoxRecv" value="All" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All" />
+                                            <String fx:value="Pending" />
+                                            <String fx:value="Accepted" />
+                                            <String fx:value="Rejected" />
+                                            <String fx:value="Canceled" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <Label style="-fx-font-weight: bold;" text="Sort by:" />
+                                <ComboBox fx:id="sortComboBoxRecv" value="Newest first" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Newest first" />
+                                            <String fx:value="Oldest first" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
 
                         <HBox alignment="CENTER" style="-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-background-radius: 5;">
                             <children>
@@ -50,6 +84,38 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Filter status:" />
+                                <ComboBox fx:id="statusFilterComboBoxSent" value="All" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All" />
+                                            <String fx:value="Pending" />
+                                            <String fx:value="Accepted" />
+                                            <String fx:value="Rejected" />
+                                            <String fx:value="Canceled" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <Label style="-fx-font-weight: bold;" text="Sort by:" />
+                                <ComboBox fx:id="sortComboBoxSent" value="Newest first" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Newest first" />
+                                            <String fx:value="Oldest first" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
 
                         <HBox alignment="CENTER" style="-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-background-radius: 5;">
                             <children>

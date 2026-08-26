@@ -70,13 +70,15 @@ public class JFXOfferTile extends HBox {
         actionButtonsVbox.setFillWidth(true);
         actionButtonsVbox.setSpacing(20);
         actionButtonsVbox.setAlignment(Pos.BOTTOM_RIGHT);
+        actionButtonsVbox.setPrefWidth(70);
         this.acceptButton = new Button("Accept");
         this.acceptButton.setStyle(
                 "-fx-background-color: #2ecc71; " +
                         "-fx-text-fill: white; " +
                         "-fx-font-size: 15px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 5px;"
+                        "-fx-background-radius: 5px;" +
+                        "-fx-cursor: hand;"
         );
         this.rejectButton = new Button("Reject");
         this.rejectButton.setStyle(
@@ -84,8 +86,11 @@ public class JFXOfferTile extends HBox {
                         "-fx-text-fill: white; " +
                         "-fx-font-size: 15px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 5px;"
+                        "-fx-background-radius: 5px;" +
+                        "-fx-cursor: hand;"
         );
+        this.acceptButton.setMaxWidth(Double.MAX_VALUE);
+        this.rejectButton.setMaxWidth(Double.MAX_VALUE);
         actionButtonsVbox.getChildren().addAll(rejectButton, acceptButton);
 
         Region region0 = new Region();
@@ -107,6 +112,10 @@ public class JFXOfferTile extends HBox {
             youGiveVbox.getChildren().addAll(invisibleLabel, requestedItemTile);
             youGiveVbox.getChildren().addAll(youGiveHbox);
 
+            for(JFXItemTileMyOffers tile: offeredItemTiles){
+                tile.setPopularity();
+            }
+
             this.getChildren().add(region0);
             this.getChildren().add(youGetVbox);
             this.getChildren().add(region1);
@@ -126,6 +135,7 @@ public class JFXOfferTile extends HBox {
             youGiveHbox.getChildren().addAll(offeredItemTiles);
             youGiveVbox.getChildren().addAll(invisibleLabel, youGiveHbox);
 
+            requestedItemTile.setPopularity();
 
             this.getChildren().add(region0);
             this.getChildren().add(youGiveVbox);

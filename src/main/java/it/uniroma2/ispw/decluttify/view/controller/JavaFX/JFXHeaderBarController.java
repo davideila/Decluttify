@@ -78,7 +78,7 @@ public class JFXHeaderBarController {
 
     @FXML
     void handleLogoutButton(ActionEvent event) {
-        if(logoutButton.getText().equals("Sign Out")){
+        if(logoutButton.getText().equals("Logout")){
            loginController.logout();
            this.navigator.reset();
         }
@@ -90,15 +90,15 @@ public class JFXHeaderBarController {
     public void update() {
         if (sessionManager.isLoggedIn()) {
             profileButton.setText(sessionManager.getLoggedUser().getUsername());
-            logoutButton.setText("Sign Out");
+            logoutButton.setText("Logout");
             if(sessionManager.getNotifications() != null){
                 badgePane.setVisible(true);
                 this.notificationCountLabel.setText(String.valueOf(sessionManager.getNotifications().size()));
             }
 
         } else{
-            profileButton.setText("Sign In");
-            logoutButton.setText("Sign Up");
+            profileButton.setText("Login");
+            logoutButton.setText("Register");
             profileButton.setDisable(false);
             badgePane.setVisible(false);
         }

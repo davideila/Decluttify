@@ -2,7 +2,7 @@ package it.uniroma2.ispw.decluttify.utils;
 
 import it.uniroma2.ispw.decluttify.bean.NotificationBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
-
+import it.uniroma2.ispw.decluttify.exception.LoginException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -24,22 +24,24 @@ public class SessionManager extends SessionSubject {
         loginAttempts = 0;
     }
 
-    public void login(UserBean userBean, boolean success) {
-        if(isLoginLocked()){
+    public void login(UserBean userBean) {
+        if (this.loggedUser == null && this.loggedIn) {
+            throw new LoginException("You are already logged in.");
         }
-        else {
-            if (success) {
-                this.setLoggedUser(userBean);
-                this.setLoggedIn(true);
-                notifyObservers();
-            } else {
-                this.setLoggedUser(null);
-                this.setLoggedIn(false);
-                loginAttempts++;
-                if (loginAttempts == MAX_LOGIN_ATTEMPTS) {
-                    lockLogin();
-                }
-            }
+        if(isLoginLocked()){
+            throw new LoginException("Too many login failed attempts. Try again later.");
+        }
+        else{
+            this.setLoggedUser(userBean);
+            this.setLoggedIn(true);
+            notifyObservers();
+        }
+    }
+
+    public void failLoginAttempt(){
+        this.loginAttempts++;
+        if (loginAttempts == MAX_LOGIN_ATTEMPTS) {
+            lockLogin();
         }
     }
 

@@ -18,6 +18,8 @@ public class JFXOfferTile extends HBox {
 
     private JFXItemTileMyOffers requestedItemTile;
     private List<JFXItemTileMyOffers> offeredItemTiles;
+    private boolean escrow = false;
+    private boolean shipping = false;
     private Button acceptButton;
     private Button rejectButton;
     private Button cancelButton;
@@ -28,6 +30,8 @@ public class JFXOfferTile extends HBox {
             this.offeredItemTiles.add(new JFXItemTileMyOffers(item));
         }
         this.requestedItemTile = new JFXItemTileMyOffers(offer.getRequestedItem());
+        this.escrow = offer.isEscrow();
+        this.shipping = offer.isShipping();
     }
 
     public void init(boolean isReceivedTab){
@@ -52,13 +56,30 @@ public class JFXOfferTile extends HBox {
         optionsVbox.setFillWidth(true);
         optionsVbox.setSpacing(20);
         optionsVbox.setAlignment(Pos.CENTER);
-        ImageView shippingIcon = new ImageView(MediaLoader.SHIPPING_ICON);
-        shippingIcon.setFitHeight(80);
-        shippingIcon.setFitWidth(80);
-        ImageView escrowIcon = new ImageView(MediaLoader.ESCROW_ICON);
-        escrowIcon.setFitHeight(80);
-        escrowIcon.setFitWidth(80);
-        optionsVbox.getChildren().addAll(shippingIcon, escrowIcon);
+
+        ImageView shippingIcon = new ImageView();
+        if(shipping) {
+            shippingIcon.setImage(MediaLoader.SHIPPING_ICON);
+            shippingIcon.setFitHeight(80);
+            shippingIcon.setFitWidth(80);
+            optionsVbox.getChildren().add(shippingIcon);
+        }
+
+        ImageView escrowIcon = new ImageView();
+        if(escrow) {
+            escrowIcon.setImage(MediaLoader.ESCROW_ICON);
+            escrowIcon.setFitHeight(80);
+            escrowIcon.setFitWidth(80);
+            optionsVbox.getChildren().add(escrowIcon);
+        }
+
+        if(!shipping && !escrow) {
+            Label noOptionsLabel = new Label("No options set");
+            noOptionsLabel.setAlignment(Pos.CENTER);
+            noOptionsLabel.setStyle("-fx-text-fill: gray;");
+            noOptionsLabel.setStyle("-fx-font-size: 12px;");
+            optionsVbox.getChildren().add(noOptionsLabel);
+        }
 
         VBox youGiveVbox = new VBox();
         youGiveVbox.setFillWidth(true);

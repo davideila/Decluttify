@@ -18,7 +18,7 @@ public class UserDAOJDBC extends UserDAO {
             ResultSet rs = SelectQueries.selectUserByUsername(stmt, username);
 
             if (!rs.first()) { // rs empty
-                throw new DAOException("No user found with username: " + username);
+               return null;
             }
             if (rs.next()) {
                 throw new DAOException("Data integrity error: duplicate username found for '" + username + "'.");

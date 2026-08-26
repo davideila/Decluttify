@@ -56,7 +56,7 @@ public class JFXHeaderBarController {
             popupStage.setTitle("Login");
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML));
-                JFXLoginPopupController popupController = new JFXLoginPopupController(sessionManager, loginController);
+                JFXLoginPopupController popupController = new JFXLoginPopupController(loginController);
                 loader.setController(popupController);
                 Parent root = loader.load();
                 popupStage.setScene(new Scene(root));

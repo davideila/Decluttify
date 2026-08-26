@@ -1,6 +1,6 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
-import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
+import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.model.Notification;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
 import it.uniroma2.ispw.decluttify.utils.ConfigReader;
@@ -24,26 +24,30 @@ public class LoginController {
     }
 
     public boolean login(String username, String inputPassword) {
-        if(username == null || inputPassword == null){
-            throw new DecluttifyException("Please provide username and password.");
+        if (sessionManager.isLoginLocked()){
+            throw new LoginException("Too many failed attempts. Please try again later.");
+        }
+        if(username == null || inputPassword == null || username.isEmpty() || inputPassword.isEmpty()){
+            this.sessionManager.failLoginAttempt();
+            throw new LoginException("Please provide username and password.");
         }
         if (sessionManager.isLoggedIn()){
-            throw new DecluttifyException("You are already logged in.");
-        }
-        if (sessionManager.isLoginLocked()){
-
+            throw new LoginException("You are already logged in.");
         }
         User user = userDAO.retrieveUserByUsername(username);
         if(user == null){
-            sessionManager.login(null, false);
-            throw new DecluttifyException("User " + username + " not found.");
+            sessionManager.failLoginAttempt();
+            return false;
         }
         else {
             if (user.checkPassword(inputPassword, ConfigReader.getInstance().getPepper())) {
-                sessionManager.login(BeanConverter.toUserBean(user), true);
+                sessionManager.login(BeanConverter.toUserBean(user));
                 this.checkForNotifications();
                 return true;
-            } else return false;
+            } else {
+                sessionManager.failLoginAttempt();
+                return false;
+            }
         }
     }
 
@@ -51,12 +55,6 @@ public class LoginController {
         if (sessionManager.isLoggedIn()){
             sessionManager.logout();
         }
-    }
-
-    public void signOn(){//TODO
-    }
-
-    public void signOut(){//TODO
     }
 
     public void checkForNotifications() {

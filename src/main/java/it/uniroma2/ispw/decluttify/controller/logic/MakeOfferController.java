@@ -17,7 +17,7 @@ public class MakeOfferController {
 
     private SessionManager sessionManager;
     private boolean isSessionExpired;
-    private final int TIMEOUT_MINUTES = 15;
+    private final int TIMEOUT_MINUTES = 1;
     private Thread timerThread;
     private final OfferDAO offerDAO;
     private final UserDAO userDAO;
@@ -87,6 +87,9 @@ public class MakeOfferController {
         //Get offerer (=logged) user from persistence
         User offerer;
         offerer = userDAO.retrieveUserByUsername(offererBean.getUsername());
+        if(offerer == null){
+            throw new DecluttifyException("Offerer user does not exists");
+        }
 
         //Create offer
         Offer offer = targetItem.proposeBarter(offerer, offeredItems);

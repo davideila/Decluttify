@@ -57,7 +57,9 @@
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label style="-fx-font-weight: bold;" text="YOU GET" HBox.hgrow="ALWAYS" />
                         <Region HBox.hgrow="ALWAYS" />
-                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                                    <Image url="@../images/offer_arrows_icon.png" />
+                                </ImageView>
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label style="-fx-font-weight: bold;" text="YOU GIVE" HBox.hgrow="ALWAYS" />
                                 <Region HBox.hgrow="ALWAYS" />
@@ -127,7 +129,9 @@
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label style="-fx-font-weight: bold;" text="YOU GIVE" HBox.hgrow="ALWAYS" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                                    <Image url="@../images/offer_arrows_icon.png" />
+                                </ImageView>
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label style="-fx-font-weight: bold;" text="YOU GET" HBox.hgrow="ALWAYS" />
                                 <Region HBox.hgrow="ALWAYS" />

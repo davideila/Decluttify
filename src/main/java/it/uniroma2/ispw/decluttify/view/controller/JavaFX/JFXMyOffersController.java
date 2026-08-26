@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
+import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.offerTile.JFXOfferTile;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -66,13 +67,9 @@ public class JFXMyOffersController extends JFXGraphicController {
                 JFXOfferTile offerTile = new JFXOfferTile(offer);
                 offerTile.init(false);
                 this.vboxSentOffers.getChildren().add(offerTile);
-                Button acceptButton = offerTile.getAcceptButton();
-                Button rejectButton = offerTile.getRejectButton();
-                acceptButton.setOnAction(event -> {
-                    handleAcceptOffer(offer);
-                });
-                rejectButton.setOnAction(event -> {
-                    handleRejectOffer(offer);
+                Button withdrawButton = offerTile.getCancelButton();
+                withdrawButton.setOnAction(event -> {
+                    AlertProvider.showComingSoon();
                 });
             }
         }

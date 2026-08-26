@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-tab-min-width: 150;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <tabs>
         <!-- TAB 1: RECEIVED OFFERS -->
@@ -21,7 +21,8 @@
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <children>
                                 <Label style="-fx-font-weight: bold;" text="Filter status:" />
-                                <ComboBox fx:id="statusFilterComboBoxRecv" value="All" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                <ComboBox fx:id="statusFilterComboBoxRecv" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Pending">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="All" />
@@ -36,7 +37,8 @@
                                 <Region HBox.hgrow="ALWAYS" />
 
                                 <Label style="-fx-font-weight: bold;" text="Sort by:" />
-                                <ComboBox fx:id="sortComboBoxRecv" value="Newest first" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                <ComboBox fx:id="sortComboBoxRecv" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Newest first">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="Newest first" />
@@ -59,6 +61,7 @@
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label style="-fx-font-weight: bold;" text="YOU GIVE" HBox.hgrow="ALWAYS" />
                                 <Region HBox.hgrow="ALWAYS" />
+                        <Region prefWidth="80.0" />
                             </children>
                         </HBox>
 
@@ -88,7 +91,8 @@
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <children>
                                 <Label style="-fx-font-weight: bold;" text="Filter status:" />
-                                <ComboBox fx:id="statusFilterComboBoxSent" value="All" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                <ComboBox fx:id="statusFilterComboBoxSent" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Pending">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="All" />
@@ -103,7 +107,8 @@
                                 <Region HBox.hgrow="ALWAYS" />
 
                                 <Label style="-fx-font-weight: bold;" text="Sort by:" />
-                                <ComboBox fx:id="sortComboBoxSent" value="Newest first" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;">
+                                <ComboBox fx:id="sortComboBoxSent" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand; -fx-mark-color: #3498db;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db;" value="Newest first">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="Newest first" />

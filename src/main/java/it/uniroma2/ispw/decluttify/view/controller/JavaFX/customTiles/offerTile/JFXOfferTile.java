@@ -20,6 +20,7 @@ public class JFXOfferTile extends HBox {
     private List<JFXItemTileMyOffers> offeredItemTiles;
     private Button acceptButton;
     private Button rejectButton;
+    private Button cancelButton;
 
     public JFXOfferTile(OfferBean offer) {
         this.offeredItemTiles = new ArrayList<>();
@@ -70,28 +71,7 @@ public class JFXOfferTile extends HBox {
         actionButtonsVbox.setFillWidth(true);
         actionButtonsVbox.setSpacing(20);
         actionButtonsVbox.setAlignment(Pos.BOTTOM_RIGHT);
-        actionButtonsVbox.setPrefWidth(70);
-        this.acceptButton = new Button("Accept");
-        this.acceptButton.setStyle(
-                "-fx-background-color: #2ecc71; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-size: 15px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 5px;" +
-                        "-fx-cursor: hand;"
-        );
-        this.rejectButton = new Button("Reject");
-        this.rejectButton.setStyle(
-                "-fx-background-color: #e74c3c; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-size: 15px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-background-radius: 5px;" +
-                        "-fx-cursor: hand;"
-        );
-        this.acceptButton.setMaxWidth(Double.MAX_VALUE);
-        this.rejectButton.setMaxWidth(Double.MAX_VALUE);
-        actionButtonsVbox.getChildren().addAll(rejectButton, acceptButton);
+        actionButtonsVbox.setPrefWidth(80);
 
         Region region0 = new Region();
         HBox.setHgrow(region0, Priority.ALWAYS);
@@ -116,6 +96,28 @@ public class JFXOfferTile extends HBox {
                 tile.setPopularity();
             }
 
+            this.acceptButton = new Button("Accept");
+            this.acceptButton.setStyle(
+                    "-fx-background-color: #2ecc71; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-font-size: 14px; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-background-radius: 5px;" +
+                            "-fx-cursor: hand;"
+            );
+            this.rejectButton = new Button("Reject");
+            this.rejectButton.setStyle(
+                    "-fx-background-color: #e74c3c; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-font-size: 14px; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-background-radius: 5px;" +
+                            "-fx-cursor: hand;"
+            );
+            this.acceptButton.setMaxWidth(Double.MAX_VALUE);
+            this.rejectButton.setMaxWidth(Double.MAX_VALUE);
+            actionButtonsVbox.getChildren().addAll(rejectButton, acceptButton);
+
             this.getChildren().add(region0);
             this.getChildren().add(youGetVbox);
             this.getChildren().add(region1);
@@ -137,6 +139,18 @@ public class JFXOfferTile extends HBox {
 
             requestedItemTile.setPopularity();
 
+            this.cancelButton = new Button("Cancel");
+            this.cancelButton.setStyle(
+                    "-fx-background-color: #3498db; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-font-size: 14px; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-background-radius: 5px;" +
+                            "-fx-cursor: hand;"
+            );
+            this.cancelButton.setMaxWidth(Double.MAX_VALUE);
+            actionButtonsVbox.getChildren().addAll(cancelButton);
+
             this.getChildren().add(region0);
             this.getChildren().add(youGiveVbox);
             this.getChildren().add(region1);
@@ -154,6 +168,10 @@ public class JFXOfferTile extends HBox {
 
     public Button getRejectButton(){
         return this.rejectButton;
+    }
+
+    public Button getCancelButton(){
+        return this.cancelButton;
     }
 
 }

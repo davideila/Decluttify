@@ -12,13 +12,17 @@ public class JFXItemTileBrowser extends JFXItemTile{
     public JFXItemTileBrowser(PreviewItemBean itemBean) {
         super(itemBean);
         this.setPopularityLabel();
-        this.itemImageView.setFitHeight(140.0);
-        this.itemImageView.setFitWidth(140.0);
+        this.itemImageView.setFitHeight(160.0);
+        this.itemImageView.setFitWidth(160.0);
         this.tileVbox.setStyle(baseStyle + borderColor);
         tileVbox.setOnMouseEntered(e -> {
             this.borderColor = "-fx-border-color: #3498db;";
             tileVbox.setStyle(baseStyle + borderColor);
         });
+        this.nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: Bold");
+        this.conditionLabel.setStyle("-fx-font-size: 14px; ");
+        this.popularityLabel.setStyle("-fx-font-size: 14px; ");
+
 
         tileVbox.setOnMouseExited(e -> {
             this.borderColor = "-fx-border-color: #ddd; ";

@@ -12,7 +12,7 @@ public class EncryptedPasswordGenerator {
     public static void main(String[] args) {
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B, 10);
 
-        Hash hash = Password.hash("richard")
+        Hash hash = Password.hash("simon")
                 .addPepper("shared-secret")
                 .with(bcrypt);
 

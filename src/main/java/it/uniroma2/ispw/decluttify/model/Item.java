@@ -209,6 +209,7 @@ public class Item{
             case BOOK -> "Book";
             case CLOTHING -> "Clothing";
             case MISCELLANEOUS -> "Miscellaneous";
+            case SPORT -> "Sport";
             default -> "Miscellaneous";
         };
     }

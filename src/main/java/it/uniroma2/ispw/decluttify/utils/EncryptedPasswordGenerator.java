@@ -6,7 +6,7 @@ import com.password4j.Password;
 import com.password4j.types.Bcrypt;
 
 
-//This is a utility to generate the pwd hash and write manually on persistence for pwd of users
+//This is a utility class to generate the pwd hash and write manually on persistence for pwd of users
 public class EncryptedPasswordGenerator {
 
     public static void main(String[] args) {

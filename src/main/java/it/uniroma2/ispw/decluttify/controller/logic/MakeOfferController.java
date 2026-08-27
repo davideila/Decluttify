@@ -107,7 +107,7 @@ public class MakeOfferController {
         }
 
         //Save Notifications on persistence
-        notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New OfferStateMachine!", "OFFER"));
+        notificationDAO.createNotification(new Notification(offer.getReceiver().getUsername(), "New offer from " + offer.getOfferer().getUsername(), "OFFER"));
     }
 
 }

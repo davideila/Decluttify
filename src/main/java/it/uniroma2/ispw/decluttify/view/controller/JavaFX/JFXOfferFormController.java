@@ -3,6 +3,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.exception.SessionExpiredException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.MediaLoader;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -165,7 +166,10 @@ public class JFXOfferFormController extends JFXGraphicController {
         try{
             makeOfferController.submitOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
             result = true;
-        }catch(Exception e){
+        }catch(SessionExpiredException e){
+            AlertProvider.showError("Session expired", "Session has expired, redirecting on item browser");
+            this.navigator.reset();
+        }catch(Exception e) {
             this.handleException(e);//TODO
         }
         if (result) {

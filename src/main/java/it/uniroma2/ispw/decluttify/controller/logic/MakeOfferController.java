@@ -30,13 +30,12 @@ public class MakeOfferController {
         this.userDAO = DAOFactory.getDAOFactory().createUserDAO();
         this.itemDAO = DAOFactory.getDAOFactory().createItemDAO();
         this.notificationDAO = DAOFactory.getDAOFactory().createNotificationDAO();
-        this.isSessionExpired = false;
+        this.startSessionTimer();
     }
 
     public List<PreviewItemBean> loadUserInventory(UserBean user) {
         if(!sessionManager.isLoggedIn() || sessionManager.getLoggedUser().getUsername() != user.getUsername()) throw new DecluttifyException("Operation not permitted");
         else {
-            this.startSessionTimer();
             List<PreviewItemBean> pib = new ArrayList<>();
             List<Item> itemlist;
             

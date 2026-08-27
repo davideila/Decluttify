@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class JFXOfferFormController extends JFXGraphicController {
     @FXML private Button submitButton;
     @FXML private Label ownerLabel;
     @FXML private Label locationLabel;
-    @FXML private Label descriptionLabel;
+    @FXML private Text descriptionText;
     @FXML private Label conditionsLabel;
     @FXML private Label popularityLabel;
     @FXML private Button optionsButton;
@@ -61,7 +62,7 @@ public class JFXOfferFormController extends JFXGraphicController {
         ownerLabel.setText(targetItem.getOwner());
         this.requestedItemImage.setImage(MediaLoader.getInstance().loadItemImage(targetItem.getMainImageName()));
         this.locationLabel.setText(targetItem.getLocation());
-        this.descriptionLabel.setText(targetItem.getDescription());
+        this.descriptionText.setText(targetItem.getDescription());
         this.conditionsLabel.setText(targetItem.getCondition());
         String popularity;
         if(targetItem.getNumOffers() == 0){

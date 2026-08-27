@@ -111,4 +111,9 @@ public class SelectQueries {
         String sql = String.format("SELECT item FROM offered WHERE offered.offer = \"%d\"", id);
         return stmt.executeQuery(sql);
     }
+
+    public static ResultSet selectPendingOffersByPartners(Statement stmt, String offerer, String receiver) throws SQLException {
+        String sql = String.format("SELECT * FROM offers WHERE offers.offerer = \"%s\" AND offers.receiver = \"%s\"",  offerer, receiver);
+        return stmt.executeQuery(sql);
+    }
 }

@@ -133,6 +133,41 @@ public class OfferDAOJDBC extends OfferDAO {
     }
 
     @Override
+    public List<Offer> retrievePendingOffersByPartners(String offerer, String receiver) {
+        List<Offer> offerlist = new ArrayList<>();
+
+        Connection connection = PersistenceManager.getInstance().getConnection();
+        try (Statement stmt = connection.createStatement();
+             Statement stmtItems = connection.createStatement()) {
+
+            ResultSet rs = SelectQueries.selectPendingOffersByPartners(stmt, offerer, receiver);
+            while (rs.next()) {
+                List<Item> itemofflist = new ArrayList<>();
+                int offID = rs.getInt("id");
+                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
+                    while (rsItems.next()) {
+                        itemofflist.add(new Item(rsItems.getInt("item")));
+                    }
+                }
+
+                offerlist.add(new Offer(
+                        offID,
+                        new User(rs.getString("offerer"), null, -1, null),
+                        new User(rs.getString("receiver"), null, -1, null),
+                        itemofflist,
+                        new Item(rs.getInt("itemReq")),
+                        rs.getBoolean("escrow"),
+                        rs.getBoolean("shipping"),
+                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                ));
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error fetching offers between offerer " + offerer + " and receiver " + receiver, e);
+        }
+        return offerlist;
+    }
+
+    @Override
     public void createOffer(Offer offer) {
         if (PersistenceManager.getInstance().isDemoMode()){
             return;

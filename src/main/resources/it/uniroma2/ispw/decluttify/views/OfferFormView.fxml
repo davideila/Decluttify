@@ -32,7 +32,7 @@
          <Region VBox.vgrow="ALWAYS" />
          <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
             <children>
-               <VBox alignment="CENTER">
+               <VBox alignment="CENTER" spacing="5.0">
                   <children>
                         <ImageView fx:id="requestedItemImage" fitHeight="200.0" fitWidth="250.0" preserveRatio="true" VBox.vgrow="ALWAYS" />
                         <Label fx:id="requestedItemName" style="-fx-font-weight: bold;" text="Item Name">
@@ -40,6 +40,27 @@
                            <Font size="24.0" />
                         </font>
                      </Label>
+                  </children>
+               </VBox>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Description:" wrapText="true">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                      <TextFlow>
+                        <children>
+                              <Text fx:id="descriptionText" fill="GRAY" text="description">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Text>
+                        </children>
+                        <VBox.margin>
+                           <Insets left="15.0" />
+                        </VBox.margin>
+                      </TextFlow>
                   </children>
                </VBox>
                <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
@@ -64,20 +85,6 @@
                         </font>
                      </Label>
                      <Label fx:id="locationLabel" style="-fx-text-fill: gray;" text="Rome">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
-                  </children>
-               </HBox>
-               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-                  <children>
-                     <Label style="-fx-text-fill: gray;" text="Description:">
-                        <font>
-                           <Font name="System Bold" size="18.0" />
-                        </font>
-                     </Label>
-                     <Label fx:id="descriptionLabel" style="-fx-text-fill: gray;" text="description">
                         <font>
                            <Font size="18.0" />
                         </font>

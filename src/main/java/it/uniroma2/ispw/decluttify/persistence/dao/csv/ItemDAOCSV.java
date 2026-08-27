@@ -127,36 +127,70 @@ public class ItemDAOCSV extends ItemDAO {
 
     @Override
     public void incrementItemsOfferCounters(List<Integer> iDs) {
-        if (PersistenceManager.getInstance().isDemoMode()){
+        if (PersistenceManager.getInstance().isDemoMode() || iDs == null || iDs.isEmpty()) {
             return;
         }
+
         synchronized (ITEMS_FILE_LOCK) {
-            String tempFilePath = ITEMS_FILE_PATH + "_tmp";
-            File tempFile = new File(tempFilePath);
             File originalFile = new File(ITEMS_FILE_PATH);
-            boolean success = false;
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
-                 BufferedReader br = new BufferedReader(new FileReader(originalFile))) {
-                String line;
-                line = br.readLine();
-                bw.write(line + "\r\n");
-                String[] tmpRow;
-                while ((line = br.readLine()) != null) {
-                    tmpRow = line.split(";");
-                    if (tmpRow[0].equals(String.valueOf(iDs))) {
-                        tmpRow[7] = String.valueOf(Integer.parseInt(tmpRow[7]) + 1);
-                        bw.write(String.join(";", tmpRow) + "\r\n");
-                        success = true;
-                    } else {
-                        bw.write(line + "\r\n");
-                    }
+            File tempFile = new File(ITEMS_FILE_PATH + "_tmp");
+            boolean anyUpdated = false;
+
+            try (BufferedReader br = new BufferedReader(new FileReader(originalFile));
+                 BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
+                // copy header in tmp file
+                String line = br.readLine();
+                if (line != null) {
+                    bw.write(line);
+                    bw.newLine();
                 }
-            } catch (IOException e) {
-                if (tempFile.exists()) tempFile.delete();
-                throw new DAOException("Error: cannot access to file");
+                // start reading the info by row
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
+                    String[] tmpRow = line.split(";");
+                    int currentLineId = Integer.parseInt(tmpRow[0].trim());
+                    // Verify ID match
+                    boolean isMatch = false;
+                    for (Integer id : iDs) {
+                        if (id != null && id == currentLineId) {
+                            isMatch = true;
+                            break;
+                        }
+                    }
+                    if (isMatch) {
+                        int currentCounter = Integer.parseInt(tmpRow[7].trim());
+                        tmpRow[7] = String.valueOf(currentCounter + 1);
+                        // Rebuild row with ; separator for tmp file and with offer counter increment
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < tmpRow.length; i++) {
+                            sb.append(tmpRow[i]);
+                            if (i < tmpRow.length - 1) {
+                                sb.append(";");
+                            }
+                        }
+                        bw.write(sb.toString());
+                        anyUpdated = true;
+                    } else {
+                        bw.write(line);
+                    }
+                    bw.newLine();
+                }
+            } catch (IOException | NumberFormatException e) {
+                if (tempFile.exists()) {
+                    tempFile.delete();
+                }
+                throw new DAOException("Error: cannot access or read items file");
             }
-            if (success && (!originalFile.delete() || !tempFile.renameTo(originalFile))) {
-                throw new DAOException("Error: cannot delete original file and rename temp file");
+            // Overwrite real file
+            if (anyUpdated) {
+                if (!originalFile.delete() || !tempFile.renameTo(originalFile)) {
+                    throw new DAOException("Error: cannot replace original file with temp file");
+                }
+            } else {
+                // If no updates, delete temp file
+                tempFile.delete();
             }
         }
     }

@@ -167,6 +167,34 @@ public class OfferDAOCSV extends OfferDAO {
         return collidingOffers;
     }
 
+    @Override
+    public List<Offer> retrievePendingOffersByPartners(String offerer, String receiver) {
+        List<Offer> offers = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(OFFER_FILE_PATH))) {
+            String line = br.readLine(); //skip header
+            while ((line = br.readLine()) != null) {
+                String[] offerData = line.split(";");
+                if ((offerData[2]).equals(receiver) && offerData[6].equalsIgnoreCase("PENDING") && offerData[1].equals(offerer)) {
+                    offers.add(new Offer(
+                            Integer.parseInt(offerData[0]),
+                            new User(offerData[1], null, 0, null),
+                            new User(offerData[2], null, 0, null),
+                            this.retrieveOfferedItems(Integer.parseInt(offerData[0])),
+                            new Item(Integer.parseInt(offerData[3])),
+                            Boolean.parseBoolean(offerData[4]),
+                            Boolean.parseBoolean(offerData[5]),
+                            OfferStatus.valueOf(offerData[6].toUpperCase())
+                    ));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new DAOException("Persistence error: offers file not found.", e);
+        } catch (IOException | NumberFormatException e) {
+            throw new DAOException("Error fetching offers with receiver: " + receiver, e);
+        }
+        return offers;
+    }
+
     // Utility method for retrieveCollidingOffers (to not include duplicates)
     private void addIfValid(List<Offer> list, Offer newOffer, int excludedId) {
         if (newOffer == null || newOffer.getId() == excludedId || newOffer.getStatus() == OfferStatus.ACCEPTED) {

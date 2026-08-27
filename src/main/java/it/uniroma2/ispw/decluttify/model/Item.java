@@ -110,6 +110,11 @@ public class Item{
                             allOk = false;
                             break;
                         }
+                        for(Item item2 : offeredItems){
+                            if(offeredItems.indexOf(item) != offeredItems.indexOf(item2) && item.getId() == item2.getId()){
+                                throw new ModelException("Cannot propose the same item multiple times for an offer");
+                            }
+                        }
                     }
                     offeredResult[0] = allOk;
                 }

@@ -4,6 +4,7 @@ import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
+import it.uniroma2.ispw.decluttify.exception.DuplicateOfferException;
 import it.uniroma2.ispw.decluttify.exception.SessionExpiredException;
 import it.uniroma2.ispw.decluttify.model.*;
 import it.uniroma2.ispw.decluttify.persistence.dao.*;
@@ -92,6 +93,14 @@ public class MakeOfferController {
 
         //Create offer
         Offer offer = targetItem.proposeBarter(offerer, offeredItems);
+
+        //Check if offer is a duplicate
+        List<Offer> partnersPendingOffers = offerDAO.retrievePendingOffersByPartners(offer.getOfferer().getUsername(), offer.getReceiver().getUsername());
+        for(Offer partnerOffer : partnersPendingOffers){
+            if(offer.isDuplicate(partnerOffer)){
+                throw new DuplicateOfferException("You have already submitted an identical offer for this item");
+            }
+        }
 
         //Save offer on persistence: save all items new state within a single transaction, rollback if not possible and throw exception. If success, save the new offer.
         try {

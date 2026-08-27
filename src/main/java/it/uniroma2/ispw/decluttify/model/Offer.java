@@ -165,4 +165,47 @@ public class Offer {
     public void setState(StateMachine SM) {
         this.SM = SM;
     }
+
+    public boolean isDuplicate(Offer partnerOffer) {
+        if (partnerOffer == null) {
+            return false;
+        }
+
+        //check receivers
+        if (this.getReceiver() == null || partnerOffer.getReceiver() == null ||
+                !this.getReceiver().getUsername().equals(partnerOffer.getReceiver().getUsername())) {
+            return false;
+        }
+
+        //check offerers
+        if (this.getOfferer() == null || partnerOffer.getOfferer() == null ||
+                !this.getOfferer().getUsername().equals(partnerOffer.getOfferer().getUsername())) {
+            return false;
+        }
+
+        //check target items
+        if (this.getItemRequested() == null || partnerOffer.getItemRequested() == null ||
+                this.getItemRequested().getId() != partnerOffer.getItemRequested().getId()) {
+            return false;
+        }
+
+        //check offered items
+        if (this.itemOffered.size() != partnerOffer.getItemOffered().size()) {
+            return false;
+        }
+        for (Item item1 : this.itemOffered) {
+            boolean found = false;
+            for (Item item2 : partnerOffer.getItemOffered()) {
+                if (item1.getId() == item2.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -18,7 +18,7 @@ public class DecluttifyLauncher extends Application {
                 Navigator navigator = new CLINavigatorManager(sessionManager);
                 navigator.start();
                 break;
-            case "GUI":
+            case "JFX":
                 Application.launch(args);
                 break;
             default:

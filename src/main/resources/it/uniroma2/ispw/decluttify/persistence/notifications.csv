@@ -1,12 +1,4 @@
 id;user;message;type;isRead;createdAt
-1;jane;New Offer!;OFFER;false;2026-04-11T15:44:44.446699
-2;dave;Offer Accepted!;OFFER;false;2026-04-11T15:46:24.040631100
-3;dave;Barter Confirmed!;BARTER;false;2026-04-11T15:47:13.603681800
-4;dave;Barter Confirmed!;BARTER;false;2026-04-11T15:47:27.282783100
-5;jane;Barter Confirmed!;BARTER;false;2026-04-11T15:48:28.234922500
-6;richard;New Offer!;OFFER;false;2026-04-26T01:14:35.192468600
-7;richard;New Offer!;OFFER;false;2026-04-26T01:18:48.321535400
-8;richard;New Offer!;OFFER;false;2026-04-26T01:20:18.212300700
-9;richard;New Offer!;OFFER;false;2026-04-26T01:24:52.999555900
-10;dave;New Offer!;OFFER;false;2026-04-26T01:28:30.348429600
-11;richard;New Offer!;OFFER;false;2026-04-27T01:02:44.847510200
+1;jane;New offer from dave;OFFER;false;2026-08-27T22:08:05.305302300
+2;richard;New offer from dave;OFFER;false;2026-04-11T15:44:44.446699
+3;dave;New offer from claire;OFFER;false;2026-08-27T22:58:02.112668500

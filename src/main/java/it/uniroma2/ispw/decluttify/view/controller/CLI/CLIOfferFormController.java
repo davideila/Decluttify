@@ -2,11 +2,11 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
+import it.uniroma2.ispw.decluttify.exception.DuplicateOfferException;
 import it.uniroma2.ispw.decluttify.exception.SessionExpiredException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLIOfferFormView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +60,8 @@ public class CLIOfferFormController extends CLIGraphicController<CLIOfferFormVie
                     }catch(SessionExpiredException e){
                         this.view.showMessage("Session has expired. Please try again", true);
                         this.navigatorManager.reset();
+                    }catch(DuplicateOfferException e){
+                        this.handleException(e);
                     }catch(DecluttifyException e){
                         this.handleException(e);
                         navigatorManager.navigateTo(CLIViewType.HOME);

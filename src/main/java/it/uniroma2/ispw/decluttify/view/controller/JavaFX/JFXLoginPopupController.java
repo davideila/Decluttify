@@ -31,16 +31,18 @@ public class JFXLoginPopupController{
 
         try{
             loginRes = loginController.login(username, password);
+            if (loginRes) {
+                failedLogin.setText("");
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.close();
+            }
+            else{
+                failedLogin.setText("Incorrect username or password");
+            }
         }catch(LoginException e){
             failedLogin.setText(e.getMessage());
         }catch(DAOException daoException){
             AlertProvider.showError("Server error", "Service temporarily unavailable");
-        }
-
-        if (loginRes) {
-            failedLogin.setText("");
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.close();
         }
 
         usernameField.setText("");

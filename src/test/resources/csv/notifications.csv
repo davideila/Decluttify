@@ -1,0 +1,4 @@
+id;user;message;type;isRead;createdAt
+1;jane;New offer from dave;OFFER;false;2026-08-27T22:08:05.305302300
+2;richard;New offer from dave;OFFER;false;2026-04-11T15:44:44.446699
+3;richard;New offer from dave;OFFER;false;2026-08-29T23:23:53.363806

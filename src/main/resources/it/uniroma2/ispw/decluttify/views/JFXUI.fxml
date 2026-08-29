@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <VBox fx:id="vbox" alignment="CENTER" spacing="15" style="-fx-background-color: #475569;">
+    </VBox>
+
+    <BorderPane fx:id="borderPane" HBox.hgrow="ALWAYS">
+        <top>
+        </top>
+        <center>
+        </center>
+    </BorderPane>
+
+</HBox>

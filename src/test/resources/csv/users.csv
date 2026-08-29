@@ -1,0 +1,6 @@
+username;password;rating;email
+dave;$2b$10$JK62/8yq4BpZN2B9d6VXCupiMD5f/11F3wk/bRUOKFXjDr1wRvkF2;5;dave@outlook.it
+jane;$2b$10$/CDY0oemdzNRYUbZav9pBuKLYKUjxHcCzjfvltbsm27uWPcWuydHS;4;jane@outlook.it
+richard;$2b$10$UH25fhFdHzanL5CnfV0X8OOkn3BiIzeF7tZlMJLr9uGhF6KscTz1m;3;richard@gmail.com
+claire;$2b$10$Q9WxWc.kFqJJ3BXrdnh.eu3Cf2Yrj8NdFYAWblHC.SXDgq0jdV3k6;4;claire@gmail.com
+simon;$2b$10$gW7fIt6f/yQjcsWPn.NodO6.tVYdjrhDRHI5SF2xQyn9OVa7HfrLW;5;simon@gmail.com

@@ -1,0 +1,25 @@
+# --- JAVA ---
+*.class
+*.log
+*.jar
+*.war
+
+# --- IDE (IntelliJ) ---
+.idea/
+*.iml
+out/
+gen/
+/shelf/
+/workspace.xml
+
+# --- BUILD TOOLS ---
+target/
+.gradle/
+build/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- PROJECT SPECIFIC ---
+# CSV

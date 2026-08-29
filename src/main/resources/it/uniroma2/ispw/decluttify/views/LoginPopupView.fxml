@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="215.0" layoutY="68.0" spacing="15.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Label fx:id="failedLogin" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textFill="#d03333" wrapText="true" />
+            <TextField fx:id="usernameField" promptText="username" />
+            <PasswordField fx:id="passwordField" promptText="password" />
+            <HBox spacing="10.0">
+               <children>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onActionSignInButton" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-cursor: hand;" text="Login" wrapText="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label contentDisplay="CENTER" text="Don't have an account yet?" wrapText="true" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onActionSignUpButton" prefWidth="65.0" style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;" text="Register" wrapText="true" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

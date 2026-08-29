@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="20.0" left="60.0" right="60.0" top="20.0" />
+    </padding>
+
+    <Label style="-fx-font-weight: bold;" text="Make Offer">
+        <font>
+            <Font size="28.0" />
+        </font>
+    </Label>
+
+    <GridPane fx:id="gridPane" alignment="CENTER" hgap="40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" />
+            <ColumnConstraints hgrow="NEVER" />
+        </columnConstraints>
+
+        <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;" GridPane.columnIndex="0">
+            <Label style="-fx-text-fill: #777; -fx-font-weight: bold;" text="YOU RECEIVE">
+            <padding>
+               <Insets left="100.0" right="100.0" />
+            </padding></Label>
+            <Separator />
+         <Region VBox.vgrow="ALWAYS" />
+         <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+            <children>
+               <VBox alignment="CENTER" spacing="5.0">
+                  <children>
+                        <ImageView fx:id="requestedItemImage" fitHeight="200.0" fitWidth="250.0" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="requestedItemName" style="-fx-font-weight: bold;" text="Item Name">
+                        <font>
+                           <Font size="24.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </VBox>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Description:" wrapText="true">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                      <TextFlow>
+                        <children>
+                              <Text fx:id="descriptionText" fill="GRAY" text="description">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Text>
+                        </children>
+                        <VBox.margin>
+                           <Insets left="15.0" />
+                        </VBox.margin>
+                      </TextFlow>
+                  </children>
+               </VBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Owner:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="ownerLabel" style="-fx-text-fill: gray;" text="username">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Location:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="locationLabel" style="-fx-text-fill: gray;" text="Rome">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Conditions:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="conditionsLabel" style="-fx-text-fill: gray;" text="Good">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                  <children>
+                     <Label style="-fx-text-fill: gray;" text="Interest level:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="popularityLabel" style="-fx-text-fill: gray;" text="Trending">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+         <Region VBox.vgrow="ALWAYS" />
+         <GridPane.margin>
+            <Insets left="30.0" right="30.0" />
+         </GridPane.margin>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+        </VBox>
+
+        <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_LEFT">
+                <Label style="-fx-text-fill: #777; -fx-font-weight: bold;" text="YOU OFFER" />
+            <padding>
+               <Insets left="100.0" right="100.0" />
+            </padding>
+            </HBox>
+
+            <Separator />
+         <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+            <children>
+               <VBox fx:id="vboxItemsOffered" alignment="CENTER" fillWidth="false" spacing="30.0">
+                  <children>
+      
+                            <VBox fx:id="emptyTile1" alignment="CENTER" onMouseClicked="#handleAddItems" prefHeight="200.0" prefWidth="100.0" style="-fx-border-style: dashed; -fx-border-radius: 10; -fx-border-color: #3498db; -fx-border-width: 2;">
+                               <children>
+                                      <Button fx:id="addItem1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleAddItems" style="-fx-text-fill: #3498db; -fx-cursor: hand; -fx-background-color: transparent;" text="Add item" VBox.vgrow="ALWAYS">
+                                     <font>
+                                        <Font size="16.0" />
+                                     </font>
+                                  </Button>
+                               </children>
+                            </VBox>
+      
+                            <VBox fx:id="emptyTile2" alignment="CENTER" onMouseClicked="#handleAddItems" prefHeight="200.0" prefWidth="100.0" style="-fx-border-style: dashed; -fx-border-radius: 10; -fx-border-color: #3498db; -fx-border-width: 2;">
+                                <children>
+                                    <Button fx:id="addItem2" disable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleAddItems" style="-fx-text-fill: #3498db; -fx-cursor: hand; -fx-background-color: transparent;" text="Add item" VBox.vgrow="ALWAYS">
+                                        <font>
+                                            <Font size="16.0" />
+                                        </font>
+                                    </Button>
+                                </children>
+                            </VBox>
+      
+                            <VBox fx:id="emptyTile3" alignment="CENTER" onMouseClicked="#handleAddItems" prefHeight="200.0" prefWidth="100.0" style="-fx-border-style: dashed; -fx-border-radius: 10; -fx-border-color: #3498db; -fx-border-width: 2;">
+                                <children>
+                                    <Button fx:id="addItem3" disable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleAddItems" style="-fx-text-fill: #3498db; -fx-cursor: hand; -fx-background-color: transparent;" text="Add item" VBox.vgrow="ALWAYS">
+                                        <font>
+                                            <Font size="16.0" />
+                                        </font>
+                                    </Button>
+                                </children>
+                            </VBox>
+                  </children>
+               </VBox>
+               <Button fx:id="optionsButton" mnemonicParsing="false" style="-fx-text-fill: #3498db; -fx-background-color: transparent; -fx-underline: true; -fx-cursor: hand;" text="options">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets bottom="5.0" top="10.0" />
+                  </HBox.margin>
+               </Button>
+            </children>
+         </HBox>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+
+        </VBox>
+
+      <rowConstraints>
+         <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+      </rowConstraints>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+
+    </GridPane>
+
+    <HBox alignment="CENTER" spacing="20" VBox.vgrow="NEVER">
+        <Button onAction="#handleCancel" style="-fx-min-width: 150; -fx-padding: 10;" text="Cancel" />
+        <Button fx:id="submitButton" disable="true" onAction="#handleSubmit" style="-fx-min-width: 250; -fx-padding: 10; -fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Submit Offer" />
+    </HBox>
+</VBox>

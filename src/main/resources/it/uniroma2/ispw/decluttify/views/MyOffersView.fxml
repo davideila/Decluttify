@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-tab-min-width: 150;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <tabs>
+        <!-- TAB 1: RECEIVED OFFERS -->
+        <Tab text="Received offers">
+            <content>
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                    <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Filter status:" />
+                                <ComboBox fx:id="statusFilterComboBoxRecv" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Pending">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All" />
+                                            <String fx:value="Pending" />
+                                            <String fx:value="Accepted" />
+                                            <String fx:value="Rejected" />
+                                            <String fx:value="Canceled" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <Label style="-fx-font-weight: bold;" text="Sort by:" />
+                                <ComboBox fx:id="sortComboBoxRecv" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Newest first">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Newest first" />
+                                            <String fx:value="Oldest first" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
+
+                        <HBox alignment="CENTER" style="-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-background-radius: 5;">
+                            <children>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label style="-fx-font-weight: bold;" text="YOU GET" HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS" />
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                                    <Image url="@../images/offer_arrows_icon.png" />
+                                </ImageView>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label style="-fx-font-weight: bold;" text="YOU GIVE" HBox.hgrow="ALWAYS" />
+                                <Region HBox.hgrow="ALWAYS" />
+                        <Region prefWidth="80.0" />
+                            </children>
+                        </HBox>
+
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                            <content>
+                                <VBox fx:id="vboxReceivedOffers" spacing="20.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding></VBox>
+                            </content>
+                        </ScrollPane>
+
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+
+        <!-- TAB 2: SENT OFFERS -->
+        <Tab text="Sent offers">
+            <content>
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                    <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Filter status:" />
+                                <ComboBox fx:id="statusFilterComboBoxSent" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db; -fx-mark-color: #3498db;" value="Pending">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="All" />
+                                            <String fx:value="Pending" />
+                                            <String fx:value="Accepted" />
+                                            <String fx:value="Rejected" />
+                                            <String fx:value="Canceled" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <Label style="-fx-font-weight: bold;" text="Sort by:" />
+                                <ComboBox fx:id="sortComboBoxSent" style="-fx-background-color: transparent; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-cursor: hand; -fx-mark-color: #3498db;
+                                -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db;" value="Newest first">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Newest first" />
+                                            <String fx:value="Oldest first" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
+
+                        <HBox alignment="CENTER" style="-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-background-radius: 5;">
+                            <children>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label style="-fx-font-weight: bold;" text="YOU GIVE" HBox.hgrow="ALWAYS" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                                    <Image url="@../images/offer_arrows_icon.png" />
+                                </ImageView>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label style="-fx-font-weight: bold;" text="YOU GET" HBox.hgrow="ALWAYS" />
+                                <Region HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                            <content>
+                                <VBox fx:id="vboxSentOffers" spacing="20.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding></VBox>
+                            </content>
+                        </ScrollPane>
+
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+    </tabs>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</TabPane>

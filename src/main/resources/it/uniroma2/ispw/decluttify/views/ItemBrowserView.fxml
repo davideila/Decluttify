@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="rootView" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="10.0">
+            <Label text="Discover your next barter">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+            <font>
+               <Font size="30.0" />
+            </font></Label>
+         <VBox alignment="CENTER_LEFT">
+            <children>
+               <HBox alignment="BOTTOM_LEFT" prefHeight="64.0" prefWidth="730.0">
+                  <children>
+                     <TextField promptText="Find...">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </TextField>
+                     <Region HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                           <Insets />
+                        </HBox.margin>
+                     </Region>
+                     <HBox alignment="BOTTOM_LEFT" fillHeight="false" spacing="5.0" HBox.hgrow="NEVER">
+                        <children>
+                           <Label text="Order by: " HBox.hgrow="ALWAYS">
+                              <HBox.margin>
+                                 <Insets bottom="5.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font size="16.0" />
+                              </font>
+                           </Label>
+                            <ComboBox fx:id="sortComboBox" prefWidth="125.0" style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-base-color: #3498db; -fx-prompt-text-fill: #3498db;                              -fx-border-color: #3498db; -fx-underline: true;-fx-cursor: hand; -fx-background-radius: 10; -fx-border-radius: 10; -fx-mark-color: #3498db;" value="Latest">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Latest" />
+                                        <String fx:value="Popularity" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </children>
+                        <HBox.margin>
+                           <Insets />
+                        </HBox.margin>
+                     </HBox>
+                     <Region prefWidth="65.0" />
+                     <Button fx:id="filtersButton" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-background-radius: 10; -fx-border-radius: 10;                      -fx-cursor: hand;" text="More filters" underline="true">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </Button>
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="5.0" left="15.0" right="15.0" />
+                  </VBox.margin>
+               </HBox>
+               <Separator prefWidth="200.0">
+                  <VBox.margin>
+                     <Insets left="5.0" right="5.0" />
+                  </VBox.margin></Separator>
+            </children>
+         </VBox>
+         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #cccccc; -fx-border-width: 2px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-background-color: transparent;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+            <content>
+               <TilePane fx:id="tilePane" hgap="40.0" style="-fx-border-width: 2; -fx-border-radius: 5;" vgap="40.0">
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding></TilePane>
+            </content>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </ScrollPane>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="40.0" right="20.0" />
+         </BorderPane.margin>
+        </VBox>
+    </center>
+</BorderPane>

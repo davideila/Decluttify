@@ -1,0 +1,4 @@
+id;offerer;receiver;itemReq;escrow;shipping;status
+1;dave;jane;2;false;false;PENDING
+2;dave;richard;3;false;false;PENDING
+3;dave;richard;6;false;false;PENDING

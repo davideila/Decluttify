@@ -1,2 +1,2 @@
-# Bartrify
-Repository for ISPW project for application Bartrify
+# Decluttify
+Repository for ISPW project for application Decluttify

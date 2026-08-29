@@ -66,18 +66,6 @@ public class Item{
 
     //Business methods
 
-    public void updateStatus(ItemStatus status){
-        switch (this.status) {
-            case TRADED:
-                throw new IllegalStateException("Cannot change item status: item already traded.");
-            case AVAILABLE:
-                this.setStatus(status);
-                break;
-            default:
-                throw new IllegalArgumentException("Unexpected error: status " + this.status + " is not handled.");
-        }
-    }
-
     public Offer proposeBarter(User offerer, List<Item> offeredItems) {
         if(offerer == null || offeredItems == null || offeredItems.isEmpty()){
             throw new InvalidOfferException("Error: invalid offer");
@@ -96,6 +84,7 @@ public class Item{
 
         final boolean[] targetResult = { false }; /* Array because the runnable thread accepts only final local variables and to make it mutable array is used */
         final boolean[] offeredResult = { false };
+        final InvalidOfferException[] threadException = new InvalidOfferException[1];
 
         Thread targetThread = new Thread(new Runnable() {
             @Override
@@ -118,7 +107,7 @@ public class Item{
                         }
                         for(Item item2 : offeredItems){
                             if(offeredItems.indexOf(item) != offeredItems.indexOf(item2) && item.getId() == item2.getId()){
-                                throw new InvalidOfferException("Cannot propose the same item multiple times for an offer");
+                                threadException[0] = new InvalidOfferException("Cannot propose the same item multiple times for an offer");
                             }
                         }
                     }
@@ -136,13 +125,20 @@ public class Item{
             Thread.currentThread().interrupt();
             throw new DecluttifyException("Availability check interrupted!");
         }
-
+        if (threadException[0] != null) {
+            throw threadException[0];
+        }
         if (!targetResult[0]) {
             throw new ItemNotAvailableException("Requested item is not available!");
         }
         if (!offeredResult[0]) {
             throw new ItemNotAvailableException("Some of the offered items are not available!");
         }
+
+        for(Item item : offeredItems){
+            item.incrOffersCounter();
+        }
+        this.incrOffersCounter();
 
         return new Offer(offerer, this.getOwner(), offeredItems, this);
     }
@@ -278,6 +274,13 @@ public class Item{
 
     public int getId(){
         return this.id;
+    }
+
+    public void setId(int id){
+        if(this.id < 0){
+            throw new IllegalArgumentException("Invalid item id.");
+        }
+        this.id = id;
     }
 
 }

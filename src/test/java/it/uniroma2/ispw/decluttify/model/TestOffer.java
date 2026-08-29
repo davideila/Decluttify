@@ -4,51 +4,39 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestOffer {
 
-    private static TestItem testItem = new TestItem();
+    private TestItem testItem = new TestItem();
 
-    protected Offer CreateTestOffer(String offererUsername, String receiverUsername){
-        User offerer = testItem.CreateTestUser(offererUsername);
-        User receiver = testItem.CreateTestUser(receiverUsername);
-        Item itemReq = testItem.CreateTestItem(receiverUsername, "AVAILABLE", 2);
+    public Offer CreateTestOffer(String offererUsername, String receiverUsername){
+        User offerer = testItem.createTestUser(offererUsername);
+        User receiver = testItem.createTestUser(receiverUsername);
+        Item itemReq = testItem.createTestItem(4, receiverUsername, "AVAILABLE");
         List<Item> itemOff = new ArrayList<>();
-        itemOff.add(testItem.CreateTestItem(offererUsername, "AVAILABLE", 3));
-        itemOff.add(testItem.CreateTestItem(offererUsername, "AVAILABLE", 3));
-        itemOff.add(testItem.CreateTestItem(offererUsername, "AVAILABLE", 1));
+        itemOff.add(testItem.createTestItem(1, offererUsername, "AVAILABLE"));
+        itemOff.add(testItem.createTestItem(2, offererUsername, "AVAILABLE"));
+        itemOff.add(testItem.createTestItem(3, offererUsername, "AVAILABLE"));
         Offer offer = new Offer(offerer, receiver, itemOff, itemReq);
         return offer;
     }
 
     @Test
-    public void TestAcceptCorrect(){
-        Offer offer = this.CreateTestOffer("offerer", "receiver");
-        Barter barter = null;
-        barter = offer.accept();
-        assertNotNull(barter);
+    public void IsDuplicateTrue(){
+        Offer offer1 = CreateTestOffer("dave", "claire");
+        Offer offer2 = CreateTestOffer("dave", "claire");
+        assertTrue(offer1.isDuplicate(offer2));
     }
 
     @Test
-    public void TestAcceptWrongState(){
-        Offer offer = this.CreateTestOffer("offerer", "receiver");
-        //offer.setState(new StateMachineImpl(offer, OfferStatus.ACCEPTED));
-        offer.setStatus(OfferStatus.ACCEPTED);
-        assertThrows(ModelException.class, () -> {offer.accept();});
+    public void IsDuplicateFalse(){
+        Offer offer1 = CreateTestOffer("dave", "claire");
+        Offer offer2 = CreateTestOffer("dave", "claire");
+        offer2.getItemOffered().getFirst().setId(0);
+        assertFalse(offer1.isDuplicate(offer2));
     }
 
-    @Test
-    public void TestRejectCorrect(){
-        Offer offer = this.CreateTestOffer("offerer", "receiver");
-        offer.reject();
-        assertEquals(OfferStatus.REJECTED, offer.getStatus());
-    }
-
-    @Test
-    public void TestRejectWrongState(){
-        Offer offer = this.CreateTestOffer("offerer", "receiver");
-        offer.setStatus(OfferStatus.ACCEPTED);
-        assertThrows(ModelException.class, () -> {offer.reject();});
-    }
 }

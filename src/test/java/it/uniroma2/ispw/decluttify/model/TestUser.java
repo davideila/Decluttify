@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,33 +27,31 @@ public class TestUser {
 
     @Test
     void testCheckPasswordEmpty() {
-        String psw = "";
         String pepper = "shared-secret";
-        User user = new User("richard", psw, 5.0, "richard@test.com", pepper);
-        boolean result = user.checkPassword(psw, pepper);
-        assertFalse(result);
+        User user = new User("richard", "password", 5.0, "richard@test.com", pepper);
+        assertThrows(IllegalArgumentException.class, () ->{ user.checkPassword("", pepper);});
     }
 
     @Test
     void testCheckPasswordNull() {
-        String psw = "pwd";
+        String psw = "password";
         String pepper = "shared-secret";
         User user = new User("richard", psw, 5.0, "richard@test.com", pepper);
-        assertThrows(DecluttifyException.class, () ->{ user.checkPassword(null, pepper);});
+        assertThrows(IllegalArgumentException.class, () ->{ user.checkPassword(null, pepper);});
     }
 
     @Test
     void testSetUsernameNullThrows() {
-        User user = new User("Mario", "psw", 5.0, "mario@test.com", "pepper");
-        assertThrows(ModelException.class, () -> {
+        User user = new User("Mario", "password", 5.0, "mario@test.com", "pepper");
+        assertThrows(IllegalArgumentException.class, () -> {
             user.setUsername(null);
         });
     }
 
     @Test
     void testSetPasswordHashNullThrows() {
-        User user = new User("Mario", "psw", 5.0, "mario@test.com", "pepper");
-        assertThrows(ModelException.class, () -> {
+        User user = new User("Mario", "password", 5.0, "mario@test.com", "pepper");
+        assertThrows(IllegalArgumentException.class, () -> {
             user.setPasswordHash(null, "pepper");
         });
     }

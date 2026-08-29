@@ -6,3 +6,7 @@ id;user;message;type;isRead;createdAt
 5;richard;New offer from dave;OFFER;false;2026-08-28T00:48:32.251484500
 6;richard;New offer from dave;OFFER;false;2026-08-29T16:58:46.821275900
 7;jane;New offer from richard;OFFER;false;2026-08-29T18:11:27.805639200
+8;claire;New offer from dave;OFFER;false;2026-08-29T22:33:36.488439800
+9;claire;New offer from dave;OFFER;false;2026-08-29T22:36:24.211724500
+10;simon;New offer from dave;OFFER;false;2026-08-29T22:39:40.924167500
+11;richard;New offer from dave;OFFER;false;2026-08-29T23:00:48.239270500

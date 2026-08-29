@@ -62,7 +62,7 @@ public class PersistenceManager {
     public Connection getConnection() {
         ConfigReader configReader = ConfigReader.getInstance();
 
-        if (!"mysql".equalsIgnoreCase(persistenceType)) {
+        if (!("mysql".equalsIgnoreCase(persistenceType))) {
             return null;
         }
 
@@ -98,5 +98,10 @@ public class PersistenceManager {
 
     public boolean isDemoMode() {
         return this.demoMode;
+    }
+
+    public void setupTestEnvironment() {
+        this.testEnvironment = true;
+        this.demoMode = false;
     }
 }

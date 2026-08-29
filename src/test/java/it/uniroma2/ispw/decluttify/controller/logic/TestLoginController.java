@@ -1,60 +1,69 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
+import it.uniroma2.ispw.decluttify.exception.LoginException;
+import it.uniroma2.ispw.decluttify.utils.SessionManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class TestLoginController {
-/*
+
+    LoginController loginController;
+    SessionManager sessionManager;
+
+    @BeforeEach
+    public void setUp() {
+        SessionManager sessionManager = new SessionManager();
+        this.sessionManager = sessionManager;
+        LoginController loginController = new LoginController(sessionManager);
+        this.loginController = loginController;
+    }
+
     @Test
     public void testLoginCorrect(){
-        //CLILoginController loginController = new CLILoginController();
         boolean result = loginController.login("dave", "dave");
         assertTrue(result);
     }
 
     @Test
     public void testLoginIncorrect(){
-       // CLILoginController loginController = new CLILoginController();
         boolean result = loginController.login("dave", "wrong");
         assertFalse(result);
     }
 
     @Test
     public void testLoginUsernameNull(){
-       // CLILoginController loginController = new CLILoginController();
-        //boolean result = loginController.login(null, "dave");
-       // assertFalse(result);
+        assertThrows(LoginException.class, () -> {loginController.login(null, "dave");});
     }
 
     @Test
     public void testLoginPasswordNull(){
-        //CLILoginController loginController = new CLILoginController();
-        //assertThrows(ModelException.class, () -> {loginController.login("dave", null);});
+        assertThrows(LoginException.class, () -> {loginController.login("dave", null);});
     }
 
     @Test
     public void testLoginPasswordEmpty(){
-        CLILoginController loginController = new CLILoginController();
-        assertThrows(ModelException.class, () -> {loginController.login("dave", "");});
+        assertThrows(LoginException.class, () -> {loginController.login("dave", "");});
     }
 
     @Test
     public void testLoginUsernameEmpty(){
-        //CLILoginController loginController = new CLILoginController();
-        //boolean result = loginController.login("", "pwd");
-        //assertFalse(result);
+        assertThrows(LoginException.class, () -> {loginController.login("", "password");});
+    }
+
+    @Test
+    public void testLoginTooManyFailedAttempts(){
+        loginController.login("dave", "wrongpwd");
+        loginController.login("dave", "wrongpwd");
+        loginController.login("dave", "wrongpwd");
+        assertThrows(LoginException.class, () -> {loginController.login("dave", "dave");});
     }
 
     @Test
     public void testLogoutIfLoggedIn(){
-        //CLILoginController loginController = new CLILoginController();
-        //loginController.login("dave", "dave");
-        //loginController.logout();
-        //assertFalse(SessionManager.getInstance().isLoggedIn());
+        loginController.login("dave", "dave");
+        loginController.logout();
+        assertFalse(sessionManager.isLoggedIn());
     }
-
-    @Test
-    public void testLogoutIfLoggedOut(){
-        //CLILoginController loginController = new CLILoginController();
-        //loginController.logout();
-        //assertFalse(SessionManager.getInstance().isLoggedIn());
-    }*/
 
 }

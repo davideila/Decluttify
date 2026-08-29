@@ -31,7 +31,7 @@ public class User {
 
     //Business methods
     public boolean checkPassword(String inputPassword, String pepper) {
-        if(inputPassword == null ||inputPassword.isEmpty()) {
+        if(inputPassword == null || inputPassword.isEmpty()) {
             throw new IllegalArgumentException("Invalid input: please provide a password.");
         }
         try {

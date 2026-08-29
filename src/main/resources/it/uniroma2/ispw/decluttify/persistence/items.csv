@@ -1,13 +1,13 @@
 id;owner;name;description;creationDate;category;condition;offersCounter;location;status
-1;dave;violin;entry level;2025-09-01;Music;Excellent;4;Rome;AVAILABLE
+1;dave;violin;entry level;2025-09-01;Music;Excellent;8;Rome;AVAILABLE
 2;jane;1984;must read book;2025-09-01;Book;Good;1;London;AVAILABLE
 3;richard;chess table;rare edition;2026-04-20;Miscellaneous;Good;3;Venice;AVAILABLE
 4;dave;DJI NEO Drone;DJI Neo Drone + Smart Battery + DJI Neo Propellers (2 pairs);2026-04-13;Tech;Good;4;Rome;AVAILABLE
 5;jane;T-shirt disneyland;Limited edition disneyland paris t-shirt 2026;2026-06-20;Clothing;Good;1;London;AVAILABLE
-6;richard;Hole punch pliers;Hole punch pliers;2026-01-08;Miscellaneous;Bad;3;Venice;AVAILABLE
+6;richard;Hole punch pliers;Hole punch pliers;2026-01-08;Miscellaneous;Bad;4;Venice;AVAILABLE
 7;dave;Vertex 05;Bullpadel Vertex 05 Hybrid 2026 blue;2026-08-23;Sport;Excellent;3;Rome;AVAILABLE
 8;simon;Volkl skis racetiger;Volkl skis racetiger SL +RMOTION TL12 GW yellow V2511004;2026-05-15;Sport;Excellent;0;Bari;AVAILABLE
-9;simon;Neon light;Pacman neon light;2026-02-19;Tech;Good;0;Bari;AVAILABLE
-10;claire;GoPro HERO12;GoPro HERO12 Black;2026-06-06;Tech;Good;1;Paris;AVAILABLE
-11;claire;Spiderman action figure;Titan series action figure;2026-07-21;Miscellaneous;Bad;1;Paris;AVAILABLE
+9;simon;Neon light;Pacman neon light;2026-02-19;Tech;Good;1;Bari;AVAILABLE
+10;claire;GoPro HERO12;GoPro HERO12 Black;2026-06-06;Tech;Good;2;Paris;AVAILABLE
+11;claire;Spiderman action figure;Titan series action figure;2026-07-21;Miscellaneous;Bad;2;Paris;AVAILABLE
 12;claire;Divine clarinet;Divine clarinet La BC1260;2026-08-19;Music;Good;0;Paris;AVAILABLE

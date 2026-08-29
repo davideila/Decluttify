@@ -6,3 +6,7 @@ id;offerer;receiver;itemReq;escrow;shipping;status
 5;dave;richard;6;false;false;PENDING
 6;dave;richard;3;false;false;PENDING
 7;richard;jane;5;false;false;PENDING
+8;dave;claire;10;false;false;PENDING
+9;dave;claire;11;false;false;PENDING
+10;dave;simon;9;false;false;PENDING
+11;dave;richard;6;false;false;PENDING

@@ -5,11 +5,7 @@ import java.util.List;
 
 public abstract class OfferDAO {
     public abstract void createOffer(Offer offer);
-    public abstract void rejectOffer(Offer offer);
     public abstract List<Offer> retrieveOffersByReceiver(String receiver);
     public abstract List<Offer> retrieveOffersBySender(String sender);
-    public abstract Offer retrieveOfferById(int id) ;
-    public abstract void acceptOffer(Offer offer, List<Offer> collidingOffers);
-    public abstract List<Offer> retrieveCollidingOffers(Offer offerToExclude);
     public abstract List<Offer> retrievePendingOffersByPartners(String offerer, String receiver);
 }

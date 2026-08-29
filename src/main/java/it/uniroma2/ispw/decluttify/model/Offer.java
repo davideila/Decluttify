@@ -1,8 +1,5 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.model.OfferStateMachine.Events;
-import it.uniroma2.ispw.decluttify.model.OfferStateMachine.StateMachineImpl;
-import it.uniroma2.ispw.decluttify.model.OfferStateMachine.StateMachine;
 import java.util.List;
 
 public class Offer {
@@ -14,7 +11,6 @@ public class Offer {
     private boolean isShippingOn;
     private boolean isEscrowOn;
     private OfferStatus status;
-    private StateMachine SM;
 
     //Constructors
 
@@ -27,7 +23,6 @@ public class Offer {
         this.setIsShippingOn(isShippingOn);
         this.setIsEscrowOn(isEscrowOn);
         this.setStatus(status);
-        this.restoreStateMachine(status);
     }
 
     public Offer(User offerer, User receiver, List<Item> itemsOffered, Item itemRequested) {
@@ -39,58 +34,56 @@ public class Offer {
         this.setIsShippingOn(false);
         this.setIsEscrowOn(false);
         this.setStatus(OfferStatus.PENDING);
-        this.setState(new StateMachineImpl(this));
     }
 
     public Offer(int id) {
         this.id = id;
     }
 
-    void restoreStateMachine(OfferStatus status) {
-        this.SM = new StateMachineImpl(this, status);
-    }
 
     //Business methods
 
-    public Barter accept(){
-        this.SM.goNext(Events.accept);
-        return this.startBarter();
-    }
-
-    public void reject(){
-        this.SM.goNext(Events.reject);
-    }
-
-    private Barter startBarter(){
-        Barter barter = new Barter(this);
-        return barter;
-    }
-
-    public void decrOfferCounters(){
-        this.itemRequested.decrOffersCounter();
-        for(Item item: itemOffered){
-            item.decrOffersCounter();
+    public boolean isDuplicate(Offer partnerOffer) {
+        if (partnerOffer == null) {
+            return false;
         }
-    }
 
-    public void incrOfferCounters(){
-        this.itemRequested.incrOffersCounter();
-        for(Item item: itemOffered){
-            item.incrOffersCounter();
+        //check receivers
+        if (this.getReceiver() == null || partnerOffer.getReceiver() == null ||
+                !this.getReceiver().getUsername().equals(partnerOffer.getReceiver().getUsername())) {
+            return false;
         }
-    }
 
-    public void updateItemsStatus(){
-        switch (this.status) {
-            case ACCEPTED:
-                this.itemRequested.updateStatus(ItemStatus.TRADED);
-                for(Item item: itemOffered){
-                    item.updateStatus(ItemStatus.TRADED);
+        //check offerers
+        if (this.getOfferer() == null || partnerOffer.getOfferer() == null ||
+                !this.getOfferer().getUsername().equals(partnerOffer.getOfferer().getUsername())) {
+            return false;
+        }
+
+        //check target items
+        if (this.getItemRequested() == null || partnerOffer.getItemRequested() == null ||
+                this.getItemRequested().getId() != partnerOffer.getItemRequested().getId()) {
+            return false;
+        }
+
+        //check offered items
+        if (this.itemOffered.size() != partnerOffer.getItemOffered().size()) {
+            return false;
+        }
+        for (Item item1 : this.itemOffered) {
+            boolean found = false;
+            for (Item item2 : partnerOffer.getItemOffered()) {
+                if (item1.getId() == item2.getId()) {
+                    found = true;
+                    break;
                 }
-                break;
-            default:
-                break;
+            }
+            if (!found) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     //Getters and setters
@@ -159,53 +152,6 @@ public class Offer {
 
     public void setStatus(OfferStatus status) {
         this.status = status;
-        this.restoreStateMachine(status);
     }
 
-    public void setState(StateMachine SM) {
-        this.SM = SM;
-    }
-
-    public boolean isDuplicate(Offer partnerOffer) {
-        if (partnerOffer == null) {
-            return false;
-        }
-
-        //check receivers
-        if (this.getReceiver() == null || partnerOffer.getReceiver() == null ||
-                !this.getReceiver().getUsername().equals(partnerOffer.getReceiver().getUsername())) {
-            return false;
-        }
-
-        //check offerers
-        if (this.getOfferer() == null || partnerOffer.getOfferer() == null ||
-                !this.getOfferer().getUsername().equals(partnerOffer.getOfferer().getUsername())) {
-            return false;
-        }
-
-        //check target items
-        if (this.getItemRequested() == null || partnerOffer.getItemRequested() == null ||
-                this.getItemRequested().getId() != partnerOffer.getItemRequested().getId()) {
-            return false;
-        }
-
-        //check offered items
-        if (this.itemOffered.size() != partnerOffer.getItemOffered().size()) {
-            return false;
-        }
-        for (Item item1 : this.itemOffered) {
-            boolean found = false;
-            for (Item item2 : partnerOffer.getItemOffered()) {
-                if (item1.getId() == item2.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }

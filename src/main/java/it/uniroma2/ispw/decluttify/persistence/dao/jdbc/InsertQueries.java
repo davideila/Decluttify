@@ -35,27 +35,6 @@ public class InsertQueries {
         }
     }
 
-    public static int insertBarter(Connection conn,  int offerId, String startDate) throws SQLException {
-        String sql = "INSERT INTO barters (offer, startDate, status) VALUES (?, ?, ?)";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            //set parameters for prepared statement
-            pstmt.setInt(1, offerId);
-            pstmt.setString(2, startDate);
-            pstmt.setString(3, "ONGOING");
-
-            // Execute and get the ID of new barter
-            pstmt.executeUpdate();
-            try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                } else {
-                    throw new SQLException("Creating barter failed, no ID obtained.");
-                }
-            }
-        }
-    }
-
     public static int insertNotification(Connection conn, String username, String message, String type) throws SQLException {
         String sql = "INSERT INTO notifications (user, message, type) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

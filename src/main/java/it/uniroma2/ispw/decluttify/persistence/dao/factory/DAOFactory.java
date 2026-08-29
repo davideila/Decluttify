@@ -24,7 +24,6 @@ public abstract class DAOFactory {
         return me;
     }
 
-    public abstract BarterDAO createBarterDAO();
     public abstract ItemDAO createItemDAO();
     public abstract OfferDAO createOfferDAO();
     public abstract UserDAO createUserDAO();

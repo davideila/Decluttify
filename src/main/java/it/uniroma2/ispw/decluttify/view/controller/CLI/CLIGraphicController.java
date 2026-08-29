@@ -1,7 +1,6 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
-import it.uniroma2.ispw.decluttify.exception.DAOException;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLIView;
@@ -88,7 +87,7 @@ public abstract class CLIGraphicController<V extends CLIView> {
     void handleBarters() {
         triggerLogin();
         if(sessionManager.isLoggedIn()) {
-            navigatorManager.navigateTo(CLIViewType.MY_BARTERS);
+            this.view.showMessage("TO BE IMPLEMENTED", false);
         }
     }
 
@@ -102,7 +101,7 @@ public abstract class CLIGraphicController<V extends CLIView> {
     void handleMyItems() {
         triggerLogin();
         if(sessionManager.isLoggedIn()) {
-            navigatorManager.navigateTo(CLIViewType.MY_INVENTORY);
+            this.view.showMessage("TO BE IMPLEMENTED", false);
         }
     }
 

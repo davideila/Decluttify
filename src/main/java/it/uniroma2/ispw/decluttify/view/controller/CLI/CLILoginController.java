@@ -4,7 +4,6 @@ import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLILoginView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
-
 import java.util.Scanner;
 
 public class CLILoginController extends CLIGraphicController<CLILoginView> {

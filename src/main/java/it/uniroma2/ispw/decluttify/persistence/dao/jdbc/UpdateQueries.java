@@ -59,17 +59,4 @@ public class UpdateQueries {
         return rowsAffected;
     }
 
-    public static int updateBarter(Connection connection, int id, String completionDate, String status, boolean offererConfirmed, boolean receiverConfirmed) throws SQLException {
-        int rowsAffected;
-        String sql = "UPDATE barters SET completionDate = ?, status = ?, offererConfirmed = ?, receiverConfirmed = ? WHERE id = ?";
-        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, completionDate);
-            pstmt.setString(2, status);
-            pstmt.setBoolean(3, offererConfirmed);
-            pstmt.setBoolean(4, receiverConfirmed);
-            pstmt.setInt(5, id);
-            rowsAffected = pstmt.executeUpdate();
-        }
-        return rowsAffected;
-    }
 }

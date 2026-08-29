@@ -4,3 +4,5 @@ id;user;message;type;isRead;createdAt
 3;dave;New offer from claire;OFFER;false;2026-08-27T22:58:02.112668500
 4;richard;New offer from dave;OFFER;false;2026-08-28T00:47:59.574472700
 5;richard;New offer from dave;OFFER;false;2026-08-28T00:48:32.251484500
+6;richard;New offer from dave;OFFER;false;2026-08-29T16:58:46.821275900
+7;jane;New offer from richard;OFFER;false;2026-08-29T18:11:27.805639200

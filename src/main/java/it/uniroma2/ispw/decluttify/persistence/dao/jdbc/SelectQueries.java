@@ -41,11 +41,6 @@ public class SelectQueries {
         return stmt.executeQuery(sql);
     }
 
-    public static ResultSet selectItemsOfferedIds(Statement stmt, int id) throws SQLException {
-        String sql = String.format("SELECT item FROM offers JOIN offered ON offers.id = offered.offer WHERE offers.id = \"%d\"", id);
-        return stmt.executeQuery(sql);
-    }
-
     public static ResultSet selectOfferById(Statement stmt, int id) throws SQLException {
         String sql = String.format("SELECT * FROM offers WHERE offers.id = \"%d\"", id);
         return stmt.executeQuery(sql);
@@ -91,19 +86,6 @@ public class SelectQueries {
 
     public static ResultSet selectNotificationsByUser(Statement stmt, String username) throws SQLException{
         String sql = String.format("SELECT * FROM notifications WHERE user = \"%s\" AND is_read = 0", username);
-        return stmt.executeQuery(sql);
-    }
-
-    public static ResultSet selectBartersByUser(Statement stmt, String username) throws SQLException{
-        String sql = String.format(
-                "SELECT * " +
-                "FROM barters b JOIN offers o on b.offer = o.id " +
-                "WHERE offerer = \"%s\" OR receiver = \"%s\"", username, username);
-        return stmt.executeQuery(sql);
-    }
-
-    public static ResultSet selectBarterByID(Statement stmt, int id) throws SQLException {
-        String sql = String.format("SELECT * FROM barters WHERE barters.id = \"%d\"", id);
         return stmt.executeQuery(sql);
     }
 

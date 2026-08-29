@@ -24,7 +24,6 @@ public class JFXGraphicControllerFactory {
         {
             case ITEM_BROWSER: return new JFXItemBrowserController(navigator, sessionManager);
             case MY_OFFERS: return new JFXMyOffersController(navigator, sessionManager);
-            case MY_BARTERS: return new JFXMyBartersController(navigator, sessionManager);
             default: throw new IllegalArgumentException("Invalid view type : " + viewType);
         }
     }

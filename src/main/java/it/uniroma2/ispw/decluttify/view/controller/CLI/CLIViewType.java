@@ -7,7 +7,6 @@ public enum CLIViewType implements ViewType {
     ITEM_DETAILS(false),
     OFFER_FORM(true),
     MY_OFFERS(true),
-    MY_BARTERS(true),
     LOGIN(false),
     MY_INVENTORY(true),
     HOME(false);

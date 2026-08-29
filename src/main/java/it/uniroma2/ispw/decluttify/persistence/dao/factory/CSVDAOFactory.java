@@ -6,11 +6,6 @@ import it.uniroma2.ispw.decluttify.persistence.dao.csv.*;
 public class CSVDAOFactory extends DAOFactory {
 
     @Override
-    public BarterDAO createBarterDAO() {
-        return new BarterDAOCSV();
-    }
-
-    @Override
     public ItemDAO createItemDAO() {
         return new ItemDAOCSV();
     }

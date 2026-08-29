@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
-import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
+import it.uniroma2.ispw.decluttify.controller.logic.VisualizeOfferController;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -15,20 +15,20 @@ import java.util.List;
 
 public class JFXMyOffersController extends JFXGraphicController {
 
-    private final ManageOfferController manageOfferController;
+    private final VisualizeOfferController visualizeOfferController;
 
     @FXML VBox vboxReceivedOffers;
     @FXML VBox vboxSentOffers;
 
     public JFXMyOffersController(Navigator navigator, SessionManager sm) {
         super(navigator, sm, JFXViewType.MY_OFFERS);
-        this.manageOfferController = new ManageOfferController(sm);
+        this.visualizeOfferController = new VisualizeOfferController(sm);
     }
 
     public void init() {
         List<OfferBean> receivedOffers = List.of();
         try {
-            receivedOffers = manageOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
+            receivedOffers = visualizeOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
         }catch(DecluttifyException e){
             this.handleErrorAlert("Application error", e);
         }catch (Exception e) {
@@ -37,7 +37,7 @@ public class JFXMyOffersController extends JFXGraphicController {
         }
         List<OfferBean> sentOffers = List.of();
         try {
-            sentOffers = manageOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
+            sentOffers = visualizeOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
         }catch(DecluttifyException e){
             this.handleErrorAlert("Application error", e);
         }catch (Exception e) {
@@ -84,21 +84,11 @@ public class JFXMyOffersController extends JFXGraphicController {
     }
 
     private void handleAcceptOffer(OfferBean offer) {
-        try {
-            manageOfferController.acceptOffer(offer);
-        }catch(Exception e){
-            //TODO this.handleErrorAlert(e);
-        }
-        this.init();
+        AlertProvider.showComingSoon();
     }
 
     private void handleRejectOffer(OfferBean offer){
-        try {
-            manageOfferController.rejectOffer(offer);
-        }catch(Exception e){
-            //TODO this.handleErrorAlert(e);
-        }
-        this.init();
+        AlertProvider.showComingSoon();
     }
 
 }

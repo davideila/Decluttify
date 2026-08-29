@@ -1,16 +1,16 @@
 package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
-import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
+import it.uniroma2.ispw.decluttify.controller.logic.VisualizeOfferController;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLIMyOffersView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
 
 public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView> {
-    private final ManageOfferController manageOfferController;
+    private final VisualizeOfferController visualizeOfferController;
 
     public CLIMyOffersController(SessionManager sessionManager, Navigator navigatorManager) {
         super(sessionManager, navigatorManager);
-        this.manageOfferController = new ManageOfferController(sessionManager);
+        this.visualizeOfferController = new VisualizeOfferController(sessionManager);
     }
 
     @Override
@@ -37,32 +37,14 @@ public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView>
         else{
              switch(index){
                  case 0:
-                     try{
-                         manageOfferController.acceptOffer(this.view.getSelectedOffer());
-                         this.view.showMessage("Offer successfully accepted", false);
-                         this.navigatorManager.navigateTo(CLIViewType.MY_BARTERS);
-                     }catch(Exception e){
-                         this.handleException(e);
-                     }
-                     finally{
-                         this.view.setOnSelection(false);
-                         this.view.setSelectedOffer(null);
-                     }
+                     this.view.showMessage("TO BE IMPLEMENTED", false);
                      break;
                  case 1:
-                     try{
-                         manageOfferController.rejectOffer(this.view.getSelectedOffer());
-                         this.view.showMessage("Offer successfully rejected", false);
-                     }catch(Exception e){
-                         this.handleException(e);
-                     }
-                     finally{
-                         this.view.setOnSelection(false);
-                         this.view.setSelectedOffer(null);
-                     }
+                     this.view.showMessage("TO BE IMPLEMENTED", false);
                      break;
                  default:
                      this.view.showMessage("Select a valid option", true);
+                     break;
             }
         }
     }
@@ -124,8 +106,8 @@ public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView>
     @Override
     protected void setupData() {
         try {
-            this.view.setReceivedOffers(manageOfferController.loadReceivedOffers(sessionManager.getLoggedUser()));
-            this.view.setSentOffers(manageOfferController.loadSentOffers(sessionManager.getLoggedUser()));
+            this.view.setReceivedOffers(visualizeOfferController.loadReceivedOffers(sessionManager.getLoggedUser()));
+            this.view.setSentOffers(visualizeOfferController.loadSentOffers(sessionManager.getLoggedUser()));
         }catch(Exception e){
             this.handleException(e);
         }

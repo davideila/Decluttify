@@ -42,7 +42,6 @@ public class CLINavigatorManager implements Navigator {
         }
             switch((CLIViewType) viewType){
                 case ITEM_BROWSER -> pushAndStart(new CLIItemBrowserController(sessionManager, this));
-                case MY_BARTERS -> pushAndStart(new CLIMyBartersController(sessionManager, this));
                 case LOGIN ->  {pushAndStart(new CLILoginController(sessionManager, this));}
                 case MY_OFFERS ->  pushAndStart(new CLIMyOffersController(sessionManager, this));
                 case HOME ->  pushAndStart(new CLIHomeController(sessionManager, this));

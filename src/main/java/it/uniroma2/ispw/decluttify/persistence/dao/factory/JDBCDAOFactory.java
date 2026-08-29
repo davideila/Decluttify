@@ -6,11 +6,6 @@ import it.uniroma2.ispw.decluttify.persistence.dao.jdbc.*;
 public class JDBCDAOFactory extends DAOFactory {
 
     @Override
-    public BarterDAO createBarterDAO() {
-        return new BarterDAOJDBC();
-    }
-
-    @Override
     public ItemDAO createItemDAO() {
         return new ItemDAOJDBC();
     }

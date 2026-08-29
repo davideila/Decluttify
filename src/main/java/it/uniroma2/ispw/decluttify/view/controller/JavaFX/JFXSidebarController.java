@@ -33,7 +33,7 @@ public class JFXSidebarController {
         navigator.navigateTo(JFXViewType.MY_OFFERS);
     }
     @FXML void handleBarterButton(ActionEvent event) {
-        navigator.navigateTo(JFXViewType.MY_BARTERS);
+        AlertProvider.showComingSoon();
     }
 
     public void update(boolean enable){
@@ -61,13 +61,6 @@ public class JFXSidebarController {
                     this.offerButton.setStyle(ACTIVE_BUTTON_STYLE);
                     this.barterButton.setStyle("");
                     this.itemBrowseButton.setStyle("");
-                    this.itemBrowseButton.setDisable(false);
-                    break;
-                case MY_BARTERS:
-                    this.barterButton.setDisable(true);
-                    this.barterButton.setStyle(ACTIVE_BUTTON_STYLE);
-                    this.itemBrowseButton.setStyle("");
-                    this.offerButton.setStyle("");
                     this.itemBrowseButton.setDisable(false);
                     break;
                 default:

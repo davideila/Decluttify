@@ -1,11 +1,7 @@
 id;offerer;receiver;itemReq;escrow;shipping;status
-1;dave;jane;2;false;false;ACCEPTED
-2;dave;jane;2;false;false;ACCEPTED
-3;dave;richard;3;false;false;PENDING
-4;dave;richard;3;false;false;PENDING
-5;dave;dave;1;false;false;PENDING
-6;dave;dave;1;false;false;PENDING
-7;dave;richard;3;false;false;PENDING
-8;dave;richard;3;false;false;PENDING
-9;dave;richard;3;false;false;PENDING
-10;dave;richard;3;false;false;PENDING
+1;dave;jane;2;false;false;PENDING
+2;dave;richard;3;false;false;PENDING
+3;claire;dave;4;false;false;PENDING
+4;dave;richard;6;false;false;PENDING
+5;dave;richard;6;false;false;PENDING
+6;dave;richard;3;false;false;PENDING

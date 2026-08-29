@@ -1,6 +1,6 @@
 package it.uniroma2.ispw.decluttify.utils;
 
-import it.uniroma2.ispw.decluttify.view.controller.JavaFX.SessionObserver;
+import it.uniroma2.ispw.decluttify.view.controller.jfx.SessionObserver;
 
 import java.util.List;
 import java.util.Vector;

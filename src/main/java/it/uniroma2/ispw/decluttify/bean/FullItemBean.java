@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.bean;
 
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FullItemBean extends PreviewItemBean{
 
@@ -24,11 +25,11 @@ public class FullItemBean extends PreviewItemBean{
     }
     public String getLocation() { return location; }
 
-    public ArrayList<String> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<String> images) {
+    public void setImages(List<String> images) {
         for (String image : images) {
             this.addImage(image);
         }

@@ -19,6 +19,8 @@ public abstract class DAOFactory {
                 case "csv","CSV":
                     me = new CSVDAOFactory();
                     break;
+                case null, default:
+                    throw new IllegalArgumentException("Invalid or null DAO Type");
             }
         }
         return me;

@@ -3,7 +3,7 @@ package it.uniroma2.ispw.decluttify.bean;
 import java.util.List;
 
 public class OfferBean {
-    private int ID;
+    private int id;
     private String receiver;
     private String offerer;
     private PreviewItemBean requestedItem;
@@ -12,8 +12,8 @@ public class OfferBean {
     private boolean shipping;
     private String status;
 
-    public OfferBean(int ID, String receiver, String offerer,  PreviewItemBean requestedItem, List<PreviewItemBean> offeredItemList, boolean escrow, boolean shipping, String status) {
-        this.setID(ID);
+    public OfferBean(int id, String receiver, String offerer, PreviewItemBean requestedItem, List<PreviewItemBean> offeredItemList, boolean escrow, boolean shipping, String status) {
+        this.setId(id);
         this.setReceiver(receiver);
         this.setOfferer(offerer);
         this.setRequestedItem(requestedItem);
@@ -44,12 +44,12 @@ public class OfferBean {
         this.offerer = offerer;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public PreviewItemBean getRequestedItem() {

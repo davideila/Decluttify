@@ -6,7 +6,6 @@ import com.password4j.Hash;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 
 public class User {
     private String username;
@@ -32,8 +31,8 @@ public class User {
 
     //Business methods
     public boolean checkPassword(String inputPassword, String pepper) {
-        if(inputPassword.isEmpty()) {
-            throw new ModelException("Invalid input: please provide a password.");
+        if(inputPassword == null ||inputPassword.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input: please provide a password.");
         }
         try {
             return Password.check(inputPassword, this.passwordHash)
@@ -41,20 +40,20 @@ public class User {
                     .with(BcryptFunction.getInstance(Bcrypt.B, 10));
         }catch(BadParametersException e){
             if(inputPassword == null) {
-                throw new ModelException("Invalid input: please provide a password.");
+                throw new IllegalArgumentException("Invalid input: please provide a password.");
             }
             else{
-                throw new ModelException("System error: service not available, please try again later");
+                throw new DecluttifyException("System error: service not available, please try again later");
             }
         }
     }
 
     public void setPasswordHash(String password, String pepper) {
         if (password == null || password.length() < 6) {
-            throw new ModelException("Invalid password: please provide a password with more than 6 characters.");
+            throw new IllegalArgumentException("Invalid password: please provide a password with more than 6 characters.");
         }
         if (pepper == null) {
-            throw new ModelException("System error: service not available, please try again later");
+            throw new DecluttifyException("System error: service not available, please try again later");
         }
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B, 10);
 
@@ -65,17 +64,6 @@ public class User {
         this.passwordHash = hash.getResult();
     }
 
-    public void changePassword(String password){
-        //TODO
-    }
-
-    public void deleteUser(){
-        this.setUsername(null);
-        this.setEmail(null);
-        this.setRating(0);
-        //TODO
-    }
-
     //Getters and setters
 
     public void setEmail(String email) {
@@ -84,7 +72,7 @@ public class User {
 
     public void setUsername(String username) {
         if(username == null){
-            throw new ModelException("Username cannot be null");
+            throw new IllegalArgumentException("Username cannot be null");
         }
         else {
             this.username = username;

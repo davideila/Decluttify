@@ -3,6 +3,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.exception.SessionExpiredException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.MediaLoader;
@@ -134,7 +135,7 @@ public class JFXOfferFormController extends JFXGraphicController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            AlertProvider.showError("Error", "Cannot open inventory, service temporarily unavailable.");
+            AlertProvider.showError("Application error", "Couldn't open inventory page.");
         }
     }
 
@@ -168,13 +169,16 @@ public class JFXOfferFormController extends JFXGraphicController {
             makeOfferController.submitOffer(this.offeredItems, this.targetItem, sessionManager.getLoggedUser());
             result = true;
         }catch(SessionExpiredException e){
-            AlertProvider.showError("Session expired", "Session has expired, redirecting on item browser");
+            this.handleErrorAlert("Timeout", e);
             this.navigator.reset();
-        }catch(Exception e) {
-            this.handleException(e);//TODO
+        }catch(DecluttifyException e) {
+            this.handleErrorAlert("Application error", e);
+        }catch (Exception e) {
+            handleUnexpectedErrorAlert();
+            e.printStackTrace();
         }
         if (result) {
-            AlertProvider.showInfo("Success", "Offer submitted!");
+            handleSuccessAlert("Offer submitted!");
             navigator.reset();
             navigator.navigateTo(JFXViewType.MY_OFFERS);
         }

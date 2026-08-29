@@ -3,6 +3,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.bean.UserBean;
 import it.uniroma2.ispw.decluttify.controller.logic.MakeOfferController;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.itemTile.JFXItemTileInventory;
 import javafx.event.ActionEvent;
@@ -24,8 +25,15 @@ public class JFXInventoryPopupController {
 
     // This method is to pass data to this object from caller
     public void init(MakeOfferController makeOfferController, UserBean user, List<PreviewItemBean> alreadySelectedItems) {
-        if(inventoryItems.isEmpty()) {
-            this.inventoryItems.addAll(makeOfferController.loadUserInventory(user));
+        try {
+            if (inventoryItems.isEmpty()) {
+                this.inventoryItems.addAll(makeOfferController.loadUserInventory(user));
+            }
+        }catch(DecluttifyException e) {
+            AlertProvider.showError("Operation failed", e.getMessage());
+        }catch (Exception e) {
+            AlertProvider.showError("System failure", "An unexpected error occurred.");
+            e.printStackTrace();
         }
         populateGrid();
         for(PreviewItemBean item : alreadySelectedItems) {

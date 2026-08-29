@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.itemTile.JFXItemTileBrowser;
@@ -33,8 +34,11 @@ public class JFXItemBrowserController extends JFXGraphicController {
             browsingItems.clear();
             browsingItems.addAll(this.visualizeItemController.loadAvailableItems());
             refreshTilePane();
-        } catch (Exception e) {
-            this.handleException(e);
+        } catch (DecluttifyException e) {
+            handleErrorAlert("Application error", e);
+        }catch (Exception e) {
+            handleUnexpectedErrorAlert();
+            e.printStackTrace();
         }
     }
 
@@ -53,11 +57,7 @@ public class JFXItemBrowserController extends JFXGraphicController {
 
         // Item tile click handler
         tile.setOnMouseClicked(event -> {
-            try {
-                this.navigator.navigateTo(JFXViewType.ITEM_DETAILS, item);
-            }catch(Exception e){
-                this.handleException(e);
-            }
+            this.navigator.navigateTo(JFXViewType.ITEM_DETAILS, item);
         });
     }
 

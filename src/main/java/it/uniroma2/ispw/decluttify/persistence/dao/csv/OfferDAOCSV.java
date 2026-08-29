@@ -304,7 +304,7 @@ public class OfferDAOCSV extends OfferDAO {
                 newRow.append(itemOffered.getId()).append(";").append(id).append("\r\n");
                 raf2.write(newRow.toString().getBytes());
             }
-        } catch (IOException e) {
+        } catch (IOException | NumberFormatException e) {
             throw new DAOException("Error: Impossible to save new offer in CSV.", e);
         }
     }

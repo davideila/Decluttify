@@ -1,5 +1,7 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
+import it.uniroma2.ispw.decluttify.exception.DAOException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.model.Notification;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
@@ -34,7 +36,14 @@ public class LoginController {
         if (sessionManager.isLoggedIn()){
             throw new LoginException("You are already logged in.");
         }
-        User user = userDAO.retrieveUserByUsername(username);
+
+        User user;
+        try {
+            user = userDAO.retrieveUserByUsername(username);
+        }catch (DAOException e){
+            throw new DecluttifyException("Unable to complete the operation due to a system error.", e);
+        }
+
         if(user == null){
             sessionManager.failLoginAttempt();
             return false;
@@ -58,7 +67,12 @@ public class LoginController {
     }
 
     public void checkForNotifications() {
-        List<Notification> notifications = notificationDAO.retrieveNotificationByUser(sessionManager.getLoggedUser().getUsername());
-        sessionManager.setNotifications(BeanConverter.toNotificationBeanList(notifications));
+        try {
+            List<Notification> notifications = notificationDAO.retrieveNotificationByUser(sessionManager.getLoggedUser().getUsername());
+            sessionManager.setNotifications(BeanConverter.toNotificationBeanList(notifications));
+        }
+        catch (DAOException e){
+            throw new DecluttifyException("Unable to complete the operation due to a system error.", e);
+        }
     }
 }

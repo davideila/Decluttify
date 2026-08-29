@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

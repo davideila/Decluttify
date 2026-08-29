@@ -2,7 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLIView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -82,7 +82,6 @@ public abstract class CLIGraphicController<V extends CLIView> {
     protected abstract void handleViewChoice(int index);
 
     void handleDonate() {
-        //TODO
         this.view.showMessage("TO BE IMPLEMENTED", false);
     }
 
@@ -113,13 +112,14 @@ public abstract class CLIGraphicController<V extends CLIView> {
 
     protected void handleRegister() {
         this.view.showMessage("TO BE IMPLEMENTED", false);
-        //TODO
     }
 
     protected void handleProfile() {
-        triggerLogin();
         if(sessionManager.isLoggedIn()) {
-            //TODO navigatorManager.navigateToProfile();
+            this.view.showMessage("TO BE IMPLEMENTED", false);
+        }
+        else {
+            triggerLogin();
         }
     }
 
@@ -180,14 +180,12 @@ public abstract class CLIGraphicController<V extends CLIView> {
     }
 
     protected void handleException(Exception e) {
-        if (e instanceof DAOException) {
-            this.view.showMessage("System error: service not available. Please try again later.", true);
-        } else if (e instanceof ModelException) {
+        if (e instanceof DecluttifyException) {
             this.view.showMessage(e.getMessage(), true);
         } else {
-            this.view.showMessage("Unexpected error: " + e.getMessage(), true);
+            this.view.showMessage("An unexpected error occurred.", true);
+            e.printStackTrace();
         }
-        e.printStackTrace();
     }
 
     //Getters & Setters

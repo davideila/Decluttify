@@ -74,7 +74,7 @@ public class ItemDAOCSV extends ItemDAO {
         } catch (FileNotFoundException e) {
             throw new DAOException("Persistence error: items file not found.", e);
         } catch (IOException | NumberFormatException e) {
-            throw new DAOException("Error fetching items", e);
+            throw new DAOException("Error fetching items by IDs", e);
         }
         return items;
     }
@@ -102,7 +102,9 @@ public class ItemDAOCSV extends ItemDAO {
                     ));
                 }
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new DAOException("Persistence error: items file not found.", e);
+        } catch (IOException | NumberFormatException e) {
             throw new DAOException("Error retrieving available items from CSV.", e);
         }
         return items;
@@ -119,7 +121,9 @@ public class ItemDAOCSV extends ItemDAO {
                     imgPaths.add(imgData[1]);
                 }
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new DAOException("Persistence error: images file not found.", e);
+        } catch (IOException | NumberFormatException e) {
             throw new DAOException("Error reading images for item ID: " + itemId, e);
         }
         return imgPaths;
@@ -177,11 +181,13 @@ public class ItemDAOCSV extends ItemDAO {
                     }
                     bw.newLine();
                 }
+            } catch (FileNotFoundException e) {
+                throw new DAOException("Persistence error: items file not found.", e);
             } catch (IOException | NumberFormatException e) {
                 if (tempFile.exists()) {
                     tempFile.delete();
                 }
-                throw new DAOException("Error: cannot access or read items file");
+                throw new DAOException("Error: cannot access or read items file", e);
             }
             // Overwrite real file
             if (anyUpdated) {

@@ -3,8 +3,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
 import it.uniroma2.ispw.decluttify.controller.logic.VisualizeItemController;
-import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.MediaLoader;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
@@ -104,13 +103,11 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
         // Exception handling if fails
         getFullItemTask.setOnFailed(event -> {
             Throwable e = getFullItemTask.getException();
-            e.printStackTrace();
-            if (e instanceof DAOException) {
-                AlertProvider.showError("System error", "Service not available. Please try again later.");
-            } else if (e instanceof ModelException) {
-                AlertProvider.showError("Invalid request", e.getMessage());
+            if (e instanceof DecluttifyException) {
+                handleErrorAlert("Application error", (DecluttifyException) e);
             } else {
-                AlertProvider.showError("Unexpected error", e.getMessage());
+                handleUnexpectedErrorAlert();
+                e.printStackTrace();
             }
         });
 
@@ -126,20 +123,12 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
             if (this.visualizedItem.getOwner().equals(sessionManager.getLoggedUser().getUsername())) {
                 this.barterButton.setText("EDIT ITEM");
                 this.barterButton.setOnAction(event -> {
-                    try {
-                        handleEditItem(this.visualizedItem);
-                    }catch(Exception e){
-                        this.handleException(e);
-                    }
+                    handleEditItem(this.visualizedItem);
                 });
             } else {
                 this.barterButton.setText("MAKE OFFER");
                 this.barterButton.setOnAction(event -> {
-                    try {
-                        handleMakeOffer(event);
-                    }catch(Exception e){
-                        this.handleException(e);
-                    }
+                    handleMakeOffer(event);
                 });
             }
         };

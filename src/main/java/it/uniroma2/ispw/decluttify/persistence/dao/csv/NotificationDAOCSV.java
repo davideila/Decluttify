@@ -87,10 +87,8 @@ public class NotificationDAOCSV extends NotificationDAO {
             }
         } catch (FileNotFoundException e) {
             throw new DAOException("Persistence error: notification database file not found.", e);
-        } catch (IOException e) {
+        } catch (IOException | NumberFormatException e) {
             throw new DAOException("System error while reading notification CSV file.", e);
-        } catch (Exception e) { //for parser in the add method
-            throw new DAOException("Error parsing notification data for user: " + username, e);
         }
         return notifications;
     }

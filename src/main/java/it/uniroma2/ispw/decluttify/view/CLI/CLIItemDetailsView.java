@@ -29,7 +29,7 @@ public class CLIItemDetailsView extends CLIView {
             System.out.println("\n[0] Edit item");
         }
         else {
-            System.out.println("\n[0] Make OfferStateMachine");
+            System.out.println("\n[0] Make Offer");
         }
         System.out.println("[1] Owner details");
     }

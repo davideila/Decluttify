@@ -17,7 +17,7 @@ public class CLIItemDetailsController extends CLIGraphicController<CLIItemDetail
         try {
             this.item = visualizeItemController.loadItemDetails(pib);
         }catch(Exception e){
-            this.view.showMessage("Item details not available", true);
+            this.handleException(e);
         }
     }
 

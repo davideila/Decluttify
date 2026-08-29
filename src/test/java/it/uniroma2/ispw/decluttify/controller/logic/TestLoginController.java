@@ -1,10 +1,5 @@
 package it.uniroma2.ispw.decluttify.controller.logic;
 
-import it.uniroma2.ispw.decluttify.exception.ModelException;
-import it.uniroma2.ispw.decluttify.utils.SessionManager;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 public class TestLoginController {
 /*
     @Test

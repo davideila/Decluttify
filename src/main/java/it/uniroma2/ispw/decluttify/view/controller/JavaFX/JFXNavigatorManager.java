@@ -30,9 +30,11 @@ public class JFXNavigatorManager implements Navigator {
         }
         try {
             pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController((JFXViewType) viewType, sessionManager, this));
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            AlertProvider.showError("Navigation Error", "Unable to display the requested page.");
+        }catch (Exception e) {
+            AlertProvider.showError("System failure", "An unexpected error occurred.");
             e.printStackTrace();
-            AlertProvider.showError("Server error", "Service temporarily not available");
         }
     }
 
@@ -52,16 +54,20 @@ public class JFXNavigatorManager implements Navigator {
         }
         try {
             pushAndInit(JFXGraphicControllerFactory.getInstance().createJFXGraphicController((JFXViewType) viewType, sessionManager, this, data));
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            AlertProvider.showError("Navigation Error", "Unable to display the requested page.");
+        }catch (Exception e) {
+            AlertProvider.showError("System failure", "An unexpected error occurred.");
             e.printStackTrace();
-            AlertProvider.showError("Server error", "Service temporarily not available");
         }
     }
 
     private void pushAndInit(JFXGraphicController controller) {
-        this.ui.loadViewAndSetController(controller);
-        navigationStack.push(controller);
-        controller.init();
+        boolean success = this.ui.loadViewAndSetController(controller);
+        if(success) {
+            navigationStack.push(controller);
+            controller.init();
+        }
     }
 
     private boolean checkAuthRequirement(JFXViewType viewType) {

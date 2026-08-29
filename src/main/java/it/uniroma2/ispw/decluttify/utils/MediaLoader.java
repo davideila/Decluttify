@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.utils;
 
+import it.uniroma2.ispw.decluttify.exception.ConfigurationException;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.io.InputStream;
@@ -67,6 +68,8 @@ public class MediaLoader {
         if (is != null) {
             return new Image(is);
         }
-        return null;
+        else{
+            throw new ConfigurationException("Cannot load UI image/icon");
+        }
     }
 }

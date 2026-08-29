@@ -47,7 +47,7 @@ public class CLINavigatorManager implements Navigator {
                 case MY_OFFERS ->  pushAndStart(new CLIMyOffersController(sessionManager, this));
                 case HOME ->  pushAndStart(new CLIHomeController(sessionManager, this));
                 case null, default -> {
-                    return; // TODO
+                    throw new IllegalArgumentException("Unsupported view type: " + viewType);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class CLINavigatorManager implements Navigator {
             case OFFER_FORM ->  pushAndStart(new CLIOfferFormController((PreviewItemBean) data, sessionManager, this));
             case ITEM_DETAILS ->  pushAndStart(new CLIItemDetailsController((PreviewItemBean) data, sessionManager, this));
             case null, default -> {
-                return; // TODO
+                throw new IllegalArgumentException("Unsupported view type: " + viewType);
             }
         }
     }

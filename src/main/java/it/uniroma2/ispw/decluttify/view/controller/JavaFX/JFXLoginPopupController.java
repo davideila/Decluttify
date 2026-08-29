@@ -1,7 +1,7 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.controller.logic.LoginController;
-import it.uniroma2.ispw.decluttify.exception.DAOException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.exception.LoginException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import javafx.event.ActionEvent;
@@ -41,8 +41,11 @@ public class JFXLoginPopupController{
             }
         }catch(LoginException e){
             failedLogin.setText(e.getMessage());
-        }catch(DAOException daoException){
-            AlertProvider.showError("Server error", "Service temporarily unavailable");
+        }catch(DecluttifyException e){
+            AlertProvider.showError("Application error", e.getMessage());
+        }catch (Exception e) {
+            AlertProvider.showError("System failure", "An unexpected error occurred.");
+            e.printStackTrace();
         }
 
         usernameField.setText("");

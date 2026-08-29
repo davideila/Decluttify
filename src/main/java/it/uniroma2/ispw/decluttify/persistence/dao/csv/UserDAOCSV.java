@@ -27,12 +27,10 @@ public class UserDAOCSV extends UserDAO {
                     );
                 }
             }
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            throw new DAOException("Data corruption: failed to parse user " + username + " from CSV.", e);
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e) {
             throw new DAOException("Persistence error: user database file not found at " + FILE_PATH, e);
-        } catch (IOException e) {
-            throw new DAOException("System error while reading users CSV file.", e);
+        } catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            throw new DAOException("Error fetching user " + username + " in users CSV file.", e);
         }
 
         return null;

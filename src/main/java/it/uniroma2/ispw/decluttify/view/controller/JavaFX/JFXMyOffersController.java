@@ -2,6 +2,7 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.controller.logic.ManageOfferController;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.JavaFX.customTiles.offerTile.JFXOfferTile;
@@ -28,14 +29,20 @@ public class JFXMyOffersController extends JFXGraphicController {
         List<OfferBean> receivedOffers = List.of();
         try {
             receivedOffers = manageOfferController.loadReceivedOffers(this.sessionManager.getLoggedUser());
-        }catch(Exception e){
-            this.handleException(e);
+        }catch(DecluttifyException e){
+            this.handleErrorAlert("Application error", e);
+        }catch (Exception e) {
+            handleUnexpectedErrorAlert();
+            e.printStackTrace();
         }
         List<OfferBean> sentOffers = List.of();
         try {
             sentOffers = manageOfferController.loadSentOffers(this.sessionManager.getLoggedUser());
-        }catch(Exception e){
-            this.handleException(e);
+        }catch(DecluttifyException e){
+            this.handleErrorAlert("Application error", e);
+        }catch (Exception e) {
+            handleUnexpectedErrorAlert();
+            e.printStackTrace();
         }
 
         this.vboxReceivedOffers.getChildren().clear();
@@ -80,7 +87,7 @@ public class JFXMyOffersController extends JFXGraphicController {
         try {
             manageOfferController.acceptOffer(offer);
         }catch(Exception e){
-            this.handleException(e);
+            //TODO this.handleErrorAlert(e);
         }
         this.init();
     }
@@ -89,7 +96,7 @@ public class JFXMyOffersController extends JFXGraphicController {
         try {
             manageOfferController.rejectOffer(offer);
         }catch(Exception e){
-            this.handleException(e);
+            //TODO this.handleErrorAlert(e);
         }
         this.init();
     }

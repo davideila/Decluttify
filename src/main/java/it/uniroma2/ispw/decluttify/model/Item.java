@@ -1,6 +1,9 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.exception.ModelException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
+import it.uniroma2.ispw.decluttify.exception.InvalidOfferException;
+import it.uniroma2.ispw.decluttify.exception.ItemNotAvailableException;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
@@ -66,26 +69,29 @@ public class Item{
     public void updateStatus(ItemStatus status){
         switch (this.status) {
             case TRADED:
-                throw new ModelException("Cannot change item status: item already traded.");
+                throw new IllegalStateException("Cannot change item status: item already traded.");
             case AVAILABLE:
                 this.setStatus(status);
                 break;
             default:
-                throw new ModelException("Unexpected error: status " + this.status + " is not handled.");
+                throw new IllegalArgumentException("Unexpected error: status " + this.status + " is not handled.");
         }
     }
 
     public Offer proposeBarter(User offerer, List<Item> offeredItems) {
         if(offerer == null || offeredItems == null || offeredItems.isEmpty()){
-            throw new ModelException("Error: invalid offer");
+            throw new InvalidOfferException("Error: invalid offer");
         }
         if(offerer.getUsername().equals(this.getOwner().getUsername())){
-            throw new ModelException("Self offer is not possible");
+            throw new InvalidOfferException("Self offer is not possible");
         }
         for(Item item : offeredItems){
             if (!item.getOwner().getUsername().equals(offerer.getUsername())) {
-                throw new ModelException("Offered Item " + item.getName() + " with ID " + item.getId() + " is not owned by offerer " + offerer.getUsername() + ".");
+                throw new InvalidOfferException("Offered Item " + item.getName() + " with ID " + item.getId() + " is not owned by offerer " + offerer.getUsername() + ".");
             }
+        }
+        if(offeredItems.size() > 3){
+            throw new InvalidOfferException("Cannot offer more than 3 items");
         }
 
         final boolean[] targetResult = { false }; /* Array because the runnable thread accepts only final local variables and to make it mutable array is used */
@@ -112,7 +118,7 @@ public class Item{
                         }
                         for(Item item2 : offeredItems){
                             if(offeredItems.indexOf(item) != offeredItems.indexOf(item2) && item.getId() == item2.getId()){
-                                throw new ModelException("Cannot propose the same item multiple times for an offer");
+                                throw new InvalidOfferException("Cannot propose the same item multiple times for an offer");
                             }
                         }
                     }
@@ -128,14 +134,14 @@ public class Item{
             offeredThread.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ModelException("Availability check interrupted!");
+            throw new DecluttifyException("Availability check interrupted!");
         }
 
         if (!targetResult[0]) {
-            throw new ModelException("Requested item is not available!");
+            throw new ItemNotAvailableException("Requested item is not available!");
         }
         if (!offeredResult[0]) {
-            throw new ModelException("Some of the offered items are not available!");
+            throw new ItemNotAvailableException("Some of the offered items are not available!");
         }
 
         return new Offer(offerer, this.getOwner(), offeredItems, this);
@@ -151,27 +157,23 @@ public class Item{
 
     public void decrOffersCounter(){
         if(this.offersCounter <= 0){
-            throw new ModelException("Item has no offers.");
+            throw new IllegalStateException("Item has no offers.");
         }
         else this.offersCounter--;
     }
 
     public void addImage(String image){
-        if(this.getStatus() == ItemStatus.TRADED) throw new ModelException("Traded item cannot be edited");
+        if(this.getStatus() == ItemStatus.TRADED) throw new IllegalStateException("Traded item cannot be edited");
         if(this.getImages() == null){
             this.images = new ArrayList<>();
         }
         if(image == null){
-            throw new ModelException("Please add a valid image.");
+            throw new IllegalArgumentException("Please add a valid image.");
         }
         if (this.getImages().size() < 3) {
             this.getImages().add(image);
         }
-        else throw new ModelException("Cannot add new image to item: max image number reached.");
-    }
-
-    public void edit(){
-        //TODO
+        else throw new IllegalStateException("Cannot add new image to item: max image number reached.");
     }
 
     //GETTERS & SETTERS

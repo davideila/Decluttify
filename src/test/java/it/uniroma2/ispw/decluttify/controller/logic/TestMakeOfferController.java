@@ -2,9 +2,7 @@ package it.uniroma2.ispw.decluttify.controller.logic;
 
 import it.uniroma2.ispw.decluttify.bean.OfferBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.model.Notification;
-import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.ItemDAO;
 import it.uniroma2.ispw.decluttify.persistence.dao.NotificationDAO;
 import it.uniroma2.ispw.decluttify.persistence.dao.factory.DAOFactory;

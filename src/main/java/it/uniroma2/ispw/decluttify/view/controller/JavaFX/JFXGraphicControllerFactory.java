@@ -19,22 +19,22 @@ public class JFXGraphicControllerFactory {
         return me;
     }
 
-    public JFXGraphicController createJFXGraphicController(JFXViewType viewType, SessionManager sessionManager, Navigator navigator) throws Exception{
+    public JFXGraphicController createJFXGraphicController(JFXViewType viewType, SessionManager sessionManager, Navigator navigator){
         switch (viewType)
         {
             case ITEM_BROWSER: return new JFXItemBrowserController(navigator, sessionManager);
             case MY_OFFERS: return new JFXMyOffersController(navigator, sessionManager);
             case MY_BARTERS: return new JFXMyBartersController(navigator, sessionManager);
-            default: throw new Exception("Invalid view type : " + viewType);
+            default: throw new IllegalArgumentException("Invalid view type : " + viewType);
         }
     }
 
-    public JFXGraphicController createJFXGraphicController(JFXViewType viewType, SessionManager sessionManager, Navigator navigator, Object data) throws Exception{
+    public JFXGraphicController createJFXGraphicController(JFXViewType viewType, SessionManager sessionManager, Navigator navigator, Object data){
         switch (viewType)
         {
             case ITEM_DETAILS: return new JFXItemDetailsController(navigator, sessionManager, (PreviewItemBean) data);
             case OFFER_FORM: return new JFXOfferFormController(navigator, sessionManager, (FullItemBean) data);
-            default: throw new Exception("Invalid view type : " + viewType);
+            default: throw new IllegalArgumentException("Invalid view type : " + viewType);
         }
     }
 

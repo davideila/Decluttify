@@ -79,7 +79,7 @@ public class OfferDAOJDBC extends OfferDAO {
                 for (Offer coll : collidingOffers) {
                     rowsAffected = UpdateQueries.updateOfferStatus(connection, coll.getId(), coll.getStatus().name());
                     if (rowsAffected == 0) {
-                        throw new SQLException("Collision rejection failed: OfferStateMachine ID " + coll.getId());
+                        throw new SQLException("Collision rejection failed: Offer ID " + coll.getId());
                     }
                     rowsAffected = UpdateQueries.updateItemNumOffer(connection, coll.getItemRequested().getId(), -1);
                     if (rowsAffected == 0) {
@@ -203,7 +203,7 @@ public class OfferDAOJDBC extends OfferDAO {
             try {
                 if (connection != null) connection.setAutoCommit(true);
             } catch (SQLException e) {
-                System.err.println("Warning: Could not reset auto-commit.");
+                throw new DAOException("Database error: Could not reset auto-commit.", e);
             }
         }
     }

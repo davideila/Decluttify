@@ -3,7 +3,6 @@ package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 import it.uniroma2.ispw.decluttify.bean.BarterBean;
 import it.uniroma2.ispw.decluttify.controller.logic.ManageBarterController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;

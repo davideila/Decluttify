@@ -44,7 +44,7 @@ public class CLIOfferFormController extends CLIGraphicController<CLIOfferFormVie
                 this.view.showMessage("Please select a valid item", true);
                 return;
             }
-            if(index == 0 && !addedItems.isEmpty()) {
+            if(index == 0 && !addedItems.isEmpty()) { // 0 is send offer when atleast 1 item is added
                 if(!offeredItems.isEmpty() && offeredItems.equals(addedItems)) {
                     this.view.showMessage("Offer already sent!", true);
                 }
@@ -65,6 +65,8 @@ public class CLIOfferFormController extends CLIGraphicController<CLIOfferFormVie
                     }catch(DecluttifyException e){
                         this.handleException(e);
                         navigatorManager.navigateTo(CLIViewType.HOME);
+                    }catch(Exception e){
+                        this.handleException(e);
                     }
                 }
             }
@@ -86,7 +88,6 @@ public class CLIOfferFormController extends CLIGraphicController<CLIOfferFormVie
     protected void setupData() {
         try{
             this.inventoryItems = makeOfferController.loadUserInventory(sessionManager.getLoggedUser());
-            System.out.println(inventoryItems.toString());
             this.view.setItems(this.inventoryItems);
         }catch(Exception e){
             this.handleException(e);

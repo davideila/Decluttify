@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.model;
 
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -306,7 +306,7 @@ public class ItemDAOJDBC extends ItemDAO {
                 connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DAOException("Database error: failed to reset autocommit " + iDs, e);
             }
         }
     }

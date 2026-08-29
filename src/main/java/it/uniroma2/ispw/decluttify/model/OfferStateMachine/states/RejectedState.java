@@ -1,6 +1,5 @@
 package it.uniroma2.ispw.decluttify.model.OfferStateMachine.states;
 
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.model.OfferStatus;
 import it.uniroma2.ispw.decluttify.model.OfferStateMachine.AbstractState;
 import it.uniroma2.ispw.decluttify.model.OfferStateMachine.StateMachineImpl;

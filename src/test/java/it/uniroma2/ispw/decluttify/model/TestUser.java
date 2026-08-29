@@ -1,7 +1,6 @@
 package it.uniroma2.ispw.decluttify.model;
 
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

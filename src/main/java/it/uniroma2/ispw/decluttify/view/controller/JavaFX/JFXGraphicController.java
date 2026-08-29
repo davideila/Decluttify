@@ -1,7 +1,5 @@
 package it.uniroma2.ispw.decluttify.view.controller.JavaFX;
 
-import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.AlertProvider;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -30,15 +28,17 @@ public abstract class JFXGraphicController {
         rootView = view;
     }
 
-    protected void handleException(Exception e) {
-        if (e instanceof DAOException) {
-            AlertProvider.showError("System error", "Service not available. Please try again later.");
-        } else if (e instanceof ModelException) {
-            AlertProvider.showError("Invalid request", e.getMessage());
-        } else {
-            AlertProvider.showError("Unexpected error", e.getMessage());
-        }
+    protected void handleErrorAlert(String header, Exception e) {
+        AlertProvider.showError(header, e.getMessage());
         e.printStackTrace();
+    }
+
+    protected void handleSuccessAlert(String content){
+        AlertProvider.showInfo("Success", content);
+    }
+
+    protected void handleUnexpectedErrorAlert() {
+        AlertProvider.showError("System failure", "An unexpected error occurred.");
     }
 
     public JFXViewType getViewType() {

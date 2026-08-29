@@ -69,7 +69,7 @@ public class JFXHeaderBarController {
                 popupStage.setScene(new Scene(root));
                 popupStage.showAndWait();
             }catch (IOException e){
-                AlertProvider.showError("Server Error", "Service temporarily not available");
+                AlertProvider.showError("Operation Failed", "Unable to open the login window. Please try again.");
             }
 
             if (sessionManager.getLoggedUser() != null) {

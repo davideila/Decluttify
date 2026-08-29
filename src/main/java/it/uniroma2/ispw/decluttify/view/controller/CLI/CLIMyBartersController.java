@@ -2,7 +2,6 @@ package it.uniroma2.ispw.decluttify.view.controller.CLI;
 
 import it.uniroma2.ispw.decluttify.controller.logic.ManageBarterController;
 import it.uniroma2.ispw.decluttify.exception.DAOException;
-import it.uniroma2.ispw.decluttify.exception.ModelException;
 import it.uniroma2.ispw.decluttify.utils.SessionManager;
 import it.uniroma2.ispw.decluttify.view.CLI.CLIMyBartersView;
 import it.uniroma2.ispw.decluttify.view.controller.Navigator;
@@ -49,15 +48,8 @@ public class CLIMyBartersController extends CLIGraphicController<CLIMyBartersVie
                             this.view.showMessage("Barter successfully confirmed", false);
                             this.navigatorManager.navigateTo(CLIViewType.MY_BARTERS);
                         }
-                    }catch(DAOException e) {
-                        this.view.showMessage("System error: service not available. Please try again later.", true);
-                        e.printStackTrace();
-                    }catch(ModelException e) {
-                        this.view.showMessage(e.getMessage(), true);
-                        e.printStackTrace();
-                    }catch(Exception e) {
-                        this.view.showMessage("Unexpected error", true);
-                        e.printStackTrace();
+                    }catch(Exception e){
+                        this.handleException(e);
                     }finally{
                         this.view.setOnSelection(false);
                         this.view.setSelectedBarter(null);

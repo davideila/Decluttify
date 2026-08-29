@@ -57,24 +57,24 @@ public class JFXUI implements SessionObserver {
 
             stage.show();
         }catch(IOException e){
-            e.printStackTrace();
-            AlertProvider.showError("Server Error", "Service temporarily unavailable.");
+            AlertProvider.showError("Application start failed", "Couldn't load interface.");
             Platform.exit();
         }
     }
 
-    void loadViewAndSetController(JFXGraphicController graphicController) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(graphicController.getViewType().getFxmlPath()));
-        loader.setController(graphicController);
-        sidebarController.refreshCurrentButton(graphicController.getViewType());
-        sidebarController.update(sessionManager.isLoggedIn());
+    public boolean loadViewAndSetController(JFXGraphicController graphicController) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(graphicController.getViewType().getFxmlPath()));
+            loader.setController(graphicController);
+            sidebarController.refreshCurrentButton(graphicController.getViewType());
+            sidebarController.update(sessionManager.isLoggedIn());
             Parent nextView = loader.load();
             graphicController.setView(nextView);
             borderPane.setCenter(nextView);
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            AlertProvider.showError("Server error", "Service temporarily unavailable");
+            AlertProvider.showError("Application interface error", "Couldn't load interface");
+            return false;
         }
     }
 

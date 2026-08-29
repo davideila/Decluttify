@@ -39,7 +39,7 @@ public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView>
                  case 0:
                      try{
                          manageOfferController.acceptOffer(this.view.getSelectedOffer());
-                         this.view.showMessage("OfferStateMachine successfully accepted", false);
+                         this.view.showMessage("Offer successfully accepted", false);
                          this.navigatorManager.navigateTo(CLIViewType.MY_BARTERS);
                      }catch(Exception e){
                          this.handleException(e);
@@ -52,7 +52,7 @@ public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView>
                  case 1:
                      try{
                          manageOfferController.rejectOffer(this.view.getSelectedOffer());
-                         this.view.showMessage("OfferStateMachine successfully rejected", false);
+                         this.view.showMessage("Offer successfully rejected", false);
                      }catch(Exception e){
                          this.handleException(e);
                      }

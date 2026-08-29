@@ -1,6 +1,6 @@
 package it.uniroma2.ispw.decluttify.persistence;
 
-import it.uniroma2.ispw.decluttify.exception.DAOException;
+import it.uniroma2.ispw.decluttify.exception.ConfigurationException;
 import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.utils.ConfigReader;
 import java.sql.Connection;
@@ -15,30 +15,38 @@ public class PersistenceManager {
     private boolean demoMode = false;
 
     private PersistenceManager(){
-        switch(ConfigReader.getInstance().getMode()){
-            case "TEST", "test":
+        String mode = ConfigReader.getInstance().getMode();
+        if (mode == null) {
+            throw new ConfigurationException("Configuration mode is null. Please check properties file.");
+        }
+        switch(mode.toUpperCase().trim()){
+            case "TEST":
                 this.testEnvironment = true;
                 break;
-            case "DEMO", "demo":
+            case "DEMO":
                 this.demoMode = true;
                 break;
-            case "FULL", "full":
+            case "FULL":
                 this.testEnvironment = false;
                 this.demoMode = false;
                 break;
-            case null, default:
-                throw new DecluttifyException("Cannot read configuration properties... closing app.");
+            default:
+                throw new ConfigurationException("Unsupported application mode in configuration: " + mode);
         }
 
-        switch(ConfigReader.getInstance().getPersistenceType()){
+        String type = ConfigReader.getInstance().getPersistenceType();
+        if (type == null) {
+            throw new ConfigurationException("Persistence type is null. Please check properties file.");
+        }
+        switch(type.toLowerCase().trim()){
             case "mysql":
                 this.persistenceType = "mysql";
                 break;
             case "csv":
                 this.persistenceType = "csv";
                 break;
-            case null, default:
-                throw new DecluttifyException("Cannot read configuration properties... closing app.");
+            default:
+                throw new ConfigurationException("Unsupported persistence type in configuration: " + type);
 
         }
     }
@@ -46,11 +54,7 @@ public class PersistenceManager {
     //Singleton
     public static PersistenceManager getInstance() {
         if (instance == null) {
-            try {
-                instance = new PersistenceManager();
-            } catch (Exception e) {
-                throw new DAOException("Critical error: Could not initialize PersistenceManager.", e);
-            }
+            instance = new PersistenceManager();
         }
         return instance;
     }
@@ -82,9 +86,9 @@ public class PersistenceManager {
                 );
             }
         } catch (ClassNotFoundException e) {
-            throw new DAOException("Database driver not found: " + configReader.getDBDriver(), e);
+            throw new ConfigurationException("Database driver not found: " + configReader.getDBDriver(), e);
         } catch (SQLException e) {
-            throw new DAOException("Failed to establish database connection.", e);
+            throw new DecluttifyException("Failed to establish database connection.", e);
         }
     }
 

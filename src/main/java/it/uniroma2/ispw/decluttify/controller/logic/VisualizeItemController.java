@@ -2,6 +2,8 @@ package it.uniroma2.ispw.decluttify.controller.logic;
 
 import it.uniroma2.ispw.decluttify.bean.FullItemBean;
 import it.uniroma2.ispw.decluttify.bean.PreviewItemBean;
+import it.uniroma2.ispw.decluttify.exception.DAOException;
+import it.uniroma2.ispw.decluttify.exception.DecluttifyException;
 import it.uniroma2.ispw.decluttify.model.Item;
 import it.uniroma2.ispw.decluttify.persistence.dao.ItemDAO;
 import it.uniroma2.ispw.decluttify.persistence.dao.factory.DAOFactory;
@@ -21,11 +23,15 @@ public class VisualizeItemController {
     public ArrayList<PreviewItemBean> loadAvailableItems() {
         ArrayList<PreviewItemBean> itemBeans = new ArrayList<>();
         List<Item> items;
-        items = itemDAO.retrieveAllAvailableItems();
-        PreviewItemBean pib;
-        for (Item item : items) {
-            pib = BeanConverter.toPreviewItemBean(item);
-            itemBeans.add(pib);
+        try {
+            items = itemDAO.retrieveAllAvailableItems();
+            PreviewItemBean pib;
+            for (Item item : items) {
+                pib = BeanConverter.toPreviewItemBean(item);
+                itemBeans.add(pib);
+            }
+        }catch(DAOException exception){
+            throw new DecluttifyException("Unable to load available items due to a system error", exception);
         }
         return itemBeans;
     }
@@ -33,7 +39,11 @@ public class VisualizeItemController {
    // Method for loading the full detailed item view
    public FullItemBean loadItemDetails(PreviewItemBean pib) {
        Item item;
-       item = itemDAO.retrieveItemById(pib.getId());
+       try {
+           item = itemDAO.retrieveItemById(pib.getId());
+       }catch(DAOException exception){
+           throw new DecluttifyException("Unable to load item data due to a system error", exception);
+       }
        FullItemBean fib;
        fib = BeanConverter.toFullItemBean(item);
     return fib;

@@ -6,205 +6,46 @@ import it.uniroma2.ispw.decluttify.model.User;
 import it.uniroma2.ispw.decluttify.persistence.PersistenceManager;
 import it.uniroma2.ispw.decluttify.persistence.dao.ItemDAO;
 import java.sql.*;
-import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAOJDBC extends ItemDAO {
 
     @Override
     public Item retrieveItemById(int id) {
-        Item item = null;
         Connection connection = PersistenceManager.getInstance().getConnection();
 
-        try {
-            // Get Item data
-            String owner;
-            String name;
-            String description;
-            LocalDate creationDate;
-            String category;
-            String condition;
-            String location;
-            int numOffers;
-            String status;
+        try (PreparedStatement pstmtItem = connection.prepareStatement(SelectQueries.SELECT_ITEM_BY_ID)) {
+            pstmtItem.setInt(1, id);
 
-            try (PreparedStatement pstmtItem = connection.prepareStatement(
-                    SelectQueries.SELECT_ITEM_BY_ID,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY)) {
-
-                pstmtItem.setInt(1, id);
-
-                try (ResultSet rsItem = pstmtItem.executeQuery()) {
-                    if (!rsItem.first()) {
-                        throw new DAOException("No item found with ID: " + id);
-                    }
-                    if (rsItem.next()) {
-                        throw new DAOException("Data integrity error: multiple items found for ID " + id);
-                    }
-                    rsItem.first();
-
-                    owner = rsItem.getString("owner");
-                    name = rsItem.getString("name");
-                    description = rsItem.getString("description");
-                    creationDate = rsItem.getDate("creationDate").toLocalDate();
-                    category = rsItem.getString("category");
-                    condition = rsItem.getString("condition");
-                    location = rsItem.getString("location");
-                    numOffers = rsItem.getInt("numOffers");
-                    status = rsItem.getString("status");
+            try (ResultSet rsItem = pstmtItem.executeQuery()) {
+                if (!rsItem.next()) {
+                    throw new DAOException("No item found with ID: " + id);
                 }
-            }
 
-            // Get user owner data
-            User user;
-            try (PreparedStatement pstmtUser = connection.prepareStatement(
-                    SelectQueries.SELECT_USER_BY_USERNAME,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY)) {
+                Item item = fetchItemData(connection, rsItem);
 
-                pstmtUser.setString(1, owner);
-
-                try (ResultSet rsUser = pstmtUser.executeQuery()) {
-                    if (!rsUser.first()) {
-                        throw new DAOException("Data integrity error: Owner '" + owner + "' not found for item " + id);
-                    }
-                    rsUser.first();
-
-                    String username = rsUser.getString("username");
-                    double rating = rsUser.getDouble("rating");
-                    String email = rsUser.getString("email");
-                    user = new User(username, null, rating, email);
+                if (rsItem.next()) {
+                    throw new DAOException("Data integrity error: multiple items found for ID " + id);
                 }
+
+                return item;
             }
-
-            // Get images data
-            List<String> images = new ArrayList<>();
-            try (PreparedStatement pstmtImages = connection.prepareStatement(
-                    SelectQueries.SELECT_IMAGES_BY_ITEM,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY)) {
-
-                pstmtImages.setInt(1, id);
-
-                try (ResultSet rsImages = pstmtImages.executeQuery()) {
-                    if (!rsImages.first()) {
-                        throw new DAOException("Data integrity error: no image found for item with ID: " + id);
-                    }
-                    rsImages.first();
-                    do {
-                        images.add(rsImages.getString("image"));
-                    } while (rsImages.next());
-                }
-            }
-
-            item = new Item(id, user, name, description, creationDate, category.toUpperCase(), condition.toUpperCase(), numOffers, images, location, status);
-
         } catch (SQLException e) {
             throw new DAOException("Database error while retrieving item by ID: " + id, e);
         }
-
-        if (item == null) {
-            throw new DAOException("No item found with ID: " + id);
-        }
-
-        return item;
     }
 
     @Override
     public List<Item> retrieveItemsByIds(List<Integer> itemIDs) {
         List<Item> itemList = new ArrayList<>();
-        Connection connection = PersistenceManager.getInstance().getConnection();
+        if (itemIDs == null || itemIDs.isEmpty()) {
+            return itemList;
+        }
 
-        try {
-            for (Integer id : itemIDs) {
-                // Item data
-                String owner;
-                String name;
-                String description;
-                LocalDate creationDate;
-                String category;
-                String condition;
-                String location;
-                int numOffers;
-                String status;
-
-                try (PreparedStatement pstmtItem = connection.prepareStatement(
-                        SelectQueries.SELECT_ITEM_BY_ID,
-                        ResultSet.TYPE_SCROLL_INSENSITIVE,
-                        ResultSet.CONCUR_READ_ONLY)) {
-
-                    pstmtItem.setInt(1, id);
-
-                    try (ResultSet rsItem = pstmtItem.executeQuery()) {
-                        if (!rsItem.first()) {
-                            throw new DAOException("No item found with ID: " + id);
-                        }
-                        if (rsItem.next()) {
-                            throw new DAOException("Data integrity error: multiple items found for ID " + id);
-                        }
-
-                        rsItem.first();
-                        owner = rsItem.getString("owner");
-                        name = rsItem.getString("name");
-                        description = rsItem.getString("description");
-                        creationDate = rsItem.getDate("creationDate").toLocalDate();
-                        category = rsItem.getString("category");
-                        condition = rsItem.getString("condition");
-                        location = rsItem.getString("location");
-                        numOffers = rsItem.getInt("numOffers");
-                        status = rsItem.getString("status");
-                    }
-                }
-
-                // User owner data
-                User user;
-                try (PreparedStatement pstmtUser = connection.prepareStatement(
-                        SelectQueries.SELECT_USER_BY_USERNAME,
-                        ResultSet.TYPE_SCROLL_INSENSITIVE,
-                        ResultSet.CONCUR_READ_ONLY)) {
-
-                    pstmtUser.setString(1, owner);
-
-                    try (ResultSet rsUser = pstmtUser.executeQuery()) {
-                        if (!rsUser.first()) {
-                            throw new DAOException("Data integrity error: Owner '" + owner + "' not found for item " + id);
-                        }
-                        rsUser.first();
-                        String username = rsUser.getString("username");
-                        double rating = rsUser.getDouble("rating");
-                        String email = rsUser.getString("email");
-                        user = new User(username, null, rating, email);
-                    }
-                }
-
-                // Images data
-                List<String> images = new ArrayList<>();
-                try (PreparedStatement pstmtImages = connection.prepareStatement(
-                        SelectQueries.SELECT_IMAGES_BY_ITEM,
-                        ResultSet.TYPE_SCROLL_INSENSITIVE,
-                        ResultSet.CONCUR_READ_ONLY)) {
-
-                    pstmtImages.setInt(1, id);
-
-                    try (ResultSet rsImages = pstmtImages.executeQuery()) {
-                        if (!rsImages.first()) {
-                            throw new DAOException("Data integrity error: no image found for item with ID: " + id);
-                        }
-                        rsImages.first();
-                        do {
-                            images.add(rsImages.getString("image"));
-                        } while (rsImages.next());
-                    }
-                }
-
-                Item item = new Item(id, user, name, description, creationDate,
-                        category.toUpperCase(), condition.toUpperCase(), numOffers, images, location, status);
-                itemList.add(item);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Database error while retrieving items", e);
+        for (Integer id : itemIDs) {
+            itemList.add(retrieveItemById(id));
         }
         return itemList;
     }
@@ -218,48 +59,7 @@ public class ItemDAOJDBC extends ItemDAO {
              ResultSet rsItem = pstmtItem.executeQuery()) {
 
             while (rsItem.next()) {
-                int id = rsItem.getInt("id");
-                String owner = rsItem.getString("owner");
-                String name = rsItem.getString("name");
-                String description = rsItem.getString("description");
-                LocalDate creationDate = rsItem.getDate("creationDate").toLocalDate();
-                String category = rsItem.getString("category");
-                String condition = rsItem.getString("condition");
-                int numOffers = rsItem.getInt("numOffers");
-
-                // --- Dati Owner ---
-                User user;
-                try (PreparedStatement pstmtUser = connection.prepareStatement(SelectQueries.SELECT_USER_BY_USERNAME)) {
-                    pstmtUser.setString(1, owner);
-                    try (ResultSet rsUser = pstmtUser.executeQuery()) {
-                        if (!rsUser.next()) {
-                            throw new DAOException("Data integrity error: no owner found for item with ID: " + id);
-                        }
-                        String username = rsUser.getString("username");
-                        double rating = rsUser.getDouble("rating");
-                        String email = rsUser.getString("email");
-                        user = new User(username, null, rating, email);
-                    }
-                }
-
-                // --- Dati Immagini ---
-                List<String> images = new ArrayList<>();
-                try (PreparedStatement pstmtImages = connection.prepareStatement(SelectQueries.SELECT_IMAGES_BY_ITEM)) {
-                    pstmtImages.setInt(1, id);
-                    try (ResultSet rsImages = pstmtImages.executeQuery()) {
-                        while (rsImages.next()) {
-                            images.add(rsImages.getString("image"));
-                        }
-                    }
-                }
-
-                if (images.isEmpty()) {
-                    throw new DAOException("Data integrity error: no images found for item with ID: " + id);
-                }
-
-                Item item = new Item(id, user, name, description, creationDate,
-                        category.toUpperCase(), condition.toUpperCase(), numOffers, images);
-                itemList.add(item);
+                itemList.add(fetchItemData(connection, rsItem));
             }
 
             if (itemList.isEmpty()) {
@@ -278,76 +78,17 @@ public class ItemDAOJDBC extends ItemDAO {
         List<Item> items = new ArrayList<>();
         Connection connection = PersistenceManager.getInstance().getConnection();
 
-        try (PreparedStatement pstmtItem = connection.prepareStatement(
-                SelectQueries.SELECT_ITEM_BY_USER,
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY)) {
-
+        try (PreparedStatement pstmtItem = connection.prepareStatement(SelectQueries.SELECT_ITEM_BY_USER)) {
             pstmtItem.setString(1, username);
 
             try (ResultSet rsItem = pstmtItem.executeQuery()) {
-                if (!rsItem.first()) {
-                    throw new DAOException("No items found for owner: " + username);
+                while (rsItem.next()) {
+                    items.add(fetchItemData(connection, rsItem));
                 }
 
-                rsItem.first();
-                do {
-                    int id = rsItem.getInt("id");
-                    String owner = rsItem.getString("owner");
-                    String name = rsItem.getString("name");
-                    String description = rsItem.getString("description");
-                    LocalDate creationDate = rsItem.getDate("creationDate").toLocalDate();
-                    String category = rsItem.getString("category");
-                    String condition = rsItem.getString("condition");
-                    int numOffers = rsItem.getInt("numOffers");
-                    String location = rsItem.getString("location");
-                    String status = rsItem.getString("status");
-
-                    // Images data
-                    List<String> images = new ArrayList<>();
-                    try (PreparedStatement pstmtImages = connection.prepareStatement(
-                            SelectQueries.SELECT_IMAGES_BY_ITEM,
-                            ResultSet.TYPE_SCROLL_INSENSITIVE,
-                            ResultSet.CONCUR_READ_ONLY)) {
-
-                        pstmtImages.setInt(1, id);
-
-                        try (ResultSet rsImage = pstmtImages.executeQuery()) {
-                            if (!rsImage.first()) {
-                                throw new DAOException("Data integrity error: no images found for item with ID: " + id);
-                            }
-                            rsImage.first();
-                            do {
-                                images.add(rsImage.getString("image"));
-                            } while (rsImage.next());
-                        }
-                    }
-
-                    // Owner data
-                    User user;
-                    try (PreparedStatement pstmtUser = connection.prepareStatement(
-                            SelectQueries.SELECT_USER_BY_USERNAME,
-                            ResultSet.TYPE_SCROLL_INSENSITIVE,
-                            ResultSet.CONCUR_READ_ONLY)) {
-
-                        pstmtUser.setString(1, owner);
-
-                        try (ResultSet rsUser = pstmtUser.executeQuery()) {
-                            if (!rsUser.first()) {
-                                throw new DAOException("Data integrity error: no owner found for item with ID: " + id);
-                            }
-                            rsUser.first();
-                            double rating = rsUser.getDouble("rating");
-                            String email = rsUser.getString("email");
-                            user = new User(username, null, rating, email);
-                        }
-                    }
-
-                    Item item = new Item(id, user, name, description, creationDate,
-                            category.toUpperCase(), condition.toUpperCase(), numOffers, images, location, status);
-                    items.add(item);
-
-                } while (rsItem.next());
+                if (items.isEmpty()) {
+                    throw new DAOException("No items found for owner: " + username);
+                }
             }
         } catch (SQLException e) {
             throw new DAOException("Error fetching items for owner: " + username, e);
@@ -384,6 +125,59 @@ public class ItemDAOJDBC extends ItemDAO {
         } catch (SQLException e) {
             throw new DAOException("Database error while updating offer counter for item " + iDs, e);
         }
+    }
+
+    // #################################################################################
+    // Private helper methods to eliminate duplication as per sonarqube indication
+
+
+    private Item fetchItemData(Connection connection, ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String ownerName = rs.getString("owner");
+        String name = rs.getString("name");
+        String description = rs.getString("description");
+        LocalDate creationDate = rs.getDate("creationDate").toLocalDate();
+        String category = rs.getString("category");
+        String condition = rs.getString("condition");
+        int numOffers = rs.getInt("numOffers");
+        String location = rs.getString("location");
+        String status = rs.getString("status");
+
+        User owner = fetchUserByUsername(connection, ownerName);
+        List<String> images = fetchImagesByItemId(connection, id);
+
+        return new Item(id, owner, name, description, creationDate,
+                category.toUpperCase(), condition.toUpperCase(), numOffers, images, location, status);
+    }
+
+    private User fetchUserByUsername(Connection connection, String username) throws SQLException {
+        try (PreparedStatement pstmtUser = connection.prepareStatement(SelectQueries.SELECT_USER_BY_USERNAME)) {
+            pstmtUser.setString(1, username);
+            try (ResultSet rsUser = pstmtUser.executeQuery()) {
+                if (!rsUser.next()) {
+                    throw new DAOException("Data integrity error: Owner '" + username + "' not found.");
+                }
+                double rating = rsUser.getDouble("rating");
+                String email = rsUser.getString("email");
+                return new User(username, null, rating, email);
+            }
+        }
+    }
+
+    private List<String> fetchImagesByItemId(Connection connection, int itemId) throws SQLException {
+        List<String> images = new ArrayList<>();
+        try (PreparedStatement pstmtImages = connection.prepareStatement(SelectQueries.SELECT_IMAGES_BY_ITEM)) {
+            pstmtImages.setInt(1, itemId);
+            try (ResultSet rsImages = pstmtImages.executeQuery()) {
+                while (rsImages.next()) {
+                    images.add(rsImages.getString("image"));
+                }
+            }
+        }
+        if (images.isEmpty()) {
+            throw new DAOException("Data integrity error: no images found for item with ID: " + itemId);
+        }
+        return images;
     }
 
 }

@@ -9,17 +9,21 @@ import java.sql.SQLException;
 
 public class PersistenceManager {
 
+    private static final String MYSQL_TYPE = "mysql";
+    private static final String CSV_TYPE = "csv";
     private static PersistenceManager instance;
     private String persistenceType;
     private boolean testEnvironment = false;
     private boolean demoMode = false;
 
-    private PersistenceManager(){
+    private PersistenceManager() {
         String mode = ConfigReader.getInstance().getMode();
+
         if (mode == null) {
             throw new ConfigurationException("Configuration mode is null. Please check properties file.");
         }
-        switch(mode.toUpperCase().trim()){
+
+        switch (mode.toUpperCase().trim()) {
             case "TEST":
                 this.testEnvironment = true;
                 break;
@@ -35,23 +39,26 @@ public class PersistenceManager {
         }
 
         String type = ConfigReader.getInstance().getPersistenceType();
+
         if (type == null) {
             throw new ConfigurationException("Persistence type is null. Please check properties file.");
         }
-        switch(type.toLowerCase().trim()){
-            case "mysql":
-                this.persistenceType = "mysql";
+
+        switch (type.toLowerCase().trim()) {
+            case MYSQL_TYPE:
+                this.persistenceType = MYSQL_TYPE;
                 break;
-            case "csv":
-                this.persistenceType = "csv";
+
+            case CSV_TYPE:
+                this.persistenceType = CSV_TYPE;
                 break;
+
             default:
                 throw new ConfigurationException("Unsupported persistence type in configuration: " + type);
-
         }
     }
 
-    //Singleton
+    // Singleton
     public static PersistenceManager getInstance() {
         if (instance == null) {
             instance = new PersistenceManager();
@@ -62,7 +69,7 @@ public class PersistenceManager {
     public Connection getConnection() {
         ConfigReader configReader = ConfigReader.getInstance();
 
-        if (!("mysql".equalsIgnoreCase(persistenceType))) {
+        if (!(MYSQL_TYPE.equalsIgnoreCase(persistenceType))) {
             throw new ConfigurationException("Persistence type is not set to a value supported for a connection.");
         }
 
@@ -82,6 +89,7 @@ public class PersistenceManager {
                         configReader.getDBPassword()
                 );
             }
+
         } catch (ClassNotFoundException e) {
             throw new ConfigurationException("Database driver not found: " + configReader.getDBDriver(), e);
         } catch (SQLException e) {

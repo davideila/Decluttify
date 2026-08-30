@@ -37,7 +37,7 @@ public class CLIItemDetailsController extends CLIGraphicController<CLIItemDetail
             case 0:
                 triggerLogin();
                 if(sessionManager.getLoggedUser() != null && item.getOwner().equals(sessionManager.getLoggedUser().getUsername())){
-                    this.view.showMessage("TO BE IMPLEMENTED", false);
+                    this.view.showComingSoon();
                 }
                 else {
                     navigatorManager.navigateTo(CLIViewType.OFFER_FORM, item);
@@ -45,7 +45,7 @@ public class CLIItemDetailsController extends CLIGraphicController<CLIItemDetail
                 break;
             case 1:
                 //navigatorManager.navigateToUserDetails(username);
-                this.view.showMessage("TO BE IMPLEMENTED", false);
+                this.view.showComingSoon();
                 break;
             default:
                 this.view.showMessage("Invalid choice", true);

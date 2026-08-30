@@ -61,6 +61,10 @@ public abstract class CLIView {
         }
     }
 
+    public void showComingSoon(){
+        showMessage("FEATURE COMING SOON", false);
+    }
+
 
     public Scanner getScanner() {
         return scanner;

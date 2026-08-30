@@ -37,10 +37,10 @@ public class CLIMyOffersController extends CLIGraphicController<CLIMyOffersView>
         else{
              switch(index){
                  case 0:
-                     this.view.showMessage("TO BE IMPLEMENTED", false);
+                     this.view.showComingSoon();
                      break;
                  case 1:
-                     this.view.showMessage("TO BE IMPLEMENTED", false);
+                     this.view.showComingSoon();
                      break;
                  default:
                      this.view.showMessage("Select a valid option", true);

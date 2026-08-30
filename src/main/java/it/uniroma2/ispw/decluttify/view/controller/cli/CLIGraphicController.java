@@ -81,13 +81,13 @@ public abstract class CLIGraphicController<V extends CLIView> {
     protected abstract void handleViewChoice(int index);
 
     void handleDonate() {
-        this.view.showMessage("TO BE IMPLEMENTED", false);
+        this.view.showComingSoon();
     }
 
     void handleBarters() {
         triggerLogin();
         if(sessionManager.isLoggedIn()) {
-            this.view.showMessage("TO BE IMPLEMENTED", false);
+            this.view.showComingSoon();
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class CLIGraphicController<V extends CLIView> {
     void handleMyItems() {
         triggerLogin();
         if(sessionManager.isLoggedIn()) {
-            this.view.showMessage("TO BE IMPLEMENTED", false);
+            this.view.showComingSoon();
         }
     }
 
@@ -110,12 +110,12 @@ public abstract class CLIGraphicController<V extends CLIView> {
     }
 
     protected void handleRegister() {
-        this.view.showMessage("TO BE IMPLEMENTED", false);
+        this.view.showComingSoon();
     }
 
     protected void handleProfile() {
         if(sessionManager.isLoggedIn()) {
-            this.view.showMessage("TO BE IMPLEMENTED", false);
+            this.view.showComingSoon();
         }
         else {
             triggerLogin();

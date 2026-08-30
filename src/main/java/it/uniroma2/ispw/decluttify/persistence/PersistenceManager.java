@@ -63,15 +63,16 @@ public class PersistenceManager {
         ConfigReader configReader = ConfigReader.getInstance();
 
         if (!("mysql".equalsIgnoreCase(persistenceType))) {
-            return null;
+            throw new ConfigurationException("Persistence type is not set to a value supported for a connection.");
+        }
+
+        if (demoMode) {
+            throw new ConfigurationException("Demo mode is not compatible with a connection.");
         }
 
         try {
             Class.forName(configReader.getDBDriver());
 
-            if (demoMode) {
-                return null;
-            }
             if (testEnvironment) {
                 return DriverManager.getConnection(
                         configReader.getTestDBURL(),

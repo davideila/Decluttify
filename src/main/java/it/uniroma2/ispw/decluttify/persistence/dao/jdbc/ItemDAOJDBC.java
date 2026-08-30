@@ -274,42 +274,28 @@ public class ItemDAOJDBC extends ItemDAO {
 
     @Override
     public void incrementItemsOfferCounters(List<Integer> iDs) {
-        if (PersistenceManager.getInstance().isDemoMode()) {
-            return;
-        }
-        if (iDs == null || iDs.isEmpty()) {
+        if (PersistenceManager.getInstance().isDemoMode() || iDs == null || iDs.isEmpty()) {
             return;
         }
 
-        int totalRowsAffected = 0;
         try (Connection connection = PersistenceManager.getInstance().getConnection()) {
-
             if (connection == null) {
                 throw new DAOException("Database connection is null.");
             }
 
             connection.setAutoCommit(false);
-            try {
-                for (Integer i : iDs) {
-                    int rowsAffected = UpdateQueries.updateItemNumOffer(
-                            connection,
-                            i,
-                            1
-                    );
-                    totalRowsAffected += rowsAffected;
-                }
+            int totalRowsAffected = 0;
 
-                if (totalRowsAffected != iDs.size()) {
-                    connection.rollback();
-                    throw new DAOException("Update failed for items with IDs: " + iDs);
-                }
-                connection.commit();
-
-            } catch (Exception e) {
-                // rollback if error
-                connection.rollback();
-                throw e;
+            for (Integer i : iDs) {
+                totalRowsAffected += UpdateQueries.updateItemNumOffer(connection, i, 1);
             }
+
+            if (totalRowsAffected != iDs.size()) {
+                connection.rollback();
+                throw new DAOException("Update failed for items with IDs: " + iDs);
+            }
+
+            connection.commit();
 
         } catch (SQLException e) {
             throw new DAOException("Database error while updating offer counter for item " + iDs, e);

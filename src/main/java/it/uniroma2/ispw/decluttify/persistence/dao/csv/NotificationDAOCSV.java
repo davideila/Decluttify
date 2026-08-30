@@ -10,49 +10,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationDAOCSV extends NotificationDAO {
-    private final String NOTIFICATION_FILE_PATH = PersistenceManager.getInstance().getCSVPathPrefix() + "notifications.csv";
+    private final String notificationFilePath = PersistenceManager.getInstance().getCSVPathPrefix() + "notifications.csv";
 
     @Override
     public synchronized void createNotification(Notification notification) {
-        if (PersistenceManager.getInstance().isDemoMode()){
+        if (PersistenceManager.getInstance().isDemoMode()) {
             return;
         }
-        File notificationFile = new File(NOTIFICATION_FILE_PATH);
-        if (!notificationFile.exists()) throw new DAOException("Error: Notifications file does not exist.");
-        if (notificationFile.length() == 0) throw new DAOException("No header found in file notifications.");
+
+        File notificationFile = new File(notificationFilePath);
+        if (!notificationFile.exists()) {
+            throw new DAOException("Error: Notifications file does not exist.");
+        }
+
+        if (notificationFile.length() == 0) {
+            throw new DAOException("No header found in file notifications.");
+        }
+
         try (RandomAccessFile raf = new RandomAccessFile(notificationFile, "rw")) {
             long fileLength = notificationFile.length();
-            long pointer = fileLength - 1; //last char of the file
+            long pointer = fileLength - 1; // last char of the file
+
             while (pointer >= 0) {
                 raf.seek(pointer);
                 int b = raf.read();
+
                 if (b == '\n' && pointer != fileLength - 1) { // '\n' = 10
                     break;
                 }
                 pointer--;
             }
 
-            int id = 0;
             String line = raf.readLine();
-            if (line != null && !line.isEmpty()) {
-                try {
-                    id = Integer.parseInt(line.split(";")[0].trim());
-                } catch (NumberFormatException e) {
-                    //No notifications, only header
-                    id = 0;
-                }
-            }
-            id++;
+            int id = parseLastNotificationId(line) + 1;
 
-            StringBuilder newRow = new StringBuilder();
             if (raf.length() > 0) {
                 raf.seek(raf.length() - 1);
                 if (raf.read() != '\n') {
                     raf.writeBytes("\r\n"); // Add new line and return feed if missing
                 }
             }
+
             raf.seek(raf.length());
-            newRow.append(id).append(";").append(notification.getUsername()).append(";").append(notification.getMessage()).append(";").append(notification.getType()).append(";").append(notification.isRead()).append(";").append(notification.getCreatedAt()).append("\r\n");
+            StringBuilder newRow = new StringBuilder();
+            newRow.append(id).append(";")
+                    .append(notification.getUsername()).append(";")
+                    .append(notification.getMessage()).append(";")
+                    .append(notification.getType()).append(";")
+                    .append(notification.isRead()).append(";")
+                    .append(notification.getCreatedAt()).append("\r\n");
+
             raf.write(newRow.toString().getBytes());
 
         } catch (IOException e) {
@@ -62,18 +69,22 @@ public class NotificationDAOCSV extends NotificationDAO {
 
     @Override
     public void update(Notification notification) {
-        if (PersistenceManager.getInstance().isDemoMode()){
+        if (PersistenceManager.getInstance().isDemoMode()) {
             return;
         }
+        // not implemented
     }
 
     @Override
     public List<Notification> retrieveNotificationByUser(String username) {
         List<Notification> notifications = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(NOTIFICATION_FILE_PATH))){
-            String line = br.readLine(); //skip header
+
+        try (BufferedReader br = new BufferedReader(new FileReader(notificationFilePath))) {
+            String line = br.readLine(); // skip header
+
             while ((line = br.readLine()) != null) {
                 String[] notificationData = line.split(";");
+
                 if (notificationData[1].equals(username)) {
                     notifications.add(new Notification(
                             Integer.parseInt(notificationData[0]),
@@ -90,6 +101,22 @@ public class NotificationDAOCSV extends NotificationDAO {
         } catch (IOException | NumberFormatException e) {
             throw new DAOException("System error while reading notification CSV file.", e);
         }
+
         return notifications;
+    }
+
+    // ##################################################################################
+    // Private helper methods as requested by sonarqube to eliminate nested try blocks
+
+    private int parseLastNotificationId(String line) {
+        if (line != null && !line.isEmpty()) {
+            try {
+                return Integer.parseInt(line.split(";")[0].trim());
+            } catch (NumberFormatException e) {
+                // No previous notifications, only header present
+                return 0;
+            }
+        }
+        return 0;
     }
 }

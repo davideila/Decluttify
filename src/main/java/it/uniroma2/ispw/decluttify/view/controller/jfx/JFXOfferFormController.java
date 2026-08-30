@@ -134,7 +134,6 @@ public class JFXOfferFormController extends JFXGraphicController {
                 this.updateOfferedItemsView();
             }
         } catch (IOException e) {
-            //e.printStackTrace();
             AlertProvider.showError("Application error", "Couldn't open inventory page.");
         }
     }
@@ -175,7 +174,6 @@ public class JFXOfferFormController extends JFXGraphicController {
             this.handleErrorAlert("Application error", e);
         }catch (Exception e) {
             handleUnexpectedErrorAlert();
-            //e.printStackTrace();
         }
         if (result) {
             handleSuccessAlert("Offer submitted!");

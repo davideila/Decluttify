@@ -107,7 +107,6 @@ public class JFXItemDetailsController extends JFXGraphicController implements Se
                 handleErrorAlert("Application error", (DecluttifyException) e);
             } else {
                 handleUnexpectedErrorAlert();
-                //e.printStackTrace();
             }
         });
 

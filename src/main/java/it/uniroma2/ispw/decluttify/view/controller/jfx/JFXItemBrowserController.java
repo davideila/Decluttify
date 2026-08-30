@@ -38,7 +38,6 @@ public class JFXItemBrowserController extends JFXGraphicController {
             handleErrorAlert("Application error", e);
         }catch (Exception e) {
             handleUnexpectedErrorAlert();
-            //e.printStackTrace();
         }
     }
 

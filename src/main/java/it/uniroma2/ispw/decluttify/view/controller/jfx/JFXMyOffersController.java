@@ -33,7 +33,6 @@ public class JFXMyOffersController extends JFXGraphicController {
             this.handleErrorAlert("Application error", e);
         }catch (Exception e) {
             handleUnexpectedErrorAlert();
-            //e.printStackTrace();
         }
         List<OfferBean> sentOffers = List.of();
         try {
@@ -42,7 +41,6 @@ public class JFXMyOffersController extends JFXGraphicController {
             this.handleErrorAlert("Application error", e);
         }catch (Exception e) {
             handleUnexpectedErrorAlert();
-            //e.printStackTrace();
         }
 
         this.vboxReceivedOffers.getChildren().clear();

@@ -10,17 +10,17 @@ public abstract class SessionSubject {
     private List<SessionObserver> observers;
     private final Object MUTEX = new Object();
 
-    public SessionSubject() {
+    protected SessionSubject() {
         this((SessionObserver) null);
     }
 
-    public SessionSubject(SessionObserver obs) {
+    protected SessionSubject(SessionObserver obs) {
         this(new Vector<>());
         if (obs != null)
             this.observers.add(obs);
     }
 
-    public SessionSubject(List<SessionObserver> list) {
+    protected SessionSubject(List<SessionObserver> list) {
         this.observers = list;
     }
 

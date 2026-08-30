@@ -21,7 +21,7 @@ public class CLIHomeController extends CLIGraphicController<CLIHomeView> {
 
     @Override
     protected void handleViewChoice(int index) {
-
+        // no more input to manage excpet the menu input
     }
 
 }

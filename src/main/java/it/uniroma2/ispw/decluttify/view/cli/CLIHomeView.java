@@ -8,6 +8,7 @@ public class CLIHomeView extends CLIView {
         super(sessionManager);
     }
 
+    @Override
     public void showMenu() {
         printHeader("Home View");
         super.showMenu();
@@ -15,6 +16,6 @@ public class CLIHomeView extends CLIView {
 
     @Override
     public void showFunctions() {
-
+        // no more functions to show except menu
     }
 }

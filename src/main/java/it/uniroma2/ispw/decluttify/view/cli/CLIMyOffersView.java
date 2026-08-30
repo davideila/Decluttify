@@ -18,6 +18,7 @@ public class CLIMyOffersView extends CLIView {
         super(sessionManager);
     }
 
+    @Override
     public void show() {
         printHeader("My Offers View");
         super.show();

@@ -14,6 +14,7 @@ public class CLIItemBrowserView extends CLIView {
         super(sessionManager);
     }
 
+    @Override
     public void show() {
         printHeader("Item Browser View");
         super.show();

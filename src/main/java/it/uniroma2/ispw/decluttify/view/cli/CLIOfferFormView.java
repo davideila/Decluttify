@@ -16,6 +16,7 @@ public class CLIOfferFormView extends CLIView {
         super(sessionManager);
     }
 
+    @Override
     public void show() {
         printHeader("Make Offer View");
         super.show();

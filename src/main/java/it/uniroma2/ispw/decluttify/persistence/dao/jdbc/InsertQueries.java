@@ -5,6 +5,8 @@ import java.sql.*;
 
 public class InsertQueries {
 
+    private InsertQueries(){}
+
     public static int insertOffer(Connection conn, String receiver, String offerer, int itemReq, boolean escrow, boolean shipping) throws SQLException {
         String sql = "INSERT INTO offers (offerer, receiver, itemReq, escrow, shipping, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

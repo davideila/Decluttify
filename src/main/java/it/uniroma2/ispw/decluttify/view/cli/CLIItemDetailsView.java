@@ -11,6 +11,7 @@ public class CLIItemDetailsView extends CLIView {
         super(sessionManager);
     }
 
+    @Override
     public void show() {
         printHeader("Item Details View");
         super.show();

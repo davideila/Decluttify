@@ -264,10 +264,6 @@ public class Item{
 
     }
 
-    private void setStatus(ItemStatus status){
-        this.status = status;
-    }
-
     public ItemStatus getStatus(){
         return this.status;
     }

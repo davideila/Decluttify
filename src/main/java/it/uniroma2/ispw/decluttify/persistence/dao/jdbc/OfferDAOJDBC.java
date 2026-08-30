@@ -50,13 +50,24 @@ public class OfferDAOJDBC extends OfferDAO {
 
     @Override
     public void createOffer(Offer offer) {
-        if (PersistenceManager.getInstance().isDemoMode()){
+        if (PersistenceManager.getInstance().isDemoMode()) {
             return;
         }
 
-        Connection connection = PersistenceManager.getInstance().getConnection();
+        try (Connection connection = PersistenceManager.getInstance().getConnection()) {
+            if (connection == null) {
+                throw new DAOException("Database connection is null.");
+            }
+
+            executeCreateOfferTransaction(connection, offer);
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to save offer and its items to database.", e);
+        }
+    }
+
+    private void executeCreateOfferTransaction(Connection connection, Offer offer) throws SQLException {
         try {
-            // Atomicity (2 operations on 2 different tables)
             connection.setAutoCommit(false);
 
             int generatedId = InsertQueries.insertOffer(
@@ -65,27 +76,18 @@ public class OfferDAOJDBC extends OfferDAO {
                     offer.getReceiver().getUsername(),
                     offer.getItemRequested().getId(),
                     offer.isEscrowOn(),
-                    offer.isShippingOn());
+                    offer.isShippingOn()
+            );
             offer.setId(generatedId);
 
             for (Item item : offer.getItemOffered()) {
                 InsertQueries.insertOffered(connection, offer.getId(), item.getId());
             }
-            connection.commit();
 
+            connection.commit();
         } catch (SQLException e) {
-            try {
-                if (connection != null) connection.rollback();
-            } catch (SQLException rollbackEx) {
-                throw new DAOException("Error: Rollback failed during offer creation.", rollbackEx);
-            }
-            throw new DAOException("Failed to save offer and its items to database.", e);
-        } finally {
-            try {
-                if (connection != null) connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DAOException("Database error: Could not reset auto-commit.", e);
-            }
+            connection.rollback();
+            throw e;
         }
     }
 

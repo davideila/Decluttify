@@ -183,7 +183,7 @@ public abstract class CLIGraphicController<V extends CLIView> {
             this.view.showMessage(e.getMessage(), true);
         } else {
             this.view.showMessage("An unexpected error occurred.", true);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

@@ -33,7 +33,7 @@ public class JFXInventoryPopupController {
             AlertProvider.showError("Operation failed", e.getMessage());
         }catch (Exception e) {
             AlertProvider.showError("System failure", "An unexpected error occurred.");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         populateGrid();
         for(PreviewItemBean item : alreadySelectedItems) {

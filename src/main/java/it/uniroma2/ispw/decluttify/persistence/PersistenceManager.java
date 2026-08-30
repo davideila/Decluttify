@@ -66,10 +66,6 @@ public class PersistenceManager {
             throw new ConfigurationException("Persistence type is not set to a value supported for a connection.");
         }
 
-        if (demoMode) {
-            throw new ConfigurationException("Demo mode is not compatible with a connection.");
-        }
-
         try {
             Class.forName(configReader.getDBDriver());
 

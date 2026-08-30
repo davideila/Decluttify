@@ -30,7 +30,7 @@ public abstract class JFXGraphicController {
 
     protected void handleErrorAlert(String header, Exception e) {
         AlertProvider.showError(header, e.getMessage());
-        e.printStackTrace();
+        //e.printStackTrace();
     }
 
     protected void handleSuccessAlert(String content){

@@ -16,35 +16,45 @@ public class OfferDAOJDBC extends OfferDAO {
     @Override
     public List<Offer> retrievePendingOffersByPartners(String offerer, String receiver) {
         List<Offer> offerlist = new ArrayList<>();
-
         Connection connection = PersistenceManager.getInstance().getConnection();
-        try (Statement stmt = connection.createStatement();
-             Statement stmtItems = connection.createStatement()) {
 
-            ResultSet rs = SelectQueries.selectPendingOffersByPartners(stmt, offerer, receiver);
-            while (rs.next()) {
-                List<Item> itemofflist = new ArrayList<>();
-                int offID = rs.getInt("id");
-                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
-                    while (rsItems.next()) {
-                        itemofflist.add(new Item(rsItems.getInt("item")));
+        try (PreparedStatement pstmt = connection.prepareStatement(SelectQueries.SELECT_PENDING_OFFERS_BY_PARTNERS)) {
+
+            pstmt.setString(1, offerer);
+            pstmt.setString(2, receiver);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int offID = rs.getInt("id");
+                    List<Item> itemofflist = new ArrayList<>();
+
+                    // Offered items data
+                    try (PreparedStatement pstmtItems = connection.prepareStatement(SelectQueries.SELECT_ITEMS_OFFERED_BY_OFFER_ID)) {
+                        pstmtItems.setInt(1, offID);
+
+                        try (ResultSet rsItems = pstmtItems.executeQuery()) {
+                            while (rsItems.next()) {
+                                itemofflist.add(new Item(rsItems.getInt("item")));
+                            }
+                        }
                     }
-                }
 
-                offerlist.add(new Offer(
-                        offID,
-                        new User(rs.getString("offerer"), null, -1, null),
-                        new User(rs.getString("receiver"), null, -1, null),
-                        itemofflist,
-                        new Item(rs.getInt("itemReq")),
-                        rs.getBoolean("escrow"),
-                        rs.getBoolean("shipping"),
-                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
-                ));
+                    offerlist.add(new Offer(
+                            offID,
+                            new User(rs.getString("offerer"), null, -1, null),
+                            new User(rs.getString("receiver"), null, -1, null),
+                            itemofflist,
+                            new Item(rs.getInt("itemReq")),
+                            rs.getBoolean("escrow"),
+                            rs.getBoolean("shipping"),
+                            OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                    ));
+                }
             }
         } catch (SQLException e) {
             throw new DAOException("Error fetching offers between offerer " + offerer + " and receiver " + receiver, e);
         }
+
         return offerlist;
     }
 
@@ -94,68 +104,87 @@ public class OfferDAOJDBC extends OfferDAO {
     @Override
     public List<Offer> retrieveOffersByReceiver(String receiver) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
-
         Connection connection = PersistenceManager.getInstance().getConnection();
-        try (Statement stmt = connection.createStatement();
-             Statement stmtItems = connection.createStatement()) {
-            ResultSet rs = SelectQueries.selectOffersByReceiver(stmt, receiver);
-            while (rs.next()) {
-                List<Item> itemofflist = new ArrayList<>();
-                int offID = rs.getInt("id");
-                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
-                    while (rsItems.next()) {
-                        itemofflist.add(new Item(rsItems.getInt("item")));
+
+        try (PreparedStatement pstmt = connection.prepareStatement(SelectQueries.SELECT_OFFERS_BY_RECEIVER)) {
+
+            pstmt.setString(1, receiver);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int offID = rs.getInt("id");
+                    List<Item> itemofflist = new ArrayList<>();
+
+                    // Offered items data
+                    try (PreparedStatement pstmtItems = connection.prepareStatement(SelectQueries.SELECT_ITEMS_OFFERED_BY_OFFER_ID)) {
+                        pstmtItems.setInt(1, offID);
+
+                        try (ResultSet rsItems = pstmtItems.executeQuery()) {
+                            while (rsItems.next()) {
+                                itemofflist.add(new Item(rsItems.getInt("item")));
+                            }
+                        }
                     }
+
+                    offerlist.add(new Offer(
+                            offID,
+                            new User(rs.getString("offerer"), null, -1, null),
+                            new User(rs.getString("receiver"), null, -1, null),
+                            itemofflist,
+                            new Item(rs.getInt("itemReq")),
+                            rs.getBoolean("escrow"),
+                            rs.getBoolean("shipping"),
+                            OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                    ));
                 }
-                offerlist.add(new Offer(
-                        offID,
-                        new User(rs.getString("offerer"), null, -1, null),
-                        new User(rs.getString("receiver"), null, -1, null),
-                        itemofflist,
-                        new Item(rs.getInt("itemReq")),
-                        rs.getBoolean("escrow"),
-                        rs.getBoolean("shipping"),
-                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
-                ));
             }
         } catch (SQLException e) {
             throw new DAOException("Error fetching offers for receiver " + receiver, e);
         }
+
         return offerlist;
     }
 
-    @Override
     public List<Offer> retrieveOffersBySender(String sender) throws DAOException {
         List<Offer> offerlist = new ArrayList<>();
-
         Connection connection = PersistenceManager.getInstance().getConnection();
-        try (Statement stmt = connection.createStatement();
-             Statement stmtItems = connection.createStatement()) {
 
-            ResultSet rs = SelectQueries.selectOffersBySender(stmt, sender);
-            while (rs.next()) {
-                List<Item> itemofflist = new ArrayList<>();
-                int offID = rs.getInt("id");
-                try (ResultSet rsItems = SelectQueries.selectItemsOfferedByOfferId(stmtItems, offID)) {
-                    while (rsItems.next()) {
-                        itemofflist.add(new Item(rsItems.getInt("item")));
+        try (PreparedStatement pstmt = connection.prepareStatement(SelectQueries.SELECT_OFFERS_BY_SENDER)) {
+
+            pstmt.setString(1, sender);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int offID = rs.getInt("id");
+                    List<Item> itemofflist = new ArrayList<>();
+
+                    // Offered items data
+                    try (PreparedStatement pstmtItems = connection.prepareStatement(SelectQueries.SELECT_ITEMS_OFFERED_BY_OFFER_ID)) {
+                        pstmtItems.setInt(1, offID);
+
+                        try (ResultSet rsItems = pstmtItems.executeQuery()) {
+                            while (rsItems.next()) {
+                                itemofflist.add(new Item(rsItems.getInt("item")));
+                            }
+                        }
                     }
-                }
 
-                offerlist.add(new Offer(
-                        offID,
-                        new User(rs.getString("offerer"), null, -1, null),
-                        new User(rs.getString("receiver"), null, -1, null),
-                        itemofflist,
-                        new Item(rs.getInt("itemReq")),
-                        rs.getBoolean("escrow"),
-                        rs.getBoolean("shipping"),
-                        OfferStatus.valueOf(rs.getString("status").toUpperCase())
-                ));
+                    offerlist.add(new Offer(
+                            offID,
+                            new User(rs.getString("offerer"), null, -1, null),
+                            new User(rs.getString("receiver"), null, -1, null),
+                            itemofflist,
+                            new Item(rs.getInt("itemReq")),
+                            rs.getBoolean("escrow"),
+                            rs.getBoolean("shipping"),
+                            OfferStatus.valueOf(rs.getString("status").toUpperCase())
+                    ));
+                }
             }
         } catch (SQLException e) {
             throw new DAOException("Error fetching offers for sender " + sender, e);
         }
+
         return offerlist;
     }
 

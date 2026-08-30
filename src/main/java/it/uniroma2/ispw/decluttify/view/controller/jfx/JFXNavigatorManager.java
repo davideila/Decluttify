@@ -34,7 +34,7 @@ public class JFXNavigatorManager implements Navigator {
             AlertProvider.showError("Navigation Error", "Unable to display the requested page.");
         }catch (Exception e) {
             AlertProvider.showError("System failure", "An unexpected error occurred.");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -58,7 +58,7 @@ public class JFXNavigatorManager implements Navigator {
             AlertProvider.showError("Navigation Error", "Unable to display the requested page.");
         }catch (Exception e) {
             AlertProvider.showError("System failure", "An unexpected error occurred.");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

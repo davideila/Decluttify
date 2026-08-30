@@ -45,7 +45,7 @@ public class JFXLoginPopupController{
             AlertProvider.showError("Application error", e.getMessage());
         }catch (Exception e) {
             AlertProvider.showError("System failure", "An unexpected error occurred.");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         usernameField.setText("");

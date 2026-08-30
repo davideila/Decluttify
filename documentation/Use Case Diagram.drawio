@@ -16,7 +16,7 @@
         <mxCell id="J09ckFeXd-orHBUEzoB2-18" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Request Shipping" vertex="1">
           <mxGeometry height="80" width="120" x="470" y="660" as="geometry" />
         </mxCell>
-        <mxCell id="J09ckFeXd-orHBUEzoB2-12" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Activate Escrow Protection" vertex="1">
+        <mxCell id="J09ckFeXd-orHBUEzoB2-12" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Request Escrow Protection" vertex="1">
           <mxGeometry height="80" width="120" x="470" y="495" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-29" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Donate Item *" vertex="1">
@@ -25,13 +25,13 @@
         <mxCell id="J09ckFeXd-orHBUEzoB2-31" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Item Inventory *" vertex="1">
           <mxGeometry height="80" width="120" x="280" y="270" as="geometry" />
         </mxCell>
-        <mxCell id="J09ckFeXd-orHBUEzoB2-11" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Make Barter Offer *, **" vertex="1">
+        <mxCell id="J09ckFeXd-orHBUEzoB2-11" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Make Offer *, **" vertex="1">
           <mxGeometry height="80" width="120" x="154" y="670" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-32" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Barter *, **" vertex="1">
           <mxGeometry height="80" width="120" x="110" y="470" as="geometry" />
         </mxCell>
-        <mxCell id="J09ckFeXd-orHBUEzoB2-19" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Browse Items" vertex="1">
+        <mxCell id="J09ckFeXd-orHBUEzoB2-19" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Visualize Item" vertex="1">
           <mxGeometry height="80" width="120" x="460" y="300" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-49" edge="1" parent="J09ckFeXd-orHBUEzoB2-1" source="J09ckFeXd-orHBUEzoB2-17" style="endArrow=classic;html=1;rounded=0;" target="J09ckFeXd-orHBUEzoB2-19" value="">
@@ -80,7 +80,9 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-62" connectable="0" parent="J09ckFeXd-orHBUEzoB2-61" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="Extends" vertex="1">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="58" y="-5" as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-63" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Post Review" vertex="1">
           <mxGeometry height="80" width="120" x="280" y="390" as="geometry" />
@@ -101,7 +103,7 @@
           <mxGeometry height="80" width="120" x="50" y="140" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-125" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Incoming Offer *, **" vertex="1">
-          <mxGeometry height="80" width="120" x="50" y="780" as="geometry" />
+          <mxGeometry height="80" width="120" x="100" y="790" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-130" edge="1" parent="J09ckFeXd-orHBUEzoB2-1" source="J09ckFeXd-orHBUEzoB2-18" style="endArrow=classic;html=1;rounded=0;" target="J09ckFeXd-orHBUEzoB2-29" value="">
           <mxGeometry relative="1" as="geometry">
@@ -123,6 +125,26 @@
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-134" parent="J09ckFeXd-orHBUEzoB2-1" style="ellipse;whiteSpace=wrap;html=1;" value="Manage Incoming Donation *" vertex="1">
           <mxGeometry height="80" width="120" x="20" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="NBo4X_iRJuVe-Bob4XDV-1" edge="1" parent="J09ckFeXd-orHBUEzoB2-1" source="J09ckFeXd-orHBUEzoB2-12" style="endArrow=classic;html=1;rounded=0;curved=0;" target="J09ckFeXd-orHBUEzoB2-125" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="660" />
+              <mxPoint x="410" y="650" />
+              <mxPoint x="390" y="670" />
+              <mxPoint x="400" y="680" />
+              <mxPoint x="350" y="700" />
+              <mxPoint x="330" y="690" />
+              <mxPoint x="310" y="710" />
+              <mxPoint x="320" y="720" />
+              <mxPoint x="300" y="730" />
+            </Array>
+            <mxPoint x="654" y="820" as="sourcePoint" />
+            <mxPoint x="430" y="944" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBo4X_iRJuVe-Bob4XDV-2" connectable="0" parent="NBo4X_iRJuVe-Bob4XDV-1" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="Extends" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="J09ckFeXd-orHBUEzoB2-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="User" vertex="1">
           <mxGeometry height="60" width="30" x="40" y="670" as="geometry" />

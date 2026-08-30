@@ -105,7 +105,6 @@ public class OfferDAOCSV extends OfferDAO {
         if (!offerFile.exists() || !offeredFile.exists()) {
             throw new DAOException("Error: offers file does not exist.");
         }
-
         if (offerFile.length() == 0 || offeredFile.length() == 0) {
             throw new DAOException("No header found in offers file.");
         }
@@ -113,50 +112,51 @@ public class OfferDAOCSV extends OfferDAO {
         try (RandomAccessFile raf = new RandomAccessFile(offerFile, "rw");
              RandomAccessFile raf2 = new RandomAccessFile(offeredFile, "rw")) {
 
+            // Find the last line to determine the new offer ID
             long fileLength = offerFile.length();
-            long pointer = fileLength - 1; // last char of the file
+            long pointer = fileLength - 1;
 
             while (pointer >= 0) {
                 raf.seek(pointer);
                 int b = raf.read();
-                if (b == '\n' && pointer != fileLength - 1) { // '\n' = 10
+                if (b == '\n' && pointer != fileLength - 1) {
                     break;
                 }
                 pointer--;
             }
 
+
             String line = raf.readLine();
-            int id = parseLastOfferId(line) + 1;
-
-            if (raf.length() > 0) {
-                raf.seek(raf.length() - 1);
-                if (raf.read() != '\n') {
-                    raf.writeBytes("\n");
+            int lastId = 0;
+            if (line != null && !line.isEmpty()) {
+                try {
+                    lastId = Integer.parseInt(line.split(";")[0].trim());
+                } catch (NumberFormatException e) {
+                    // Header line or invalid format
+                    lastId = 0;
                 }
             }
+            int id = lastId + 1;
 
-            StringBuilder newRow = new StringBuilder();
-            newRow.append(id).append(";")
-                    .append(offer.getOfferer().getUsername()).append(";")
-                    .append(offer.getReceiver().getUsername()).append(";")
-                    .append(offer.getItemRequested().getId()).append(";")
-                    .append(offer.isEscrowOn()).append(";")
-                    .append(offer.isShippingOn()).append(";")
-                    .append(offer.getStatus().name()).append("\r\n");
+            // File must end with newline
+            addNewLineIfNeeded(raf);
 
-            raf.write(newRow.toString().getBytes());
+            // Build and write the main offer row
+            String offerRow = id + ";"
+                    + offer.getOfferer().getUsername() + ";"
+                    + offer.getReceiver().getUsername() + ";"
+                    + offer.getItemRequested().getId() + ";"
+                    + offer.isEscrowOn() + ";"
+                    + offer.isShippingOn() + ";"
+                    + offer.getStatus().name() + "\r\n";
+            raf.write(offerRow.getBytes());
 
-            if (raf2.length() > 0) {
-                raf2.seek(raf2.length() - 1);
-                if (raf2.read() != '\n') {
-                    raf2.writeBytes("\n");
-                }
-            }
-
+            // file must end with newline
+            addNewLineIfNeeded(raf2);
+            //write offered items
             for (Item itemOffered : offer.getItemOffered()) {
-                newRow.setLength(0);
-                newRow.append(itemOffered.getId()).append(";").append(id).append("\r\n");
-                raf2.write(newRow.toString().getBytes());
+                String row = itemOffered.getId() + ";" + offer.getId() + "\r\n";
+                raf2.write(row.getBytes());
             }
 
         } catch (IOException | NumberFormatException e) {
@@ -167,24 +167,21 @@ public class OfferDAOCSV extends OfferDAO {
     // #################################################################################################
     // Private helper methods to eliminate nested try catch and reduce complexity as per sonarqube request
 
+    private void addNewLineIfNeeded(RandomAccessFile raf) throws IOException {
+        if (raf.length() > 0) {
+            raf.seek(raf.length() - 1);
+            if (raf.read() != '\n') {
+                raf.writeBytes("\n");
+            }
+        }
+    }
+
     private BufferedReader openOffersReader() {
         try {
             return new BufferedReader(new FileReader(offerFilePath));
         } catch (FileNotFoundException e) {
             throw new DAOException("Persistence error: offers file not found.", e);
         }
-    }
-
-    private int parseLastOfferId(String line) {
-        if (line != null && !line.isEmpty()) {
-            try {
-                return Integer.parseInt(line.split(";")[0].trim());
-            } catch (NumberFormatException e) {
-                // No previous offers, header only
-                return 0;
-            }
-        }
-        return 0;
     }
 
     private Offer mapRowToOffer(String[] offerData) {

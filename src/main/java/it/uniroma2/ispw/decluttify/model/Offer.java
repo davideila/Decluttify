@@ -1,5 +1,6 @@
 package it.uniroma2.ispw.decluttify.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Offer {
@@ -48,37 +49,37 @@ public class Offer {
             return false;
         }
 
-        //check receivers
+        // Check receiver
         if (this.getReceiver() == null || partnerOffer.getReceiver() == null ||
                 !this.getReceiver().getUsername().equals(partnerOffer.getReceiver().getUsername())) {
             return false;
         }
 
-        //check offerers
+        // Check offerer
         if (this.getOfferer() == null || partnerOffer.getOfferer() == null ||
                 !this.getOfferer().getUsername().equals(partnerOffer.getOfferer().getUsername())) {
             return false;
         }
 
-        //check target items
+        // Check target item
         if (this.getItemRequested() == null || partnerOffer.getItemRequested() == null ||
                 this.getItemRequested().getId() != partnerOffer.getItemRequested().getId()) {
             return false;
         }
 
-        //check offered items
+        // Check offered items size
         if (this.itemOffered.size() != partnerOffer.getItemOffered().size()) {
             return false;
         }
-        for (Item item1 : this.itemOffered) {
-            boolean found = false;
-            for (Item item2 : partnerOffer.getItemOffered()) {
-                if (item1.getId() == item2.getId()) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+
+        // Check offered items content
+        List<Integer> partnerItemIds = new ArrayList<>();
+        for (Item item : partnerOffer.getItemOffered()) {
+            partnerItemIds.add(item.getId());
+        }
+
+        for (Item item : this.itemOffered) {
+            if (!partnerItemIds.contains(item.getId())) {
                 return false;
             }
         }

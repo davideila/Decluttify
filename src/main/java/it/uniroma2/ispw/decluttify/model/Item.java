@@ -67,64 +67,37 @@ public class Item{
     //Business methods
 
     public Offer proposeBarter(User offerer, List<Item> offeredItems) {
-        if(offerer == null || offeredItems == null || offeredItems.isEmpty()){
-            throw new InvalidOfferException("Error: invalid offer");
-        }
-        if(offerer.getUsername().equals(this.getOwner().getUsername())){
-            throw new InvalidOfferException("Self offer is not possible");
-        }
-        for(Item item : offeredItems){
-            if (!item.getOwner().getUsername().equals(offerer.getUsername())) {
-                throw new InvalidOfferException("Offered Item " + item.getName() + " with ID " + item.getId() + " is not owned by offerer " + offerer.getUsername() + ".");
-            }
-        }
-        if(offeredItems.size() > 3){
-            throw new InvalidOfferException("Cannot offer more than 3 items");
-        }
+        validateOfferInput(offerer, offeredItems);
 
-        final boolean[] targetResult = { false }; /* Array because the runnable thread accepts only final local variables and to make it mutable array is used */
+        final boolean[] targetResult = { false };
         final boolean[] offeredResult = { false };
         final InvalidOfferException[] threadException = new InvalidOfferException[1];
 
-        Thread targetThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (isExchangeable()) {
-                    targetResult[0] = true;
-                }
+        Thread targetThread = new Thread(() -> {
+            if (isExchangeable()) {
+                targetResult[0] = true;
             }
         });
 
-        Thread offeredThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (offeredItems != null && !offeredItems.isEmpty()) {
-                    boolean allOk = true;
-                    for (Item item : offeredItems) {
-                        if (!item.isExchangeable()) {
-                            allOk = false;
-                            break;
-                        }
-                        for(Item item2 : offeredItems){
-                            if(offeredItems.indexOf(item) != offeredItems.indexOf(item2) && item.getId() == item2.getId()){
-                                threadException[0] = new InvalidOfferException("Cannot propose the same item multiple times for an offer");
-                            }
-                        }
-                    }
-                    offeredResult[0] = allOk;
-                }
+        Thread offeredThread = new Thread(() -> {
+            try {
+                offeredResult[0] = validateAndCheckOfferedItems(offeredItems);
+            } catch (InvalidOfferException e) {
+                threadException[0] = e;
             }
         });
 
         targetThread.start();
         offeredThread.start();
+
         try {
             targetThread.join();
             offeredThread.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new DecluttifyException("Availability check interrupted!");
+            throw new DecluttifyException("Availability check interrupted!", e);
         }
+
         if (threadException[0] != null) {
             throw threadException[0];
         }
@@ -135,12 +108,58 @@ public class Item{
             throw new ItemNotAvailableException("Some of the offered items are not available!");
         }
 
-        for(Item item : offeredItems){
+        for (Item item : offeredItems) {
             item.incrOffersCounter();
         }
         this.incrOffersCounter();
 
         return new Offer(offerer, this.getOwner(), offeredItems, this);
+    }
+
+// ##########################################################################################
+// Private helper methods as per sonarqube request to reduce complexity of proposeBarter
+
+    private void validateOfferInput(User offerer, List<Item> offeredItems) {
+        if (offerer == null || offeredItems == null || offeredItems.isEmpty()) {
+            throw new InvalidOfferException("Error: invalid offer");
+        }
+
+        if (offerer.getUsername().equals(this.getOwner().getUsername())) {
+            throw new InvalidOfferException("Self offer is not possible");
+        }
+
+        if (offeredItems.size() > 3) {
+            throw new InvalidOfferException("Cannot offer more than 3 items");
+        }
+
+        for (Item item : offeredItems) {
+            if (!item.getOwner().getUsername().equals(offerer.getUsername())) {
+                throw new InvalidOfferException("Offered Item " + item.getName() + " with ID " + item.getId() + " is not owned by offerer " + offerer.getUsername() + ".");
+            }
+        }
+    }
+
+    private boolean validateAndCheckOfferedItems(List<Item> offeredItems) {
+        if (offeredItems == null || offeredItems.isEmpty()) {
+            return false;
+        }
+
+        // Check duplicates
+        for (int i = 0; i < offeredItems.size(); i++) {
+            for (int j = i + 1; j < offeredItems.size(); j++) {
+                if (offeredItems.get(i).getId() == offeredItems.get(j).getId()) {
+                    throw new InvalidOfferException("Cannot propose the same item multiple times for an offer");
+                }
+            }
+        }
+
+        for (Item item : offeredItems) {
+            if (!item.isExchangeable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean isExchangeable(){

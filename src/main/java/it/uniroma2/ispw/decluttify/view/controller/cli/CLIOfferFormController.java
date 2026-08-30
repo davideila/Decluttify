@@ -36,53 +36,70 @@ public class CLIOfferFormController extends CLIGraphicController<CLIOfferFormVie
 
     @Override
     protected void handleViewChoice(int index) {
-        if(inventoryItems == null || inventoryItems.isEmpty()) {
+        if (inventoryItems == null || inventoryItems.isEmpty()) {
             this.view.showMessage("You have no items to offer in your inventory", true);
+            return;
         }
-        else {
-            if(index > inventoryItems.size() || index < 0) {
-                this.view.showMessage("Please select a valid item", true);
-                return;
-            }
-            if(index == 0 && !addedItems.isEmpty()) { // 0 is send offer when atleast 1 item is added
-                if(!offeredItems.isEmpty() && offeredItems.equals(addedItems)) {
-                    this.view.showMessage("Offer already sent!", true);
-                }
-                else {
-                    ArrayList<PreviewItemBean> items= new ArrayList<>();
-                    for(Integer i : addedItems) {
-                        items.add(inventoryItems.get(i-1));
-                    }
-                    try {
-                        makeOfferController.submitOffer(items, requestedItem, sessionManager.getLoggedUser());
-                        this.view.showMessage("Offer sent!", false);
-                        navigatorManager.navigateTo(CLIViewType.MY_OFFERS);
-                    }catch(SessionExpiredException e){
-                        this.view.showMessage("Session has expired. Please try again", true);
-                        this.navigatorManager.reset();
-                    }catch(DuplicateOfferException e){
-                        this.handleException(e);
-                    }catch(DecluttifyException e){
-                        this.handleException(e);
-                        navigatorManager.navigateTo(CLIViewType.HOME);
-                    }catch(Exception e){
-                        this.handleException(e);
-                    }
-                }
-            }
-            else {
-                if(addedItems.contains(index)) {
-                    this.view.showMessage("Item already added to offer!", true);
-                }
-                else {
-                    if (index != 0) {
-                        addedItems.add(index);
-                        this.view.addIndex(index);
-                    }
-                }
-            }
+
+        if (index > inventoryItems.size() || index < 0) {
+            this.view.showMessage("Please select a valid item", true);
+            return;
+        }
+
+        if (index == 0) {
+            handleOfferSubmission();
+        } else {
+            handleItemSelection(index);
         }
     }
+
+// #########################################################################################
+// Private helper methods as per sonarqube request to reduce complexity of handleviewchoice
+
+
+    private void handleOfferSubmission() {
+        if (addedItems.isEmpty()) {
+            return;
+        }
+
+        if (!offeredItems.isEmpty() && offeredItems.equals(addedItems)) {
+            this.view.showMessage("Offer already sent!", true);
+            return;
+        }
+
+        ArrayList<PreviewItemBean> items = new ArrayList<>();
+        for (Integer i : addedItems) {
+            items.add(inventoryItems.get(i - 1));
+        }
+
+        try {
+            makeOfferController.submitOffer(items, requestedItem, sessionManager.getLoggedUser());
+            this.view.showMessage("Offer sent!", false);
+            navigatorManager.navigateTo(CLIViewType.MY_OFFERS);
+        } catch (SessionExpiredException e) {
+            this.view.showMessage("Session has expired. Please try again", true);
+            this.navigatorManager.reset();
+        } catch (DuplicateOfferException e) {
+            this.handleException(e);
+        } catch (DecluttifyException e) {
+            this.handleException(e);
+            navigatorManager.navigateTo(CLIViewType.HOME);
+        } catch (Exception e) {
+            this.handleException(e);
+        }
+    }
+
+    private void handleItemSelection(int index) {
+        if (addedItems.contains(index)) {
+            this.view.showMessage("Item already added to offer!", true);
+            return;
+        }
+
+        addedItems.add(index);
+        this.view.addIndex(index);
+    }
+
+    //#######################################################################################################
 
     @Override
     protected void setupData() {

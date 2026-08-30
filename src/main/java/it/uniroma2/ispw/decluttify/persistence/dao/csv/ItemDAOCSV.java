@@ -141,49 +141,27 @@ public class ItemDAOCSV extends ItemDAO {
 
             try (BufferedReader br = new BufferedReader(new FileReader(originalFile));
                  BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
-                // copy header in tmp file
+
                 String line = br.readLine();
                 if (line != null) {
                     bw.write(line);
                     bw.newLine();
                 }
-                // start reading the info by row
+
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) {
                         continue;
                     }
-                    String[] tmpRow = line.split(";");
-                    int currentLineId = Integer.parseInt(tmpRow[0].trim());
-                    // Verify ID match
-                    boolean isMatch = false;
-                    for (Integer id : iDs) {
-                        if (id != null && id == currentLineId) {
-                            isMatch = true;
-                            break;
-                        }
-                    }
-                    if (isMatch) {
-                        int currentCounter = Integer.parseInt(tmpRow[7].trim());
-                        tmpRow[7] = String.valueOf(currentCounter + 1);
-                        // Rebuild row with ; separator for tmp file and with offer counter increment
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < tmpRow.length; i++) {
-                            sb.append(tmpRow[i]);
-                            if (i < tmpRow.length - 1) {
-                                sb.append(";");
-                            }
-                        }
-                        bw.write(sb.toString());
+
+                    boolean updated = processCsvRow(line, iDs, bw);
+                    if (updated) {
                         anyUpdated = true;
-                    } else {
-                        bw.write(line);
                     }
                     bw.newLine();
                 }
             } catch (FileNotFoundException e) {
                 throw new DAOException("Persistence error: items file not found.", e);
             } catch (IOException | NumberFormatException e) {
-                // Sonarqube request
                 try {
                     java.nio.file.Files.deleteIfExists(tempFile.toPath());
                 } catch (IOException deleteEx) {
@@ -192,19 +170,50 @@ public class ItemDAOCSV extends ItemDAO {
                 throw new DAOException("Error: cannot access or read items file", e);
             }
 
-            // changed with nio as per sonarqube request
-            try {
-                if (anyUpdated) {
-                    java.nio.file.Files.delete(originalFile.toPath());
-                    java.nio.file.Files.move(tempFile.toPath(), originalFile.toPath());
-                } else {
-                    java.nio.file.Files.deleteIfExists(tempFile.toPath());
-                }
-            } catch (IOException e) {
-                throw new DAOException("Error: cannot replace or cleanup files", e);
-            }
+            finalizeFileReplacement(originalFile, tempFile, anyUpdated);
         }
     }
+
+    // #######################################################################################################
+    // Helper methods as per sonarqube request to reduce complexity of method incrementItemsOfferCounters
+
+    private boolean processCsvRow(String line, List<Integer> iDs, BufferedWriter bw) throws IOException {
+        String[] tmpRow = line.split(";");
+        int currentLineId = Integer.parseInt(tmpRow[0].trim());
+
+        boolean isMatch = false;
+        for (Integer id : iDs) {
+            if (id != null && id == currentLineId) {
+                isMatch = true;
+                break;
+            }
+        }
+
+        if (isMatch) {
+            int currentCounter = Integer.parseInt(tmpRow[7].trim());
+            tmpRow[7] = String.valueOf(currentCounter + 1);
+            bw.write(String.join(";", tmpRow));
+            return true;
+        }
+
+        bw.write(line);
+        return false;
+    }
+
+    private void finalizeFileReplacement(File originalFile, File tempFile, boolean anyUpdated) {
+        try {
+            if (anyUpdated) {
+                java.nio.file.Files.delete(originalFile.toPath());
+                java.nio.file.Files.move(tempFile.toPath(), originalFile.toPath());
+            } else {
+                java.nio.file.Files.deleteIfExists(tempFile.toPath());
+            }
+        } catch (IOException e) {
+            throw new DAOException("Error: cannot replace or cleanup files", e);
+        }
+    }
+
+    // ##########################################################################################################################
 
     @Override
     public List<Item> retrieveItemsByOwner(String username) {

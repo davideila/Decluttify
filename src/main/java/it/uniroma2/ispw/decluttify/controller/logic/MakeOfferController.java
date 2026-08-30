@@ -56,19 +56,15 @@ public class MakeOfferController {
     private void startSessionTimer() {
         this.isSessionExpired = false;
 
-        this.timerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(TIMEOUT_MINUTES * 60000);
-                    isSessionExpired = true;
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+        // Sonawqube request to use virtual thread
+        this.timerThread = Thread.ofVirtual().start(() -> {
+            try {
+                Thread.sleep(TIMEOUT_MINUTES * 60_000L);
+                isSessionExpired = true;
+            } catch (InterruptedException _) {
+                Thread.currentThread().interrupt();
             }
         });
-        this.timerThread.setDaemon(true);
-        this.timerThread.start();
     }
 
     public void submitOffer(List<PreviewItemBean> offeredItemsBean, PreviewItemBean targetItemBean, UserBean offererBean) {

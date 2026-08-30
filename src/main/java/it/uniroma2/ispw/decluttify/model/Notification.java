@@ -1,6 +1,7 @@
 package it.uniroma2.ispw.decluttify.model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class Notification {
     private int id;
@@ -17,7 +18,7 @@ public class Notification {
         this.setMessage(message);
         this.setType(type);
         this.read = false;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(ZoneId.systemDefault()); //as per sonarqube request
     }
 
     // Used when getting data from persistence

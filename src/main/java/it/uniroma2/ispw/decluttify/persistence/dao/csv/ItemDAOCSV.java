@@ -113,8 +113,7 @@ public class ItemDAOCSV extends ItemDAO {
     private List<String> retrieveImagesForItem(int itemId){
         List<String> imgPaths = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(IMAGES_FILE_PATH))) {
-            br.readLine();
-            String line;
+            String line = br.readLine(); // skip header
             while ((line = br.readLine()) != null) {
                 String[] imgData = line.split(";");
                 if (Integer.parseInt(imgData[0]) == itemId) {
@@ -184,19 +183,25 @@ public class ItemDAOCSV extends ItemDAO {
             } catch (FileNotFoundException e) {
                 throw new DAOException("Persistence error: items file not found.", e);
             } catch (IOException | NumberFormatException e) {
-                if (tempFile.exists()) {
-                    tempFile.delete();
+                // Sonarqube request
+                try {
+                    java.nio.file.Files.deleteIfExists(tempFile.toPath());
+                } catch (IOException deleteEx) {
+                    e.addSuppressed(deleteEx);
                 }
                 throw new DAOException("Error: cannot access or read items file", e);
             }
-            // Overwrite real file
-            if (anyUpdated) {
-                if (!originalFile.delete() || !tempFile.renameTo(originalFile)) {
-                    throw new DAOException("Error: cannot replace original file with temp file");
+
+            // changed with nio as per sonarqube request
+            try {
+                if (anyUpdated) {
+                    java.nio.file.Files.delete(originalFile.toPath());
+                    java.nio.file.Files.move(tempFile.toPath(), originalFile.toPath());
+                } else {
+                    java.nio.file.Files.deleteIfExists(tempFile.toPath());
                 }
-            } else {
-                // If no updates, delete temp file
-                tempFile.delete();
+            } catch (IOException e) {
+                throw new DAOException("Error: cannot replace or cleanup files", e);
             }
         }
     }

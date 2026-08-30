@@ -274,40 +274,45 @@ public class ItemDAOJDBC extends ItemDAO {
 
     @Override
     public void incrementItemsOfferCounters(List<Integer> iDs) {
-        if (PersistenceManager.getInstance().isDemoMode()){
+        if (PersistenceManager.getInstance().isDemoMode()) {
             return;
         }
         if (iDs == null || iDs.isEmpty()) {
             return;
         }
 
-        Connection connection = PersistenceManager.getInstance().getConnection();
         int totalRowsAffected = 0;
-        try {
+        try (Connection connection = PersistenceManager.getInstance().getConnection()) {
+
+            if (connection == null) {
+                throw new DAOException("Database connection is null.");
+            }
+
             connection.setAutoCommit(false);
-            for (Integer i : iDs) {
-                int rowsAffected = UpdateQueries.updateItemNumOffer(
-                        connection,
-                        i,
-                        1
-                );
-                totalRowsAffected += rowsAffected;
-            }
-            if (totalRowsAffected != iDs.size()) {
-                connection.rollback();
-                throw new DAOException("Update failed for items with IDs: " + iDs);
-            } else {
+            try {
+                for (Integer i : iDs) {
+                    int rowsAffected = UpdateQueries.updateItemNumOffer(
+                            connection,
+                            i,
+                            1
+                    );
+                    totalRowsAffected += rowsAffected;
+                }
+
+                if (totalRowsAffected != iDs.size()) {
+                    connection.rollback();
+                    throw new DAOException("Update failed for items with IDs: " + iDs);
+                }
                 connection.commit();
+
+            } catch (Exception e) {
+                // rollback if error
+                connection.rollback();
+                throw e;
             }
+
         } catch (SQLException e) {
             throw new DAOException("Database error while updating offer counter for item " + iDs, e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-                connection.close();
-            } catch (SQLException e) {
-                throw new DAOException("Database error: failed to reset autocommit " + iDs, e);
-            }
         }
     }
 

@@ -111,12 +111,6 @@ public class TestItem {
     }
 
     @Test
-    public void testDecrOfferCounterLessThanZero() {
-        Item item = createTestItem("dave", "AVAILABLE", 0);
-        assertThrows(IllegalStateException.class, () ->{item.decrOffersCounter();});
-    }
-
-    @Test
     public void testAddImageMoreThanThree() {
         Item item = createTestItem("dave", "AVAILABLE");
         String image_path_1 = "path1";

@@ -170,13 +170,6 @@ public class Item{
         this.offersCounter++;
     }
 
-    public void decrOffersCounter(){
-        if(this.offersCounter <= 0){
-            throw new IllegalStateException("Item has no offers.");
-        }
-        else this.offersCounter--;
-    }
-
     public void addImage(String image){
         if(this.getStatus() == ItemStatus.TRADED) throw new IllegalStateException("Traded item cannot be edited");
         if(this.getImages() == null){

@@ -1,0 +1,33 @@
+Use Case "Make Offer" Internal Steps
+
+1. The Offerer finds an item of interest and visualizes the details via the use case "Visualize Item".
+2. The Offerer requests to make a barter offer for the selected item.
+3. The System starts a session timer of 20 minutes.
+4. The System displays the offer form.
+5. The System gets users inventory data.
+6. The Offerer requests to add an item to offer.
+7. The System displays the Offerer's inventory.
+8. The System requests the Offerer to select the owned items to offer.
+9. The Offerer selects a maximum of three items to exchange and requests to add selected item to offer.
+10. The System adds selected item to offer and displays the updated offer form.
+11. The Offerer requests to submit the offer. 
+12. The System validates the offer.
+13. The System saves the barter offer as "Pending"
+14. The System notifies the Receiver and displays a success message.
+15. The System displays the Offerer's offer lists.
+
+Extensions:
+6a. The Offerer owns no items in their inventory:
+	3a1. The System displays a message to the Offerer pointing that they must publish at least one item to propose a barter.
+	3a2. The System terminates the use case.
+11a. Session timer is expired:
+	11a1. The System displays an error message.
+	11a2. The System terminates the use case.
+12a. The Receiver's item is no longer available:  
+	12a1. The System displays an error message and terminates the use case.
+12b. One or more of the Offerer's selected items are no longer available:  
+	12b1. The System displays an error message.
+	12b2. The System returns to step 4.
+12c. An identical offer already exists
+	12c1. The System displays an error message.
+	12c2. The System returns to step 4

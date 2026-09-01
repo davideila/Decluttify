@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class JFXUI implements SessionObserver {
 
-    private static final double RESIZE_CONSTANT = 0.75;
+    private static final double RESIZE_CONSTANT = 0.9;
     private final String HEADER_BAR_FXML = "/it/uniroma2/ispw/decluttify/views/HeaderBar.fxml";
     private final String SIDE_BAR_FXML = "/it/uniroma2/ispw/decluttify/views/SideBar.fxml";
     private final String JFXUI_FXML = "/it/uniroma2/ispw/decluttify/views/JFXUI.fxml";

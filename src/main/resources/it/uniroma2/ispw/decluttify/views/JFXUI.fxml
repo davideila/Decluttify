@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
@@ -7,11 +8,13 @@
     <VBox fx:id="vbox" alignment="CENTER" spacing="15" style="-fx-background-color: #475569;">
     </VBox>
 
+    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
     <BorderPane fx:id="borderPane" HBox.hgrow="ALWAYS">
         <top>
         </top>
         <center>
         </center>
     </BorderPane>
+    </ScrollPane>
 
 </HBox>
